@@ -4,7 +4,7 @@
 	<groupId>org.cassandraunit</groupId>
 	<artifactId>cassandra-unit-multi</artifactId>
 	<packaging>pom</packaging>
-	<version>0.8.1-SNAPSHOT</version>
+	<version>0.8.2.1-SNAPSHOT</version>
 	<name>cassandra-unit-multi</name>
 	<modules>
 		<module>cassandra-unit</module>

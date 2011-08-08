@@ -4,7 +4,7 @@
 	<groupId>org.cassandraunit</groupId>
 	<artifactId>cassandra-unit</artifactId>
 	<packaging>jar</packaging>
-	<version>0.8.1-SNAPSHOT</version>
+	<version>0.8.2.1-SNAPSHOT</version>
 	<name>cassandra-unit</name>
 	<url>http://www.unchticafe.fr</url>
 	<build>
@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>org.apache.cassandra</groupId>
 			<artifactId>cassandra-all</artifactId>
-			<version>0.8.1</version>
+			<version>0.8.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
