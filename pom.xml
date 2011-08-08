@@ -4,8 +4,8 @@
 	<groupId>org.cassandraunit</groupId>
 	<artifactId>cassandra-unit-multi</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
-	<name>sarbacane-sync-parent</name>
+	<version>0.8.1-SNAPSHOT</version>
+	<name>cassandra-unit-multi</name>
 	<modules>
 		<module>cassandra-unit</module>
    	 	<module>cassandra-unit-examples</module>
