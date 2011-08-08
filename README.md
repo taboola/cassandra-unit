@@ -16,10 +16,17 @@ Main features :
 - Start an embedded Cassandra.
 - Create structure (keyspace and Column family's) and load Data from an XmlDataSet.
 
+Using/Compatibility :
+---------------
+- Cassandra 0.8.X
+- Hector 0.8.0-X
 
 Where to start :
 -----------
 You can start watching the cassandra-unit-examples project.
+
+
+
 
 
 License :
