@@ -10,7 +10,6 @@ CassandraUnit is for Cassandra what DBUnit is for Relational Database.
 
 CassandraUnit helps you writing isolated Junit Test in a Test Driven Development style.
 
-
 Main features :
 ---------------
 - Start an embedded Cassandra.
@@ -22,11 +21,13 @@ Using/Compatibility :
 - Hector 0.8.0-X
 
 Where to start :
------------
+----------------
 You can start watching Unit tests in the cassandra-unit-examples project.
 
-
-
+How to use it in your project :
+----------------
+Right now, you have to build it execution mvn install and to get the jar in the cassandra-unit/target directory
+CassandraUnit in public maven repository coming soon...
 
 
 License :
