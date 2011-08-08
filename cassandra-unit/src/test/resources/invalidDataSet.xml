@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<keyspace xmlns="http://xml.dataset.cassandraunit.org">
+	<name>otherKeyspaceName</name>
+	<strategy>org.apache.cassandra.locator.LocalStrategy</strategy>
+	<replicationFactor>2</replicationFactor>
+	<columnFamily>
+		<name>amazingColumnFamilyName</name>
+		<type>STANDARD</type>
+		<keyValidationClass>UTF8Type</keyValidationClass>
+		<comparatorType>UTF8Type</comparatorType>
+	</columnFamily>
+
+</keyspace>

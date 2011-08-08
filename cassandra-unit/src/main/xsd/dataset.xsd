@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://xml.dataset.cassandraunit.org"
+	targetNamespace="http://xml.dataset.cassandraunit.org" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
+	elementFormDefault="qualified">
+	<element name="keyspace">
+		<complexType>
+			<sequence>
+				<element name="name" type="string" minOccurs="1" maxOccurs="1" />
+				<element name="strategy" minOccurs="0" maxOccurs="1">
+					<annotation>
+						<documentation>stategy</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="org.apache.cassandra.locator.LocalStrategy" />
+							<enumeration value="org.apache.cassandra.locator.NetworkTopologyStrategy" />
+							<enumeration value="org.apache.cassandra.locator.SimpleStrategy" />
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="replicationFactor" type="int" minOccurs="0" maxOccurs="1" />
+				<element name="columnFamilies" type="tns:ColumnFamilies" minOccurs="0" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="ColumnFamilies">
+		<sequence>
+			<element name="columnFamily" type="tns:ColumnFamily" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ColumnFamily">
+		<sequence>
+			<element name="name" type="string" minOccurs="1" maxOccurs="1" />
+			<element name="type" type="tns:ColumnFamilyType" minOccurs="0" maxOccurs="1" />
+			<element name="keyType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
+			<element name="comparatorType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
+			<element name="subComparatorType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
+			<element name="defaultColumnValueType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
+			<element name="row" type="tns:RowType" minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<simpleType name="ColumnFamilyType">
+		<restriction base="string">
+			<enumeration value="STANDARD" />
+			<enumeration value="SUPER" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DataType">
+		<restriction base="string">
+			<enumeration value="BytesType" />
+			<enumeration value="IntegerType" />
+			<enumeration value="LexicalUUIDType" />
+			<enumeration value="LongType" />
+			<enumeration value="TimeUUIDType" />
+			<enumeration value="UTF8Type" />
+			<enumeration value="UUIDType" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="RowType">
+		<sequence>
+			<element name="key" type="string" minOccurs="1" maxOccurs="1" />
+			<element name="superColumn" type="tns:SuperColumnType" minOccurs="0" maxOccurs="unbounded" />
+			<element name="column" type="tns:ColumnType" minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="SuperColumnType">
+		<sequence>
+			<element name="name" type="string" minOccurs="1" maxOccurs="1" />
+			<element name="column" type="tns:ColumnType" minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ColumnType">
+		<sequence>
+			<element name="name" type="string" minOccurs="1" maxOccurs="1" />
+			<element name="value" type="string" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+
+</schema>
