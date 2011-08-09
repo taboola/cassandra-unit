@@ -1,7 +1,6 @@
 WELCOME to CassandraUnit
 ========================
 
-
 What is it?
 -----------
 
