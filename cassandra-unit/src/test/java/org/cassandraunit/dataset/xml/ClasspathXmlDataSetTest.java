@@ -159,20 +159,20 @@ public class ClasspathXmlDataSetTest {
 		assertThat(row1.getSuperColumns().get(0).getColumns(), notNullValue());
 		assertThat(row1.getSuperColumns().get(0).getColumns().size(), is(2));
 		assertThat(row1.getSuperColumns().get(0).getColumns().get(0), notNullValue());
-		assertThat(row1.getSuperColumns().get(0).getColumns().get(0).getName().toString(), is("name111"));
+		assertThat(row1.getSuperColumns().get(0).getColumns().get(0).getName().toString(), is("111"));
 		assertThat(row1.getSuperColumns().get(0).getColumns().get(0).getValue().toString(), is("value111"));
 		assertThat(row1.getSuperColumns().get(0).getColumns().get(1), notNullValue());
-		assertThat(row1.getSuperColumns().get(0).getColumns().get(1).getName().toString(), is("name112"));
+		assertThat(row1.getSuperColumns().get(0).getColumns().get(1).getName().toString(), is("112"));
 		assertThat(row1.getSuperColumns().get(0).getColumns().get(1).getValue().toString(), is("value112"));
 
 		assertThat(row1.getSuperColumns().get(1).getName().toString(), is("name12"));
 		assertThat(row1.getSuperColumns().get(1).getColumns(), notNullValue());
 		assertThat(row1.getSuperColumns().get(1).getColumns().size(), is(2));
 		assertThat(row1.getSuperColumns().get(1).getColumns().get(0), notNullValue());
-		assertThat(row1.getSuperColumns().get(1).getColumns().get(0).getName().toString(), is("name121"));
+		assertThat(row1.getSuperColumns().get(1).getColumns().get(0).getName().toString(), is("121"));
 		assertThat(row1.getSuperColumns().get(1).getColumns().get(0).getValue().toString(), is("value121"));
 		assertThat(row1.getSuperColumns().get(1).getColumns().get(1), notNullValue());
-		assertThat(row1.getSuperColumns().get(1).getColumns().get(1).getName().toString(), is("name122"));
+		assertThat(row1.getSuperColumns().get(1).getColumns().get(1).getName().toString(), is("122"));
 		assertThat(row1.getSuperColumns().get(1).getColumns().get(1).getValue().toString(), is("value122"));
 
 		RowModel row2 = dataSet.getColumnFamilies().get(0).getRows().get(1);
@@ -188,27 +188,27 @@ public class ClasspathXmlDataSetTest {
 		assertThat(row2.getSuperColumns().get(0).getColumns(), notNullValue());
 		assertThat(row2.getSuperColumns().get(0).getColumns().size(), is(2));
 		assertThat(row2.getSuperColumns().get(0).getColumns().get(0), notNullValue());
-		assertThat(row2.getSuperColumns().get(0).getColumns().get(0).getName().toString(), is("name211"));
+		assertThat(row2.getSuperColumns().get(0).getColumns().get(0).getName().toString(), is("211"));
 		assertThat(row2.getSuperColumns().get(0).getColumns().get(0).getValue().toString(), is("value211"));
 		assertThat(row2.getSuperColumns().get(0).getColumns().get(1), notNullValue());
-		assertThat(row2.getSuperColumns().get(0).getColumns().get(1).getName().toString(), is("name212"));
+		assertThat(row2.getSuperColumns().get(0).getColumns().get(1).getName().toString(), is("212"));
 		assertThat(row2.getSuperColumns().get(0).getColumns().get(1).getValue().toString(), is("value212"));
 
 		assertThat(row2.getSuperColumns().get(1).getName().toString(), is("name22"));
 		assertThat(row2.getSuperColumns().get(1).getColumns(), notNullValue());
 		assertThat(row2.getSuperColumns().get(1).getColumns().size(), is(2));
 		assertThat(row2.getSuperColumns().get(1).getColumns().get(0), notNullValue());
-		assertThat(row2.getSuperColumns().get(1).getColumns().get(0).getName().toString(), is("name221"));
+		assertThat(row2.getSuperColumns().get(1).getColumns().get(0).getName().toString(), is("221"));
 		assertThat(row2.getSuperColumns().get(1).getColumns().get(0).getValue().toString(), is("value221"));
 		assertThat(row2.getSuperColumns().get(1).getColumns().get(1), notNullValue());
-		assertThat(row2.getSuperColumns().get(1).getColumns().get(1).getName().toString(), is("name222"));
+		assertThat(row2.getSuperColumns().get(1).getColumns().get(1).getName().toString(), is("222"));
 		assertThat(row2.getSuperColumns().get(1).getColumns().get(1).getValue().toString(), is("value222"));
 
 		assertThat(row2.getSuperColumns().get(2).getName().toString(), is("name23"));
 		assertThat(row2.getSuperColumns().get(2).getColumns(), notNullValue());
 		assertThat(row2.getSuperColumns().get(2).getColumns().size(), is(1));
 		assertThat(row2.getSuperColumns().get(2).getColumns().get(0), notNullValue());
-		assertThat(row2.getSuperColumns().get(2).getColumns().get(0).getName().toString(), is("name231"));
+		assertThat(row2.getSuperColumns().get(2).getColumns().get(0).getName().toString(), is("231"));
 		assertThat(row2.getSuperColumns().get(2).getColumns().get(0).getValue().toString(), is("value231"));
 	}
 
