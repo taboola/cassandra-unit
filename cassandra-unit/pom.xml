@@ -1,12 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 	<groupId>org.cassandraunit</groupId>
 	<artifactId>cassandra-unit</artifactId>
 	<packaging>jar</packaging>
-	<version>0.8.2.1-SNAPSHOT</version>
 	<name>cassandra-unit</name>
-	<url>http://www.unchticafe.fr</url>
+	<version>0.8.2.1-SNAPSHOT</version>
+	<description>Test framekork to develop with Cassandra</description>
+	<url>https://github.com/jsevellec/CassandraUnit</url>
+	<licenses>
+		<license>
+			<name>GNU LESSER GENERAL PUBLIC LICENSE V3.0</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git@github.com:jsevellec/CassandraUnit.git</connection>
+		<developerConnection>scm:git:git@github.com:jsevellec/CassandraUnit.git</developerConnection>
+		<url>git@github.com:jsevellec/CassandraUnit.git</url>
+	</scm>
 	<build>
 		<resources>
 			<resource>
