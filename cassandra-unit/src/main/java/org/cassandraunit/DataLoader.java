@@ -49,7 +49,7 @@ public class DataLoader {
 		KeyspaceDefinition keyspaceDefinition = HFactory.createKeyspaceDefinition(dataSetKeyspace.getName(),
 				dataSetKeyspace.getStategy(), dataSetKeyspace.getReplicationFactor(), columnFamilyDefinitions);
 
-		cluster.addKeyspace(keyspaceDefinition);
+		cluster.addKeyspace(keyspaceDefinition, true);
 
 		log.info("creating keyspace : {}", keyspaceDefinition.getName());
 		Keyspace keyspace = HFactory.createKeyspace(dataSet.getKeyspace().getName(), cluster);
@@ -61,7 +61,7 @@ public class DataLoader {
 		KeyspaceDefinition existedKeyspace = cluster.describeKeyspace(keyspaceName);
 		if (existedKeyspace != null) {
 			log.info("dropping existing keyspace : {}", existedKeyspace.getName());
-			cluster.dropKeyspace(keyspaceName);
+			cluster.dropKeyspace(keyspaceName, true);
 		}
 	}
 
