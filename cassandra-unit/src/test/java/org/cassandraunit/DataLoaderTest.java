@@ -16,7 +16,9 @@ import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.OrderedRows;
+import me.prettyprint.hector.api.beans.OrderedSuperRows;
 import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.beans.SuperRow;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.exceptions.HInvalidRequestException;
@@ -24,22 +26,18 @@ import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
+import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
 
 import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DataLoaderTest {
 
-	private static boolean isInitialized = false;
-
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-
 	}
 
 	@Test
@@ -170,6 +168,85 @@ public class DataLoaderTest {
 			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getValue(), is("value32".getBytes()));
 			assertThat(rows.get(1).getKey(), is("key20".getBytes()));
 			assertThat(rows.get(2).getKey(), is("key10".getBytes()));
+
+		} catch (HInvalidRequestException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	public void shouldLoadDataWithSuperRow() {
+		String clusterName = "TestCluster6";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+
+		try {
+			dataLoader.load(new ClassPathXmlDataSet("datasetWithSuperColumn.xml"));
+
+			/* verify */
+			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+			Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
+			RangeSuperSlicesQuery<byte[], byte[], byte[], byte[]> query = HFactory.createRangeSuperSlicesQuery(
+					keyspace, BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get(),
+					BytesArraySerializer.get());
+			query.setColumnFamily("beautifulColumnFamilyName");
+			query.setRange(null, null, false, Integer.MAX_VALUE);
+			QueryResult<OrderedSuperRows<byte[], byte[], byte[], byte[]>> result = query.execute();
+			List<SuperRow<byte[], byte[], byte[], byte[]>> rows = result.get().getList();
+			assertThat(rows.size(), is(2));
+			assertThat(rows.get(0).getKey(), is("key1".getBytes()));
+			assertThat(rows.get(0).getSuperSlice(), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns(), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().size(), is(2));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getName(), is("name11".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns(), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().size(), is(2));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(0), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getName(),
+					is("name111".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getValue(),
+					is("value111".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(1), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getName(),
+					is("name112".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getValue(),
+					is("value112".getBytes()));
+
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getName(), is("name12".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns(), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().size(), is(2));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(0), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(0).getName(),
+					is("name121".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(0).getValue(),
+					is("value121".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(1), notNullValue());
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(1).getName(),
+					is("name122".getBytes()));
+			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(1).getValue(),
+					is("value122".getBytes()));
+
+			assertThat(rows.get(1).getKey(), is("key2".getBytes()));
+			assertThat(rows.get(1).getSuperSlice(), notNullValue());
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns(), notNullValue());
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().size(), is(1));
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0), notNullValue());
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getName(), is("name21".getBytes()));
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns(), notNullValue());
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().size(), is(2));
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(0), notNullValue());
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getName(),
+					is("name211".getBytes()));
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getValue(),
+					is("value211".getBytes()));
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(1), notNullValue());
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getName(),
+					is("name212".getBytes()));
+			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getValue(),
+					is("value212".getBytes()));
 
 		} catch (HInvalidRequestException e) {
 			e.printStackTrace();

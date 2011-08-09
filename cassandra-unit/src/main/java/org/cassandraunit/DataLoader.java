@@ -6,6 +6,7 @@ import java.util.List;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.HSuperColumn;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
@@ -18,6 +19,7 @@ import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
 import org.cassandraunit.model.RowModel;
+import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.serializer.GenericTypeSerializer;
 import org.cassandraunit.type.GenericType;
 import org.slf4j.Logger;
@@ -73,14 +75,38 @@ public class DataLoader {
 	private void loadColumnFamilyData(ColumnFamilyModel columnFamily, Keyspace keyspace) {
 		Mutator<GenericType> mutator = HFactory.createMutator(keyspace, GenericTypeSerializer.get());
 		for (RowModel row : columnFamily.getRows()) {
-			for (ColumnModel columnModel : row.getColumns()) {
-				HColumn<GenericType, GenericType> column = HFactory.createColumn(columnModel.getName(),
-						columnModel.getValue(), GenericTypeSerializer.get(), GenericTypeSerializer.get());
-				mutator.addInsertion(row.getKey(), columnFamily.getName(), column);
+			switch (columnFamily.getType()) {
+			case STANDARD:
+				for (HColumn<GenericType, GenericType> hColumn : createHColumnList(row.getColumns())) {
+					mutator.addInsertion(row.getKey(), columnFamily.getName(), hColumn);
+				}
+
+				break;
+			case SUPER:
+				for (SuperColumnModel superColumnModel : row.getSuperColumns()) {
+					HSuperColumn<GenericType, GenericType, GenericType> column = HFactory.createSuperColumn(
+							superColumnModel.getName(), createHColumnList(superColumnModel.getColumns()),
+							GenericTypeSerializer.get(), GenericTypeSerializer.get(), GenericTypeSerializer.get());
+					mutator.addInsertion(row.getKey(), columnFamily.getName(), column);
+				}
+				break;
+			default:
+				break;
 			}
+
 		}
 		mutator.execute();
 
+	}
+
+	private List<HColumn<GenericType, GenericType>> createHColumnList(List<ColumnModel> columnsModel) {
+		List<HColumn<GenericType, GenericType>> hColumns = new ArrayList<HColumn<GenericType, GenericType>>();
+		for (ColumnModel columnModel : columnsModel) {
+			HColumn<GenericType, GenericType> column = HFactory.createColumn(columnModel.getName(),
+					columnModel.getValue(), GenericTypeSerializer.get(), GenericTypeSerializer.get());
+			hColumns.add(column);
+		}
+		return hColumns;
 	}
 
 	private List<ColumnFamilyDefinition> createColumnFamilyDefinitions(IDataSet dataSet, KeyspaceModel dataSetKeyspace) {
