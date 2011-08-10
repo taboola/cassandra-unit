@@ -23,6 +23,7 @@ Using/Compatibility :
 Where to start :
 ----------------
 You can start watching Unit tests in the cassandra-unit-examples project.
+https://github.com/jsevellec/cassandra-unit-examples
 
 How to use it in your project :
 ----------------
