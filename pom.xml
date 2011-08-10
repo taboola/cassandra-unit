@@ -22,7 +22,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/jsevellec/cassandra-unit.git</connection>
 		<developerConnection>scm:git:https://github.com/jsevellec/cassandra-unit.git</developerConnection>
-		<url>ghttps://github.com/jsevellec/casszndra-unit.git</url>
+		<url>https://github.com/jsevellec/cassandra-unit.git</url>
 	</scm>
 	<build>
 		<resources>
