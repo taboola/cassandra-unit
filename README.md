@@ -27,8 +27,8 @@ https://github.com/jsevellec/cassandra-unit-examples
 
 How to use it in your project :
 ----------------
-Right now, you have to build it executing mvn install and to get the jar in the cassandra-unit/target directory
-CassandraUnit in public maven repository coming soon...
+- cassandra-unit available in public maven repository
+- you can build it using maven : mvn install
 
 
 License :
