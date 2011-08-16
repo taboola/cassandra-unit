@@ -170,6 +170,7 @@ public class MockDataSetHelper {
 		columnFamilies.add(constructColumnFamily3ForDefinedValueSimple());
 		columnFamilies.add(constructColumnFamily4ForDefinedValueSimple());
 		columnFamilies.add(constructColumnFamily5ForDefinedValueSimple());
+		keyspace.setColumnFamilies(columnFamilies);
 
 		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
 		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
@@ -177,22 +178,113 @@ public class MockDataSetHelper {
 	}
 
 	private static ColumnFamilyModel constructColumnFamily5ForDefinedValueSimple() {
-		return null;
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName5");
+		columnFamily.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+		List<RowModel> rows = new ArrayList<RowModel>();
+
+		/* row 1 */
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("key01", GenericTypeEnum.BYTES_TYPE));
+		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
+		ColumnModel columnModel11 = new ColumnModel();
+		columnModel11.setName(new GenericType("name01", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setValue(new GenericType("1", GenericTypeEnum.LONG_TYPE));
+		columns1.add(columnModel11);
+		ColumnModel columnModel12 = new ColumnModel();
+		columnModel12.setName(new GenericType("name02", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setValue(new GenericType("19652258", GenericTypeEnum.LONG_TYPE));
+		columns1.add(columnModel12);
+		row1.setColumns(columns1);
+		rows.add(row1);
+
+		columnFamily.setRows(rows);
+
+		return columnFamily;
 	}
 
 	private static ColumnFamilyModel constructColumnFamily4ForDefinedValueSimple() {
-		// TODO Auto-generated method stub
-		return null;
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName4");
+		columnFamily.setDefaultColumnValueType(ComparatorType.LONGTYPE);
+		List<RowModel> rows = new ArrayList<RowModel>();
+
+		/* row 1 */
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("key01", GenericTypeEnum.BYTES_TYPE));
+		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
+		ColumnModel columnModel11 = new ColumnModel();
+		columnModel11.setName(new GenericType("name01", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setValue(new GenericType("1", GenericTypeEnum.LONG_TYPE));
+		columns1.add(columnModel11);
+		ColumnModel columnModel12 = new ColumnModel();
+		columnModel12.setName(new GenericType("name02", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setValue(new GenericType("19652258", GenericTypeEnum.LONG_TYPE));
+		columns1.add(columnModel12);
+		row1.setColumns(columns1);
+		rows.add(row1);
+
+		columnFamily.setRows(rows);
+
+		return columnFamily;
 	}
 
 	private static ColumnFamilyModel constructColumnFamily3ForDefinedValueSimple() {
-		// TODO Auto-generated method stub
-		return null;
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName3");
+		columnFamily.setKeyType(ComparatorType.UUIDTYPE);
+		columnFamily.setComparatorType(ComparatorType.LEXICALUUIDTYPE);
+
+		List<RowModel> rows = new ArrayList<RowModel>();
+
+		/* row 1 */
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("13816710-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.UUID_TYPE));
+		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
+		ColumnModel columnModel11 = new ColumnModel();
+		columnModel11
+				.setName(new GenericType("13816710-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.LEXICAL_UUID_TYPE));
+		columnModel11.setValue(new GenericType("value11", GenericTypeEnum.BYTES_TYPE));
+		columns1.add(columnModel11);
+		ColumnModel columnModel12 = new ColumnModel();
+		columnModel12
+				.setName(new GenericType("13818e20-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.LEXICAL_UUID_TYPE));
+		columnModel12.setValue(new GenericType("value12", GenericTypeEnum.BYTES_TYPE));
+		columns1.add(columnModel12);
+		row1.setColumns(columns1);
+		rows.add(row1);
+
+		columnFamily.setRows(rows);
+
+		return columnFamily;
 	}
 
 	private static ColumnFamilyModel constructColumnFamily2ForDefinedValueSimple() {
-		// TODO Auto-generated method stub
-		return null;
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName2");
+		columnFamily.setKeyType(ComparatorType.LONGTYPE);
+		columnFamily.setComparatorType(ComparatorType.INTEGERTYPE);
+
+		List<RowModel> rows = new ArrayList<RowModel>();
+
+		/* row 1 */
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("10", GenericTypeEnum.LONG_TYPE));
+		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
+		ColumnModel columnModel11 = new ColumnModel();
+		columnModel11.setName(new GenericType("11", GenericTypeEnum.INTEGER_TYPE));
+		columnModel11.setValue(new GenericType("value11", GenericTypeEnum.BYTES_TYPE));
+		columns1.add(columnModel11);
+		ColumnModel columnModel12 = new ColumnModel();
+		columnModel12.setName(new GenericType("12", GenericTypeEnum.INTEGER_TYPE));
+		columnModel12.setValue(new GenericType("value12", GenericTypeEnum.BYTES_TYPE));
+		columns1.add(columnModel12);
+		row1.setColumns(columns1);
+		rows.add(row1);
+
+		columnFamily.setRows(rows);
+
+		return columnFamily;
 	}
 
 	private static ColumnFamilyModel constructColumnFamily1ForDefinedValueSimple() {
@@ -218,9 +310,9 @@ public class MockDataSetHelper {
 		row1.setColumns(columns1);
 		rows.add(row1);
 
-		/* row 1 */
+		/* row 2 */
 		RowModel row2 = new RowModel();
-		row2.setKey(new GenericType("13816710-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.TIME_UUID_TYPE));
+		row2.setKey(new GenericType("13818e20-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.TIME_UUID_TYPE));
 		List<ColumnModel> columns2 = new ArrayList<ColumnModel>();
 		ColumnModel columnModel21 = new ColumnModel();
 		columnModel21.setName(new GenericType("name21", GenericTypeEnum.UTF_8_TYPE));
@@ -236,5 +328,54 @@ public class MockDataSetHelper {
 		columnFamily.setRows(rows);
 
 		return columnFamily;
+	}
+
+	public static DataSet getMockDataSetWithSuperColumn() {
+		DataSet mockDataSet = mock(DataSet.class);
+		/* keyspace */
+		KeyspaceModel keyspace = new KeyspaceModel();
+		keyspace.setName("beautifulKeyspaceName");
+		List<ColumnFamilyModel> columnFamilies = new ArrayList<ColumnFamilyModel>();
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName");
+		columnFamily.setType(ColumnType.SUPER);
+		
+		List<RowModel> rows = new ArrayList<RowModel>();
+		
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("key1", GenericTypeEnum.BYTES_TYPE));
+//		List<SuperColumnModel> superColumns1 = new ArrayList<SuperColumnModel>();
+//		
+//		SuperColumnModel superColumn11 = new SuperColumnModel();
+//		superColumn11.setName(new GenericType("name11", GenericTypeEnum.BYTES_TYPE));
+//		List<ColumnModel> columns11 = new ArrayList<ColumnModel>();
+//		columns11.add(constructDefaultColumnForMock("name111", "value111"));
+//		columns11.add(constructDefaultColumnForMock("name112", "value112"));
+//		superColumn11.setColumns(columns11);
+//		superColumns1.add(superColumn11);
+//		
+//		SuperColumnModel superColumn12 = new SuperColumnModel();
+//		superColumn12.setName(new GenericType("name12", GenericTypeEnum.BYTES_TYPE));
+//		List<ColumnModel> columns12 = new ArrayList<ColumnModel>();
+//		columns12.add(constructDefaultColumnForMock("name121", "value121"));
+//		columns12.add(constructDefaultColumnForMock("name122", "value122"));
+//		superColumn12.setColumns(columns12);
+//		superColumns1.add(superColumn12);
+		
+//		row1.setSuperColumns(superColumns1);
+		rows.add(row1);
+
+		RowModel row2 = new RowModel();
+		row2.setKey(new GenericType("key2", GenericTypeEnum.BYTES_TYPE));
+
+		rows.add(row2);
+
+		columnFamily.setRows(rows);
+		columnFamilies.add(columnFamily);
+		keyspace.setColumnFamilies(columnFamilies);
+
+		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
+		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
+		return mockDataSet;
 	}
 }
