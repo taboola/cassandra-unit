@@ -2,6 +2,7 @@ package org.cassandraunit.dataset.json;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.prettyprint.hector.api.ddl.ColumnType;
@@ -10,8 +11,14 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
+import org.cassandraunit.model.RowModel;
 import org.cassandraunit.model.StrategyModel;
+import org.cassandraunit.model.SuperColumnModel;
+import org.cassandraunit.type.GenericType;
+import org.cassandraunit.type.GenericTypeEnum;
+import org.cassandraunit.utils.TypeExtractor;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -111,7 +118,81 @@ public class ClassPathJSONDataSet implements DataSet {
 					.getDefaultColumnValueType().name()));
 		}
 
+		/* data information */
+		columnFamily.setRows(mapJSONRowsToRowsModel(jsonColumnFamily, columnFamily.getKeyType(),
+				columnFamily.getComparatorType(), columnFamily.getSubComparatorType(),
+				columnFamily.getDefaultColumnValueType()));
+
 		return columnFamily;
+	}
+
+	private List<RowModel> mapJSONRowsToRowsModel(JSONColumnFamily jsonColumnFamily, ComparatorType keyType,
+			ComparatorType comparatorType, ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+		List<RowModel> rowsModel = new ArrayList<RowModel>();
+		for (JSONRow jsonRow : jsonColumnFamily.getRows()) {
+			rowsModel.add(mapsJSONRowToRowModel(jsonRow, keyType, comparatorType, subComparatorType,
+					defaultColumnValueType));
+		}
+		return rowsModel;
+	}
+
+	private RowModel mapsJSONRowToRowModel(JSONRow jsonRow, ComparatorType keyType, ComparatorType comparatorType,
+			ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+		RowModel row = new RowModel();
+
+		row.setKey(new GenericType(jsonRow.getKey(), GenericTypeEnum.fromValue(keyType.getTypeName())));
+		row.setColumns(mapXmlColumnsToColumnsModel(jsonRow.getColumns(), comparatorType, defaultColumnValueType));
+		row.setSuperColumns(mapXmlSuperColumnsToSuperColumnsModel(jsonRow.getSuperColumns(), comparatorType,
+				subComparatorType, defaultColumnValueType));
+		return row;
+	}
+
+	private List<SuperColumnModel> mapXmlSuperColumnsToSuperColumnsModel(List<JSONSuperColumn> jsonSuperColumns,
+			ComparatorType comparatorType, ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+		List<SuperColumnModel> columnsModel = new ArrayList<SuperColumnModel>();
+		for (JSONSuperColumn jsonSuperColumn : jsonSuperColumns) {
+			columnsModel.add(mapXmlSuperColumnToSuperColumnModel(jsonSuperColumn, comparatorType, subComparatorType,
+					defaultColumnValueType));
+		}
+
+		return columnsModel;
+	}
+
+	private SuperColumnModel mapXmlSuperColumnToSuperColumnModel(JSONSuperColumn jsonSuperColumn,
+			ComparatorType comparatorType, ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+		SuperColumnModel superColumnModel = new SuperColumnModel();
+
+		superColumnModel.setName(new GenericType(jsonSuperColumn.getName(), GenericTypeEnum.fromValue(comparatorType
+				.getTypeName())));
+
+		superColumnModel.setColumns(mapXmlColumnsToColumnsModel(jsonSuperColumn.getColumns(), subComparatorType,
+				defaultColumnValueType));
+		return superColumnModel;
+	}
+
+	private List<ColumnModel> mapXmlColumnsToColumnsModel(List<JSONColumn> jsonColumns, ComparatorType comparatorType,
+			ComparatorType defaultColumnValueType) {
+		List<ColumnModel> columnsModel = new ArrayList<ColumnModel>();
+		for (JSONColumn jsonColumn : jsonColumns) {
+			columnsModel.add(mapXmlColumnToColumnModel(jsonColumn, comparatorType, defaultColumnValueType));
+		}
+		return columnsModel;
+	}
+
+	private ColumnModel mapXmlColumnToColumnModel(JSONColumn jsonColumn, ComparatorType comparatorType,
+			ComparatorType defaultColumnValueType) {
+		ColumnModel columnModel = new ColumnModel();
+
+		if (comparatorType == null) {
+			columnModel.setName(new GenericType(jsonColumn.getName(), GenericTypeEnum.BYTES_TYPE));
+		} else {
+			columnModel.setName(new GenericType(jsonColumn.getName(), GenericTypeEnum.fromValue(comparatorType
+					.getTypeName())));
+		}
+
+		GenericType columnValue = TypeExtractor.extract(jsonColumn.getValue(), defaultColumnValueType);
+		columnModel.setValue(columnValue);
+		return columnModel;
 	}
 
 	@Override
