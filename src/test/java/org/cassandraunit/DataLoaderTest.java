@@ -30,6 +30,7 @@ import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
 
 import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
+import org.cassandraunit.utils.MockDataSetHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -72,7 +73,7 @@ public class DataLoaderTest {
 		String host = "localhost:9171";
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
-		dataLoader.load(new ClassPathXmlDataSet("datasetDefaultValues.xml"));
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
 
 		/* test */
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -89,7 +90,7 @@ public class DataLoaderTest {
 		String host = "localhost:9171";
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
-		dataLoader.load(new ClassPathXmlDataSet("datasetDefaultValues.xml"));
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
 
 		/* test */
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -112,7 +113,7 @@ public class DataLoaderTest {
 		String host = "localhost:9171";
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
-		dataLoader.load(new ClassPathXmlDataSet("datasetDefinedValues.xml"));
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValues());
 
 		/* test */
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -148,7 +149,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefaultValues.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -440,8 +441,8 @@ public class DataLoaderTest {
 			String clusterName = "TestCluster9";
 			String host = "localhost:9171";
 			DataLoader dataLoader = new DataLoader(clusterName, host);
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefaultValues.xml"));
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefaultValues.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
 		} catch (HInvalidRequestException e) {
 			e.printStackTrace();
 			fail();
