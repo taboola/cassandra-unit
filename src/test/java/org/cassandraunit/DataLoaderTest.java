@@ -262,7 +262,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefinedValuesSimple.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -304,7 +304,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefinedValuesSimple.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -338,7 +338,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefinedValuesSimple.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -374,7 +374,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefinedValuesSimple.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
@@ -408,7 +408,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetDefinedValuesSimple.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
