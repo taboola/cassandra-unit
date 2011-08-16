@@ -47,7 +47,7 @@ public class DataLoader {
 		List<ColumnFamilyDefinition> columnFamilyDefinitions = createColumnFamilyDefinitions(dataSet, dataSetKeyspace);
 
 		KeyspaceDefinition keyspaceDefinition = HFactory.createKeyspaceDefinition(dataSetKeyspace.getName(),
-				dataSetKeyspace.getStategy(), dataSetKeyspace.getReplicationFactor(), columnFamilyDefinitions);
+				dataSetKeyspace.getStrategy().value(), dataSetKeyspace.getReplicationFactor(), columnFamilyDefinitions);
 
 		cluster.addKeyspace(keyspaceDefinition, true);
 

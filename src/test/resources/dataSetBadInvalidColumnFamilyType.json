@@ -1,0 +1,7 @@
+{
+    "name" : "beautifulKeyspaceName",
+    "columnFamilies" : [{
+        "name" : "columnFamily1",
+        "type" : "UNKNOWN"
+    }]
+}

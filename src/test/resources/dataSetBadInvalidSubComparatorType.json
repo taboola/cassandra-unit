@@ -1,0 +1,8 @@
+{
+    "name" : "beautifulKeyspaceName",
+    "columnFamilies" : [{
+        "name" : "columnFamily1",
+        "type" : "SUPER"
+        "subComparatorType" : "UNKNOWN"
+    }]
+}

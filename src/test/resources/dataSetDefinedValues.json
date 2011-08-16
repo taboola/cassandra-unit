@@ -1,0 +1,37 @@
+{
+    "name" : "beautifulKeyspaceName",
+    "columnFamilies" : [{
+        "name" : "columnFamily1",
+        "type" : "STANDARD",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "subComparatorType" : null,
+        "rows" : [{
+            "key" : "key01",
+            "columns" : [{
+                "name" : "columnName1",
+                "value" : "columnValue1"
+            }],
+            "superColumns" : []
+        }],
+        "defaultColumnValueType" : "UTF8Type"
+    },
+    {
+        "name" : "columnFamily1",
+        "type" : "SUPER",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "subComparatorType" : null,
+        "rows" : [{
+            "key" : "key01",
+            "columns" : [{
+                "name" : "columnName1",
+                "value" : "columnValue1"
+            }],
+            "superColumns" : []
+        }],
+        "defaultColumnValueType" : "UTF8Type"
+    }],
+    "replicationFactor" : 1,
+    "stategy" : "org.apache.cassandra.locator.SimpleStrategy"
+}

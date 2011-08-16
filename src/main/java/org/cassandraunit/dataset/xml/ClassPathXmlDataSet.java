@@ -20,6 +20,7 @@ import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
 import org.cassandraunit.model.RowModel;
+import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
@@ -29,7 +30,6 @@ import org.xml.sax.SAXException;
 public class ClassPathXmlDataSet implements DataSet {
 
 	private KeyspaceModel keyspace = null;
-	private List<ColumnFamilyModel> columnFamilies = null;
 
 	public ClassPathXmlDataSet(String dataSetLocation) {
 		org.cassandraunit.dataset.xml.Keyspace xmlKeyspace;
@@ -83,19 +83,19 @@ public class ClassPathXmlDataSet implements DataSet {
 		}
 
 		if (xmlKeyspace.getStrategy() != null) {
-			keyspace.setStategy(xmlKeyspace.getStrategy());
+			keyspace.setStrategy(StrategyModel.fromValue(xmlKeyspace.getStrategy().value()));
 		}
 
 		mapsXmlColumnFamiliesToColumnFamiliesModel(xmlKeyspace);
 	}
 
 	private void mapsXmlColumnFamiliesToColumnFamiliesModel(org.cassandraunit.dataset.xml.Keyspace xmlKeyspace) {
-		columnFamilies = new ArrayList<ColumnFamilyModel>();
+
 		if (xmlKeyspace.getColumnFamilies() != null) {
 			/* there is column families to integrate */
 			for (org.cassandraunit.dataset.xml.ColumnFamily xmlColumnFamily : xmlKeyspace.getColumnFamilies()
 					.getColumnFamily()) {
-				columnFamilies.add(mapXmlColumnFamilyToColumnFamilyModel(xmlColumnFamily));
+				keyspace.getColumnFamilies().add(mapXmlColumnFamilyToColumnFamilyModel(xmlColumnFamily));
 			}
 		}
 	}
@@ -141,20 +141,20 @@ public class ClassPathXmlDataSet implements DataSet {
 			ComparatorType keyType, ComparatorType comparatorType, ComparatorType subcomparatorType,
 			ComparatorType defaultColumnValueType) {
 		List<RowModel> rowsModel = new ArrayList<RowModel>();
-		for (RowType rowType : xmlColumnFamily.getRow()) {
+		for (Row rowType : xmlColumnFamily.getRow()) {
 			rowsModel.add(mapsXmlRowToRowModel(rowType, keyType, comparatorType, subcomparatorType,
 					defaultColumnValueType));
 		}
 		return rowsModel;
 	}
 
-	private RowModel mapsXmlRowToRowModel(RowType rowType, ComparatorType keyType, ComparatorType comparatorType,
+	private RowModel mapsXmlRowToRowModel(Row xmlRow, ComparatorType keyType, ComparatorType comparatorType,
 			ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
 		RowModel row = new RowModel();
 
-		row.setKey(new GenericType(rowType.getKey(), GenericTypeEnum.fromValue(keyType.getTypeName())));
-		row.setColumns(mapXmlColumnsToColumnsModel(rowType.getColumn(), comparatorType, defaultColumnValueType));
-		row.setSuperColumns(mapXmlSuperColumnsToSuperColumnsModel(rowType.getSuperColumn(), comparatorType,
+		row.setKey(new GenericType(xmlRow.getKey(), GenericTypeEnum.fromValue(keyType.getTypeName())));
+		row.setColumns(mapXmlColumnsToColumnsModel(xmlRow.getColumn(), comparatorType, defaultColumnValueType));
+		row.setSuperColumns(mapXmlSuperColumnsToSuperColumnsModel(xmlRow.getSuperColumn(), comparatorType,
 				subComparatorType, defaultColumnValueType));
 		return row;
 	}
@@ -162,18 +162,17 @@ public class ClassPathXmlDataSet implements DataSet {
 	/**
 	 * map an xml super columns to a super columns
 	 * 
-	 * @param superColumns
+	 * @param xmlSuperColumns
 	 *            xml super columns
 	 * @param subComparatorType
 	 * @param comparatorType
 	 * @return super columns
 	 */
-	private List<SuperColumnModel> mapXmlSuperColumnsToSuperColumnsModel(
-			List<org.cassandraunit.dataset.xml.SuperColumnType> superColumns, ComparatorType comparatorType,
-			ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+	private List<SuperColumnModel> mapXmlSuperColumnsToSuperColumnsModel(List<SuperColumn> xmlSuperColumns,
+			ComparatorType comparatorType, ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
 		List<SuperColumnModel> columnsModel = new ArrayList<SuperColumnModel>();
-		for (SuperColumnType superColumnType : superColumns) {
-			columnsModel.add(mapXmlSuperColumnToSuperColumnModel(superColumnType, comparatorType, subComparatorType,
+		for (SuperColumn xmlSuperColumnType : xmlSuperColumns) {
+			columnsModel.add(mapXmlSuperColumnToSuperColumnModel(xmlSuperColumnType, comparatorType, subComparatorType,
 					defaultColumnValueType));
 		}
 
@@ -183,20 +182,20 @@ public class ClassPathXmlDataSet implements DataSet {
 	/**
 	 * map an xml super colmun to a super column
 	 * 
-	 * @param superColumn
+	 * @param xmlSuperColumn
 	 *            xml super column
 	 * @param subComparatorType
 	 * @param comparatorType
 	 * @return supercolumn
 	 */
-	private SuperColumnModel mapXmlSuperColumnToSuperColumnModel(SuperColumnType superColumn,
+	private SuperColumnModel mapXmlSuperColumnToSuperColumnModel(SuperColumn xmlSuperColumn,
 			ComparatorType comparatorType, ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
 		SuperColumnModel superColumnModel = new SuperColumnModel();
 
-		superColumnModel.setName(new GenericType(superColumn.getName(), GenericTypeEnum.fromValue(comparatorType
+		superColumnModel.setName(new GenericType(xmlSuperColumn.getName(), GenericTypeEnum.fromValue(comparatorType
 				.getTypeName())));
 
-		superColumnModel.setColumns(mapXmlColumnsToColumnsModel(superColumn.getColumn(), subComparatorType,
+		superColumnModel.setColumns(mapXmlColumnsToColumnsModel(xmlSuperColumn.getColumn(), subComparatorType,
 				defaultColumnValueType));
 		return superColumnModel;
 	}
@@ -204,22 +203,22 @@ public class ClassPathXmlDataSet implements DataSet {
 	/**
 	 * map an xml column to a column
 	 * 
-	 * @param column
+	 * @param xmlColumn
 	 *            xml column
 	 * @return column
 	 */
-	private ColumnModel mapXmlColumnToColumnModel(org.cassandraunit.dataset.xml.ColumnType column,
-			ComparatorType comparatorType, ComparatorType defaultColumnValueType) {
+	private ColumnModel mapXmlColumnToColumnModel(Column xmlColumn, ComparatorType comparatorType,
+			ComparatorType defaultColumnValueType) {
 		ColumnModel columnModel = new ColumnModel();
 
 		if (comparatorType == null) {
-			columnModel.setName(new GenericType(column.getName(), GenericTypeEnum.BYTES_TYPE));
+			columnModel.setName(new GenericType(xmlColumn.getName(), GenericTypeEnum.BYTES_TYPE));
 		} else {
-			columnModel.setName(new GenericType(column.getName(), GenericTypeEnum.fromValue(comparatorType
+			columnModel.setName(new GenericType(xmlColumn.getName(), GenericTypeEnum.fromValue(comparatorType
 					.getTypeName())));
 		}
 
-		GenericType columnValue = TypeExtractor.extract(column.getValue(), defaultColumnValueType);
+		GenericType columnValue = TypeExtractor.extract(xmlColumn.getValue(), defaultColumnValueType);
 		columnModel.setValue(columnValue);
 
 		return columnModel;
@@ -228,15 +227,15 @@ public class ClassPathXmlDataSet implements DataSet {
 	/**
 	 * map an xml columns to columns
 	 * 
-	 * @param columns
+	 * @param xmlColumns
 	 *            xml column
 	 * @return columns
 	 */
-	private List<ColumnModel> mapXmlColumnsToColumnsModel(List<org.cassandraunit.dataset.xml.ColumnType> columns,
+	private List<ColumnModel> mapXmlColumnsToColumnsModel(List<Column> xmlColumns,
 			ComparatorType columnNameComparatorType, ComparatorType defaultColumnValueType) {
 		List<ColumnModel> columnsModel = new ArrayList<ColumnModel>();
-		for (org.cassandraunit.dataset.xml.ColumnType columnType : columns) {
-			columnsModel.add(mapXmlColumnToColumnModel(columnType, columnNameComparatorType, defaultColumnValueType));
+		for (Column xmlColumn : xmlColumns) {
+			columnsModel.add(mapXmlColumnToColumnModel(xmlColumn, columnNameComparatorType, defaultColumnValueType));
 		}
 		return columnsModel;
 	}
@@ -248,7 +247,7 @@ public class ClassPathXmlDataSet implements DataSet {
 
 	@Override
 	public List<ColumnFamilyModel> getColumnFamilies() {
-		return columnFamilies;
+		return keyspace.getColumnFamilies();
 	}
 
 }

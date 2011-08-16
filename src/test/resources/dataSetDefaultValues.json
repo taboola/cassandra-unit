@@ -1,0 +1,13 @@
+{
+    "name" : "beautifulKeyspaceName",
+    "columnFamilies" : [{
+        "name" : "columnFamily1",
+        "rows" : [{
+            "key" : "key01",
+            "columns" : [{
+                "name" : "columnName1",
+                "value" : "columnValue1"
+            }]
+        }]
+    }]
+}
