@@ -14,7 +14,7 @@ import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 
-import org.cassandraunit.dataset.IDataSet;
+import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
@@ -39,7 +39,7 @@ public class DataLoader {
 		return cluster;
 	}
 
-	public void load(IDataSet dataSet) {
+	public void load(DataSet dataSet) {
 		KeyspaceModel dataSetKeyspace = dataSet.getKeyspace();
 
 		dropKeyspaceIfExist(dataSetKeyspace.getName());
@@ -65,7 +65,7 @@ public class DataLoader {
 		}
 	}
 
-	private void loadData(IDataSet dataSet, Keyspace keyspace) {
+	private void loadData(DataSet dataSet, Keyspace keyspace) {
 		for (ColumnFamilyModel columnFamily : dataSet.getColumnFamilies()) {
 			loadColumnFamilyData(columnFamily, keyspace);
 		}
@@ -109,7 +109,7 @@ public class DataLoader {
 		return hColumns;
 	}
 
-	private List<ColumnFamilyDefinition> createColumnFamilyDefinitions(IDataSet dataSet, KeyspaceModel dataSetKeyspace) {
+	private List<ColumnFamilyDefinition> createColumnFamilyDefinitions(DataSet dataSet, KeyspaceModel dataSetKeyspace) {
 		List<ColumnFamilyDefinition> columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
 		for (ColumnFamilyModel columnFamily : dataSet.getColumnFamilies()) {
 			ColumnFamilyDefinition cfDef = HFactory.createColumnFamilyDefinition(dataSetKeyspace.getName(),

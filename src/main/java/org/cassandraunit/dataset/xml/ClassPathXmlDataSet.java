@@ -14,7 +14,7 @@ import javax.xml.validation.SchemaFactory;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
-import org.cassandraunit.dataset.IDataSet;
+import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnModel;
@@ -26,7 +26,7 @@ import org.cassandraunit.type.GenericTypeEnum;
 import org.cassandraunit.utils.TypeExtractor;
 import org.xml.sax.SAXException;
 
-public class ClassPathXmlDataSet implements IDataSet {
+public class ClassPathXmlDataSet implements DataSet {
 
 	private KeyspaceModel keyspace = null;
 	private List<ColumnFamilyModel> columnFamilies = null;

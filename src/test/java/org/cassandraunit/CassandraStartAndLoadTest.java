@@ -13,14 +13,14 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 
-import org.cassandraunit.dataset.IDataSet;
+import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
 import org.junit.Test;
 
 public class CassandraStartAndLoadTest extends AbstractCassandraUnit4TestCase {
 
 	@Override
-	public IDataSet getDataSet() {
+	public DataSet getDataSet() {
 		return new ClassPathXmlDataSet("datasetDefaultValues.xml");
 	}
 
