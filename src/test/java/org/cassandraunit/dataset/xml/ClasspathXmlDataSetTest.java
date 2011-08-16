@@ -8,7 +8,7 @@ import static org.junit.Assert.fail;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
-import org.cassandraunit.dataset.IDataSet;
+import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.RowModel;
 import org.cassandraunit.type.GenericTypeEnum;
@@ -19,14 +19,14 @@ public class ClasspathXmlDataSetTest {
 	@Test
 	public void shouldGetAXmlDataSet() {
 
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
 		assertThat(dataSet, notNullValue());
 	}
 
 	@Test
 	public void shouldNotGetAXmlDataSetBecauseItNotExist() {
 		try {
-			IDataSet dataSet = new ClassPathXmlDataSet("unknownDataSet.xml");
+			DataSet dataSet = new ClassPathXmlDataSet("unknownDataSet.xml");
 			fail();
 		} catch (ParseException e) {
 			/* nothing to do, it what we want */
@@ -36,7 +36,7 @@ public class ClasspathXmlDataSetTest {
 	@Test
 	public void shouldNotGetAXmlDataSet() {
 		try {
-			IDataSet dataSet = new ClassPathXmlDataSet("invalidDataSet.xml");
+			DataSet dataSet = new ClassPathXmlDataSet("invalidDataSet.xml");
 			fail();
 		} catch (ParseException e) {
 			/* nothing to do, it what we want */
@@ -49,7 +49,7 @@ public class ClasspathXmlDataSetTest {
 	@Test
 	public void shouldGetKeyspaceWithDefaultValues() {
 
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
 		assertThat(dataSet.getKeyspace(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("beautifulKeyspaceName"));
@@ -60,7 +60,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetKeyspaceWithDefinedValues() {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefinedValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefinedValues.xml");
 		assertThat(dataSet.getKeyspace(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("otherKeyspaceName"));
@@ -70,7 +70,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetOneColumnFamilyWithDefaultValues() {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
 		assertThat(dataSet.getColumnFamilies(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().isEmpty(), is(false));
 		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
@@ -88,7 +88,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetColumnFamiliesWithDefinedValues() {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefinedValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefinedValues.xml");
 		assertThat(dataSet.getColumnFamilies(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().isEmpty(), is(false));
 		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
@@ -113,7 +113,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetOneStandardColumnFamilyDataWithDefaultValues() {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefaultValues.xml");
 		assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().size(), is(3));
 		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(0), "key10", 2, "name11", "value11",
@@ -143,7 +143,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetOneSuperColumnFamilyData() {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetDefinedValues.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetDefinedValues.xml");
 		assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().size(), is(2));
 		RowModel row1 = dataSet.getColumnFamilies().get(0).getRows().get(0);
@@ -214,7 +214,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetDefaultBytesTypeForColumnValue() throws Exception {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetColumnValueTest.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetColumnValueTest.xml");
 		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("beautifulColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
@@ -230,7 +230,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetDefaultUTF8TypeForColumnValue() throws Exception {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetColumnValueTest.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetColumnValueTest.xml");
 		assertThat(dataSet.getColumnFamilies().get(1), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("beautifulColumnFamilyName2"));
 		assertThat(dataSet.getColumnFamilies().get(1).getRows(), notNullValue());
@@ -245,7 +245,7 @@ public class ClasspathXmlDataSetTest {
 
 	@Test
 	public void shouldGetDefaultUTF8TypeAndDefinedLongTypeForColumnValue() throws Exception {
-		IDataSet dataSet = new ClassPathXmlDataSet("datasetColumnValueTest.xml");
+		DataSet dataSet = new ClassPathXmlDataSet("datasetColumnValueTest.xml");
 		assertThat(dataSet.getColumnFamilies().get(2), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(2).getName(), is("beautifulColumnFamilyName3"));
 		assertThat(dataSet.getColumnFamilies().get(2).getRows(), notNullValue());

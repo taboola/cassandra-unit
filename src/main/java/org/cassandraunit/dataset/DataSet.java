@@ -6,7 +6,7 @@ import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.KeyspaceModel;
 
 
-public interface IDataSet {
+public interface DataSet {
 
 	KeyspaceModel getKeyspace();
 

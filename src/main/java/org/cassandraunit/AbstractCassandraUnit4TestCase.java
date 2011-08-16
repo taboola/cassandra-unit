@@ -4,7 +4,7 @@ import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 
-import org.cassandraunit.dataset.IDataSet;
+import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Before;
 
@@ -34,7 +34,7 @@ public abstract class AbstractCassandraUnit4TestCase {
 
 	}
 
-	public abstract IDataSet getDataSet();
+	public abstract DataSet getDataSet();
 
 	public void setKeyspace(Keyspace keyspace) {
 		this.keyspace = keyspace;
