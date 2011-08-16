@@ -11,6 +11,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.RowModel;
+import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
 
@@ -54,7 +55,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getKeyspace().getName(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("beautifulKeyspaceName"));
 		assertThat(dataSet.getKeyspace().getReplicationFactor(), is(1));
-		assertThat(dataSet.getKeyspace().getStategy(), is("org.apache.cassandra.locator.SimpleStrategy"));
+		assertThat(dataSet.getKeyspace().getStrategy(), is(StrategyModel.SIMPLE_STRATEGY));
 
 	}
 
@@ -65,7 +66,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getKeyspace().getName(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("otherKeyspaceName"));
 		assertThat(dataSet.getKeyspace().getReplicationFactor(), is(2));
-		assertThat(dataSet.getKeyspace().getStategy(), is("org.apache.cassandra.locator.LocalStrategy"));
+		assertThat(dataSet.getKeyspace().getStrategy(), is(StrategyModel.LOCAL_STRATEGY));
 	}
 
 	@Test

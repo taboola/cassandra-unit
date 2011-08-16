@@ -1,14 +1,14 @@
-package org.cassandraunit.model;
+package org.cassandraunit.dataset.json;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyspaceModel {
+public class JSONKeyspace {
 
 	private String name;
 	private int replicationFactor = 1;
-	private StrategyModel strategy = StrategyModel.SIMPLE_STRATEGY;
-	private List<ColumnFamilyModel> columnFamilies = new ArrayList<ColumnFamilyModel>();
+	private String strategy = "org.apache.cassandra.locator.SimpleStrategy";
+	private List<JSONColumnFamily> columnFamilies = new ArrayList<JSONColumnFamily>();
 
 	public String getName() {
 		return name;
@@ -26,19 +26,19 @@ public class KeyspaceModel {
 		this.replicationFactor = replicationFactor;
 	}
 
-	public void setStrategy(StrategyModel strategy) {
-		this.strategy = strategy;
-	}
-
-	public StrategyModel getStrategy() {
+	public String getStrategy() {
 		return strategy;
 	}
 
-	public void setColumnFamilies(List<ColumnFamilyModel> columnFamilies) {
+	public void setStrategy(String stategy) {
+		this.strategy = stategy;
+	}
+
+	public void setColumnFamilies(List<JSONColumnFamily> columnFamilies) {
 		this.columnFamilies = columnFamilies;
 	}
 
-	public List<ColumnFamilyModel> getColumnFamilies() {
+	public List<JSONColumnFamily> getColumnFamilies() {
 		return columnFamilies;
 	}
 
