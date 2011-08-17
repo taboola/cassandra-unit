@@ -25,6 +25,11 @@ import org.cassandraunit.type.GenericType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class DataLoader {
 	Cluster cluster = null;
 

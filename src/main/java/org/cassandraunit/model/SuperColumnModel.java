@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.cassandraunit.type.GenericType;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class SuperColumnModel {
 
 	private GenericType name;

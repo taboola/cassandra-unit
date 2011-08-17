@@ -5,6 +5,11 @@ import java.util.List;
 
 import me.prettyprint.hector.api.ddl.ColumnType;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class JSONColumnFamily {
 
 	private String name;

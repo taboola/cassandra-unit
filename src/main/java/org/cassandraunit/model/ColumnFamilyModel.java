@@ -6,6 +6,11 @@ import java.util.List;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class ColumnFamilyModel {
 
 	private String name;

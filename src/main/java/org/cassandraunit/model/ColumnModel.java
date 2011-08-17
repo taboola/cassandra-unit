@@ -2,6 +2,11 @@ package org.cassandraunit.model;
 
 import org.cassandraunit.type.GenericType;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class ColumnModel {
 
 	private GenericType name;

@@ -3,6 +3,11 @@ package org.cassandraunit.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class KeyspaceModel {
 
 	private String name;

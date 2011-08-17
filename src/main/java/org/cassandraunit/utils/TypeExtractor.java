@@ -6,6 +6,11 @@ import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class TypeExtractor {
 
 	private static String endTypeFunction = ")";

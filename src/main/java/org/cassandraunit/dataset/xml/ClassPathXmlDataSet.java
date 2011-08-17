@@ -27,6 +27,11 @@ import org.cassandraunit.type.GenericTypeEnum;
 import org.cassandraunit.utils.TypeExtractor;
 import org.xml.sax.SAXException;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class ClassPathXmlDataSet implements DataSet {
 
 	private KeyspaceModel keyspace = null;

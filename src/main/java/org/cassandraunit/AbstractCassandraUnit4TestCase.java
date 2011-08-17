@@ -8,6 +8,11 @@ import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Before;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public abstract class AbstractCassandraUnit4TestCase {
 
 	private Keyspace keyspace = null;

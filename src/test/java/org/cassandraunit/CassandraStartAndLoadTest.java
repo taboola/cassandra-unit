@@ -17,6 +17,11 @@ import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class CassandraStartAndLoadTest extends AbstractCassandraUnit4TestCase {
 
 	@Override

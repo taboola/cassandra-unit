@@ -3,6 +3,11 @@ package org.cassandraunit.dataset.json;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class JSONKeyspace {
 
 	private String name;

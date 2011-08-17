@@ -3,13 +3,17 @@ package org.cassandraunit.utils;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ *
+ */
 public class TypeExtractorTest {
 
 	@Test

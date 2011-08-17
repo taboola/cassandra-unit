@@ -1,5 +1,10 @@
 package org.cassandraunit.type;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public enum GenericTypeEnum {
 
 	BYTES_TYPE("BytesType"), INTEGER_TYPE("IntegerType"), LEXICAL_UUID_TYPE("LexicalUUIDType"), LONG_TYPE("LongType"), TIME_UUID_TYPE(

@@ -1,6 +1,10 @@
 package org.cassandraunit.model;
 
-
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public enum StrategyModel {
 
 	LOCAL_STRATEGY("org.apache.cassandra.locator.LocalStrategy"), NETWORK_TOPOLOGY_STRATEGY(

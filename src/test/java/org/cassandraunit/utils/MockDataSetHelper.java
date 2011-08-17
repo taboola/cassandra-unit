@@ -19,6 +19,11 @@ import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ *
+ */
 public class MockDataSetHelper {
 
 	public static DataSet getMockDataSetWithDefaultValues() {
@@ -339,13 +344,13 @@ public class MockDataSetHelper {
 		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
 		columnFamily.setName("beautifulColumnFamilyName");
 		columnFamily.setType(ColumnType.SUPER);
-		
+
 		List<RowModel> rows = new ArrayList<RowModel>();
-		
+
 		RowModel row1 = new RowModel();
 		row1.setKey(new GenericType("key1", GenericTypeEnum.BYTES_TYPE));
 		List<SuperColumnModel> superColumns1 = new ArrayList<SuperColumnModel>();
-		
+
 		SuperColumnModel superColumn11 = new SuperColumnModel();
 		superColumn11.setName(new GenericType("name11", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns11 = new ArrayList<ColumnModel>();
@@ -353,7 +358,7 @@ public class MockDataSetHelper {
 		columns11.add(constructDefaultColumnForMock("name112", "value112"));
 		superColumn11.setColumns(columns11);
 		superColumns1.add(superColumn11);
-		
+
 		SuperColumnModel superColumn12 = new SuperColumnModel();
 		superColumn12.setName(new GenericType("name12", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns12 = new ArrayList<ColumnModel>();
@@ -361,10 +366,10 @@ public class MockDataSetHelper {
 		columns12.add(constructDefaultColumnForMock("name122", "value122"));
 		superColumn12.setColumns(columns12);
 		superColumns1.add(superColumn12);
-		
+
 		row1.setSuperColumns(superColumns1);
 		rows.add(row1);
-		
+
 		RowModel row2 = new RowModel();
 		row2.setKey(new GenericType("key2", GenericTypeEnum.BYTES_TYPE));
 		List<SuperColumnModel> superColumns2 = new ArrayList<SuperColumnModel>();
