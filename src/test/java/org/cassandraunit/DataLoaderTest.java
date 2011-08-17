@@ -28,7 +28,6 @@ import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
 
-import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
 import org.junit.BeforeClass;
@@ -183,7 +182,7 @@ public class DataLoaderTest {
 		DataLoader dataLoader = new DataLoader(clusterName, host);
 
 		try {
-			dataLoader.load(new ClassPathXmlDataSet("datasetWithSuperColumn.xml"));
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithSuperColumn());
 
 			/* verify */
 			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);

@@ -344,29 +344,38 @@ public class MockDataSetHelper {
 		
 		RowModel row1 = new RowModel();
 		row1.setKey(new GenericType("key1", GenericTypeEnum.BYTES_TYPE));
-//		List<SuperColumnModel> superColumns1 = new ArrayList<SuperColumnModel>();
-//		
-//		SuperColumnModel superColumn11 = new SuperColumnModel();
-//		superColumn11.setName(new GenericType("name11", GenericTypeEnum.BYTES_TYPE));
-//		List<ColumnModel> columns11 = new ArrayList<ColumnModel>();
-//		columns11.add(constructDefaultColumnForMock("name111", "value111"));
-//		columns11.add(constructDefaultColumnForMock("name112", "value112"));
-//		superColumn11.setColumns(columns11);
-//		superColumns1.add(superColumn11);
-//		
-//		SuperColumnModel superColumn12 = new SuperColumnModel();
-//		superColumn12.setName(new GenericType("name12", GenericTypeEnum.BYTES_TYPE));
-//		List<ColumnModel> columns12 = new ArrayList<ColumnModel>();
-//		columns12.add(constructDefaultColumnForMock("name121", "value121"));
-//		columns12.add(constructDefaultColumnForMock("name122", "value122"));
-//		superColumn12.setColumns(columns12);
-//		superColumns1.add(superColumn12);
+		List<SuperColumnModel> superColumns1 = new ArrayList<SuperColumnModel>();
 		
-//		row1.setSuperColumns(superColumns1);
+		SuperColumnModel superColumn11 = new SuperColumnModel();
+		superColumn11.setName(new GenericType("name11", GenericTypeEnum.BYTES_TYPE));
+		List<ColumnModel> columns11 = new ArrayList<ColumnModel>();
+		columns11.add(constructDefaultColumnForMock("name111", "value111"));
+		columns11.add(constructDefaultColumnForMock("name112", "value112"));
+		superColumn11.setColumns(columns11);
+		superColumns1.add(superColumn11);
+		
+		SuperColumnModel superColumn12 = new SuperColumnModel();
+		superColumn12.setName(new GenericType("name12", GenericTypeEnum.BYTES_TYPE));
+		List<ColumnModel> columns12 = new ArrayList<ColumnModel>();
+		columns12.add(constructDefaultColumnForMock("name121", "value121"));
+		columns12.add(constructDefaultColumnForMock("name122", "value122"));
+		superColumn12.setColumns(columns12);
+		superColumns1.add(superColumn12);
+		
+		row1.setSuperColumns(superColumns1);
 		rows.add(row1);
-
+		
 		RowModel row2 = new RowModel();
 		row2.setKey(new GenericType("key2", GenericTypeEnum.BYTES_TYPE));
+		List<SuperColumnModel> superColumns2 = new ArrayList<SuperColumnModel>();
+		SuperColumnModel superColumn21 = new SuperColumnModel();
+		superColumn21.setName(new GenericType("name21", GenericTypeEnum.BYTES_TYPE));
+		List<ColumnModel> columns21 = new ArrayList<ColumnModel>();
+		columns21.add(constructDefaultColumnForMock("name211", "value211"));
+		columns21.add(constructDefaultColumnForMock("name212", "value212"));
+		superColumn21.setColumns(columns21);
+		superColumns2.add(superColumn21);
+		row2.setSuperColumns(superColumns2);
 
 		rows.add(row2);
 
