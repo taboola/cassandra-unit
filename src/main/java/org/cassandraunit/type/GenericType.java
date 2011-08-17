@@ -1,5 +1,10 @@
 package org.cassandraunit.type;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class GenericType {
 	private String value;
 	private GenericTypeEnum type;

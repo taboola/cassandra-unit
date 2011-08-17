@@ -14,7 +14,11 @@ import org.cassandraunit.model.RowModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Jeremy Sevellec
+ *
+ */
 public class ClasspathXmlDataSetTest {
 
 	@Test

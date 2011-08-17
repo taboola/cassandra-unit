@@ -1,5 +1,10 @@
 package org.cassandraunit.dataset.json;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class JSONColumn {
 
 	private String name;

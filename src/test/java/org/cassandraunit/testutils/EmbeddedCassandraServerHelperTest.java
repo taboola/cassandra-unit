@@ -10,7 +10,11 @@ import me.prettyprint.hector.api.factory.HFactory;
 
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Jeremy Sevellec
+ *
+ */
 public class EmbeddedCassandraServerHelperTest {
 
 	@Test

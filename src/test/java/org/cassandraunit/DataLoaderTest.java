@@ -32,7 +32,11 @@ import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Jeremy Sevellec
+ *
+ */
 public class DataLoaderTest {
 
 	@BeforeClass

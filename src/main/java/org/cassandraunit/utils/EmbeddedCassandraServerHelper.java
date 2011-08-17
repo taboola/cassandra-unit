@@ -22,6 +22,11 @@ import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class EmbeddedCassandraServerHelper {
 
 	private static final String INTERNAL_CASSANDRA_KEYSPACE = "system";

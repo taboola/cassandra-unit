@@ -12,7 +12,11 @@ import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Jeremy Sevellec
+ *
+ */
 public class ClasspathJSONDataSetTest {
 
 	@Test

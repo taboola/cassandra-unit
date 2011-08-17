@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.cassandraunit.type.GenericType;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class RowModel {
 
 	private GenericType key;

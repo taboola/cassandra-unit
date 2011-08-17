@@ -12,6 +12,11 @@ import me.prettyprint.cassandra.serializers.UUIDSerializer;
 
 import org.cassandraunit.type.GenericType;
 
+/**
+ * 
+ * @author Jeremy Sevellec
+ * 
+ */
 public class GenericTypeSerializer extends AbstractSerializer<GenericType> {
 
 	private static final GenericTypeSerializer instance = new GenericTypeSerializer();
