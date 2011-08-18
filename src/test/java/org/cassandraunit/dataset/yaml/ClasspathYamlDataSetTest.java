@@ -1,4 +1,4 @@
-package org.cassandraunit.dataset.json;
+package org.cassandraunit.dataset.yaml;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -12,16 +12,17 @@ import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
+
 /**
  * 
  * @author Jeremy Sevellec
- *
+ * 
  */
-public class ClasspathJSONDataSetTest {
+public class ClasspathYamlDataSetTest {
 
 	@Test
-	public void shouldGetAJSONDataSetStructure() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetDefaultValues.json");
+	public void shouldGetAYamlDataSetStructure() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetDefaultValues.yaml");
 		assertThat(dataSet, notNullValue());
 		assertThat(dataSet.getKeyspace(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("beautifulKeyspaceName"));
@@ -41,53 +42,74 @@ public class ClasspathJSONDataSetTest {
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfDataSetNotExist() {
-		DataSet dataSet = new ClassPathJSONDataSet("unknown.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfNull() {
+		DataSet dataSet = new ClassPathYamlDataSet(null);
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfMissingKeyspaceName() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadMissingKeyspaceName.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfDataSetNotExist() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/unknown.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfInvalidStrategy() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadUnknownStrategy.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfDataSetEmpty() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadMissingKeyspaceName.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfMissingColumnFamilyName() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadMissingColumnFamilyName.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfMissingKeyspaceName() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadMissingKeyspaceName.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfInvalidColumnFamilyType() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadInvalidColumnFamilyType.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfInvalidStrategy() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadUnknownStrategy.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfInvalidRowKeyType() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadInvalidKeyType.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfMissingColumnFamilyName() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadMissingColumnFamilyName.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfInvalidComparatorType() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadInvalidComparatorType.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfInvalidColumnFamilyType() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadInvalidColumnFamilyType.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfInvalidSubComparatorType() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadInvalidSubComparatorType.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfInvalidRowKeyType() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadInvalidKeyType.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
-	public void shouldNotGetAJSONDataSetStructureBecauseOfInvalidDefaultColumnValueType() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetBadInvalidDefaultColumnValueType.json");
+	public void shouldNotGetAYamlDataSetStructureBecauseOfInvalidComparatorType() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadInvalidComparatorType.yaml");
+		dataSet.getKeyspace();
+	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetAYamlDataSetStructureBecauseOfInvalidSubComparatorType() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadInvalidSubComparatorType.yaml");
+		dataSet.getKeyspace();
+	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetAYamlDataSetStructureBecauseOfInvalidDefaultColumnValueType() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadInvalidDefaultColumnValueType.yaml");
+		dataSet.getKeyspace();
 	}
 
 	@Test
-	public void shouldGetAJSONDataSetWithData() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetDefaultValues.json");
+	public void shouldGetAYamlDataSetWithData() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetDefaultValues.yaml");
 		assertThat(dataSet, notNullValue());
 		assertThat(dataSet.getKeyspace(), notNullValue());
 
@@ -116,8 +138,8 @@ public class ClasspathJSONDataSetTest {
 	}
 
 	@Test
-	public void shouldGetAJSONDataSetWithDefinedValuesAndData() {
-		DataSet dataSet = new ClassPathJSONDataSet("dataSetDefinedValues.json");
+	public void shouldGetAYamlDataSetWithDefinedValuesAndData() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetDefinedValues.yaml");
 		assertThat(dataSet, notNullValue());
 		assertThat(dataSet.getKeyspace(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("beautifulDefinedKeyspaceName"));

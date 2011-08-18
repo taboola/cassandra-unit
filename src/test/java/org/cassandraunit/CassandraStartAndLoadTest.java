@@ -26,7 +26,7 @@ public class CassandraStartAndLoadTest extends AbstractCassandraUnit4TestCase {
 
 	@Override
 	public DataSet getDataSet() {
-		return new ClassPathXmlDataSet("datasetDefaultValues.xml");
+		return new ClassPathXmlDataSet("xml/datasetDefaultValues.xml");
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-package org.cassandraunit.dataset.json;
+package org.cassandraunit.dataset.commons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.List;
  * @author Jeremy Sevellec
  * 
  */
-public class JSONSuperColumn {
+public class ParsedSuperColumn {
 
 	private String name;
-	private List<JSONColumn> columns = new ArrayList<JSONColumn>();
+	private List<ParsedColumn> columns = new ArrayList<ParsedColumn>();
 
 	public String getName() {
 		return name;
@@ -21,11 +21,11 @@ public class JSONSuperColumn {
 		this.name = name;
 	}
 
-	public List<JSONColumn> getColumns() {
+	public List<ParsedColumn> getColumns() {
 		return columns;
 	}
 
-	public void setColumns(List<JSONColumn> columns) {
+	public void setColumns(List<ParsedColumn> columns) {
 		this.columns = columns;
 	}
 

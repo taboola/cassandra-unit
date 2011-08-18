@@ -1,4 +1,4 @@
-package org.cassandraunit.dataset.json;
+package org.cassandraunit.dataset.commons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.List;
  * @author Jeremy Sevellec
  * 
  */
-public class JSONKeyspace {
+public class ParsedKeyspace {
 
 	private String name;
 	private int replicationFactor = 1;
 	private String strategy = "org.apache.cassandra.locator.SimpleStrategy";
-	private List<JSONColumnFamily> columnFamilies = new ArrayList<JSONColumnFamily>();
+	private List<ParsedColumnFamily> columnFamilies = new ArrayList<ParsedColumnFamily>();
 
 	public String getName() {
 		return name;
@@ -39,11 +39,11 @@ public class JSONKeyspace {
 		this.strategy = stategy;
 	}
 
-	public void setColumnFamilies(List<JSONColumnFamily> columnFamilies) {
+	public void setColumnFamilies(List<ParsedColumnFamily> columnFamilies) {
 		this.columnFamilies = columnFamilies;
 	}
 
-	public List<JSONColumnFamily> getColumnFamilies() {
+	public List<ParsedColumnFamily> getColumnFamilies() {
 		return columnFamilies;
 	}
 
