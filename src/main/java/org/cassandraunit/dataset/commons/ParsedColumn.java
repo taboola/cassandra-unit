@@ -1,11 +1,11 @@
-package org.cassandraunit.dataset.json;
+package org.cassandraunit.dataset.commons;
 
 /**
  * 
  * @author Jeremy Sevellec
  * 
  */
-public class JSONColumn {
+public class ParsedColumn {
 
 	private String name;
 	private String value;

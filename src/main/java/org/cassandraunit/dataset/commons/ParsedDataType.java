@@ -1,11 +1,11 @@
-package org.cassandraunit.dataset.json;
+package org.cassandraunit.dataset.commons;
 
 /**
  * 
  * @author Jeremy Sevellec
  * 
  */
-public enum JSONDataType {
+public enum ParsedDataType {
 
 	BytesType, IntegerType, LexicalUUIDType, LongType, TimeUUIDType, UTF8Type, UUIDType;
 

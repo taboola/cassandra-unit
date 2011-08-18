@@ -8,6 +8,12 @@ import javax.xml.bind.JAXBException;
 
 import me.prettyprint.hector.api.ddl.ColumnType;
 
+import org.cassandraunit.dataset.commons.ParsedColumn;
+import org.cassandraunit.dataset.commons.ParsedColumnFamily;
+import org.cassandraunit.dataset.commons.ParsedDataType;
+import org.cassandraunit.dataset.commons.ParsedKeyspace;
+import org.cassandraunit.dataset.commons.ParsedRow;
+import org.cassandraunit.dataset.commons.ParsedSuperColumn;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -15,34 +21,35 @@ import org.codehaus.jackson.schema.JsonSchema;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * 
  * @author Jeremy Sevellec
- *
+ * 
  */
-public class JSONDataSetExampleTest {
+public class JsonDataSetExampleTest {
 
-	private Logger log = LoggerFactory.getLogger(JSONDataSetExampleTest.class);
+	private Logger log = LoggerFactory.getLogger(JsonDataSetExampleTest.class);
 
 	@Test
-	public void shouldGenerateAJSONDataSetDocument() throws JAXBException {
+	public void shouldGenerateAJsonDataSetDocument() throws JAXBException {
 
-		JSONKeyspace keyspace = new JSONKeyspace();
+		ParsedKeyspace keyspace = new ParsedKeyspace();
 		keyspace.setName("beautifulKeyspaceName");
 		keyspace.setReplicationFactor(1);
-		List<JSONColumnFamily> columnFamilies = keyspace.getColumnFamilies();
+		List<ParsedColumnFamily> columnFamilies = keyspace.getColumnFamilies();
 
-		JSONColumnFamily columnFamily1 = new JSONColumnFamily();
+		ParsedColumnFamily columnFamily1 = new ParsedColumnFamily();
 		columnFamily1.setName("columnFamily1");
 		columnFamily1.setType(ColumnType.STANDARD);
-		columnFamily1.setKeyType(JSONDataType.UTF8Type);
-		columnFamily1.setComparatorType(JSONDataType.UTF8Type);
-		columnFamily1.setDefaultColumnValueType(JSONDataType.UTF8Type);
-		List<JSONRow> rows1 = new ArrayList<JSONRow>();
-		JSONRow row1 = new JSONRow();
+		columnFamily1.setKeyType(ParsedDataType.UTF8Type);
+		columnFamily1.setComparatorType(ParsedDataType.UTF8Type);
+		columnFamily1.setDefaultColumnValueType(ParsedDataType.UTF8Type);
+		List<ParsedRow> rows1 = new ArrayList<ParsedRow>();
+		ParsedRow row1 = new ParsedRow();
 		row1.setKey("key01");
-		List<JSONColumn> columns1 = row1.getColumns();
-		JSONColumn column1 = new JSONColumn();
+		List<ParsedColumn> columns1 = row1.getColumns();
+		ParsedColumn column1 = new ParsedColumn();
 		column1.setName("columnName1");
 		column1.setValue("columnValue1");
 		columns1.add(column1);
@@ -51,20 +58,20 @@ public class JSONDataSetExampleTest {
 
 		columnFamilies.add(columnFamily1);
 
-		JSONColumnFamily columnFamily2 = new JSONColumnFamily();
+		ParsedColumnFamily columnFamily2 = new ParsedColumnFamily();
 		columnFamily2.setName("columnFamily1");
 		columnFamily2.setType(ColumnType.SUPER);
-		columnFamily2.setKeyType(JSONDataType.UTF8Type);
-		columnFamily2.setComparatorType(JSONDataType.UTF8Type);
-		columnFamily2.setDefaultColumnValueType(JSONDataType.UTF8Type);
-		List<JSONRow> rows2 = new ArrayList<JSONRow>();
-		JSONRow row2 = new JSONRow();
+		columnFamily2.setKeyType(ParsedDataType.UTF8Type);
+		columnFamily2.setComparatorType(ParsedDataType.UTF8Type);
+		columnFamily2.setDefaultColumnValueType(ParsedDataType.UTF8Type);
+		List<ParsedRow> rows2 = new ArrayList<ParsedRow>();
+		ParsedRow row2 = new ParsedRow();
 		row2.setKey("key02");
-		List<JSONSuperColumn> superColumns = row2.getSuperColumns();
-		JSONSuperColumn superColumn2 = new JSONSuperColumn();
+		List<ParsedSuperColumn> superColumns = row2.getSuperColumns();
+		ParsedSuperColumn superColumn2 = new ParsedSuperColumn();
 		superColumn2.setName("superColumnName2");
-		List<JSONColumn> columns2 = superColumn2.getColumns();
-		JSONColumn column2 = new JSONColumn();
+		List<ParsedColumn> columns2 = superColumn2.getColumns();
+		ParsedColumn column2 = new ParsedColumn();
 		column2.setName("columnName2");
 		column2.setValue("columnValue2");
 		columns2.add(column2);
@@ -75,7 +82,7 @@ public class JSONDataSetExampleTest {
 
 		ObjectMapper jSONMapper = new ObjectMapper();
 		try {
-			JsonSchema schema = jSONMapper.generateJsonSchema(JSONKeyspace.class);
+			JsonSchema schema = jSONMapper.generateJsonSchema(ParsedKeyspace.class);
 			log.debug(schema.toString());
 			log.debug(jSONMapper.writeValueAsString(keyspace));
 		} catch (JsonMappingException e) {
