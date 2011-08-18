@@ -1,6 +1,8 @@
 WELCOME to CassandraUnit
 ========================
 
+https://github.com/jsevellec/cassandra-unit/wiki
+
 What is it?
 -----------
 
