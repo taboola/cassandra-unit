@@ -8,6 +8,7 @@ import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.HCounterColumn;
+import me.prettyprint.hector.api.beans.HCounterSuperColumn;
 import me.prettyprint.hector.api.beans.HSuperColumn;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnType;
@@ -51,10 +52,7 @@ public class DataLoader {
 
 		dropKeyspaceIfExist(dataSetKeyspace.getName());
 
-		List<ColumnFamilyDefinition> columnFamilyDefinitions = createColumnFamilyDefinitions(dataSet, dataSetKeyspace);
-
-		KeyspaceDefinition keyspaceDefinition = HFactory.createKeyspaceDefinition(dataSetKeyspace.getName(),
-				dataSetKeyspace.getStrategy().value(), dataSetKeyspace.getReplicationFactor(), columnFamilyDefinitions);
+		KeyspaceDefinition keyspaceDefinition = createKeyspaceDefinition(dataSet);
 
 		cluster.addKeyspace(keyspaceDefinition, true);
 
@@ -62,6 +60,16 @@ public class DataLoader {
 		Keyspace keyspace = HFactory.createKeyspace(dataSet.getKeyspace().getName(), cluster);
 		log.info("loading data into keyspace : {}", keyspaceDefinition.getName());
 		loadData(dataSet, keyspace);
+	}
+
+	private KeyspaceDefinition createKeyspaceDefinition(DataSet dataSet) {
+		List<ColumnFamilyDefinition> columnFamilyDefinitions = createColumnFamilyDefinitions(dataSet);
+
+		KeyspaceModel dataSetKeyspace = dataSet.getKeyspace();
+
+		KeyspaceDefinition keyspaceDefinition = HFactory.createKeyspaceDefinition(dataSetKeyspace.getName(),
+				dataSetKeyspace.getStrategy().value(), dataSetKeyspace.getReplicationFactor(), columnFamilyDefinitions);
+		return keyspaceDefinition;
 	}
 
 	private void dropKeyspaceIfExist(String keyspaceName) {
@@ -84,24 +92,10 @@ public class DataLoader {
 		for (RowModel row : columnFamily.getRows()) {
 			switch (columnFamily.getType()) {
 			case STANDARD:
-			  if ( columnFamily.isCounter() ) {
-			    for (HCounterColumn<GenericType> hColumn : createHCounterColumnList(row.getColumns())) {
-            mutator.addCounter(row.getKey(), columnFamily.getName(), hColumn);
-          }
-			  } else {
-			    for (HColumn<GenericType, GenericType> hColumn : createHColumnList(row.getColumns())) {
-            mutator.addInsertion(row.getKey(), columnFamily.getName(), hColumn);
-          }
-			  }
+				loadStandardColumnFamilyData(columnFamily, mutator, row);
 				break;
 			case SUPER:
-			  // TODO deduce supercf counter or not
-				for (SuperColumnModel superColumnModel : row.getSuperColumns()) {				  
-					HSuperColumn<GenericType, GenericType, GenericType> column = HFactory.createSuperColumn(
-							superColumnModel.getName(), createHColumnList(superColumnModel.getColumns()),
-							GenericTypeSerializer.get(), GenericTypeSerializer.get(), GenericTypeSerializer.get());
-					mutator.addInsertion(row.getKey(), columnFamily.getName(), column);
-				}
+				loadSuperColumnFamilyData(columnFamily, mutator, row);
 				break;
 			default:
 				break;
@@ -110,6 +104,36 @@ public class DataLoader {
 		}
 		mutator.execute();
 
+	}
+
+	private void loadSuperColumnFamilyData(ColumnFamilyModel columnFamily, Mutator<GenericType> mutator, RowModel row) {
+		if (columnFamily.isCounter()) {
+			for (SuperColumnModel superColumnModel : row.getSuperColumns()) {
+				HCounterSuperColumn<GenericType, GenericType> superCounterColumn = HFactory.createCounterSuperColumn(
+						superColumnModel.getName(), createHCounterColumnList(superColumnModel.getColumns()),
+						GenericTypeSerializer.get(), GenericTypeSerializer.get());
+				mutator.addCounter(row.getKey(), columnFamily.getName(), superCounterColumn);
+			}
+		} else {
+			for (SuperColumnModel superColumnModel : row.getSuperColumns()) {
+				HSuperColumn<GenericType, GenericType, GenericType> superColumn = HFactory.createSuperColumn(
+						superColumnModel.getName(), createHColumnList(superColumnModel.getColumns()),
+						GenericTypeSerializer.get(), GenericTypeSerializer.get(), GenericTypeSerializer.get());
+				mutator.addInsertion(row.getKey(), columnFamily.getName(), superColumn);
+			}
+		}
+	}
+
+	private void loadStandardColumnFamilyData(ColumnFamilyModel columnFamily, Mutator<GenericType> mutator, RowModel row) {
+		if (columnFamily.isCounter()) {
+			for (HCounterColumn<GenericType> hCounterColumn : createHCounterColumnList(row.getColumns())) {
+				mutator.addCounter(row.getKey(), columnFamily.getName(), hCounterColumn);
+			}
+		} else {
+			for (HColumn<GenericType, GenericType> hColumn : createHColumnList(row.getColumns())) {
+				mutator.addInsertion(row.getKey(), columnFamily.getName(), hColumn);
+			}
+		}
 	}
 
 	private List<HColumn<GenericType, GenericType>> createHColumnList(List<ColumnModel> columnsModel) {
@@ -121,18 +145,20 @@ public class DataLoader {
 		}
 		return hColumns;
 	}
-	
-	 private List<HCounterColumn<GenericType>> createHCounterColumnList(List<ColumnModel> columnsModel) {
-	    List<HCounterColumn<GenericType>> hColumns = new ArrayList<HCounterColumn<GenericType>>();
-	    for (ColumnModel columnModel : columnsModel) {
-	      HCounterColumn<GenericType> column = HFactory.createCounterColumn(columnModel.getName(),
-	          LongSerializer.get().fromByteBuffer(GenericTypeSerializer.get().toByteBuffer(columnModel.getValue())), GenericTypeSerializer.get());
-	      hColumns.add(column);
-	    }
-	    return hColumns;
-	  }
 
-	private List<ColumnFamilyDefinition> createColumnFamilyDefinitions(DataSet dataSet, KeyspaceModel dataSetKeyspace) {
+	private List<HCounterColumn<GenericType>> createHCounterColumnList(List<ColumnModel> columnsModel) {
+		List<HCounterColumn<GenericType>> hColumns = new ArrayList<HCounterColumn<GenericType>>();
+		for (ColumnModel columnModel : columnsModel) {
+			HCounterColumn<GenericType> column = HFactory.createCounterColumn(columnModel.getName(), LongSerializer
+					.get().fromByteBuffer(GenericTypeSerializer.get().toByteBuffer(columnModel.getValue())),
+					GenericTypeSerializer.get());
+			hColumns.add(column);
+		}
+		return hColumns;
+	}
+
+	private List<ColumnFamilyDefinition> createColumnFamilyDefinitions(DataSet dataSet) {
+		KeyspaceModel dataSetKeyspace = dataSet.getKeyspace();
 		List<ColumnFamilyDefinition> columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
 		for (ColumnFamilyModel columnFamily : dataSet.getColumnFamilies()) {
 			ColumnFamilyDefinition cfDef = HFactory.createColumnFamilyDefinition(dataSetKeyspace.getName(),
@@ -141,8 +167,8 @@ public class DataLoader {
 
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getClassName());
 			cfDef.setComparatorType(ComparatorType.getByClassName(columnFamily.getComparatorType().getClassName()));
-			if ( columnFamily.isCounter() ) {
-			  cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
+			if (columnFamily.isCounter()) {
+				cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
 			}
 			if (columnFamily.getType().equals(ColumnType.SUPER) && columnFamily.getSubComparatorType() != null) {
 				cfDef.setSubComparatorType(columnFamily.getSubComparatorType());
