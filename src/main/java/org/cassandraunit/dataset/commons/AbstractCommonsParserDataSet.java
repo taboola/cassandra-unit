@@ -187,9 +187,13 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 					.getTypeName())));
 		}
 
+		if (ComparatorType.COUNTERTYPE.getClassName().equals(defaultColumnValueType.getClassName())
+				&& TypeExtractor.containFunctions(parsedColumn.getValue())) {
+			throw new ParseException("Impossible to override Column value into a Counter column family");
+		}
+
 		GenericType columnValue = TypeExtractor.extract(parsedColumn.getValue(), defaultColumnValueType);
 		columnModel.setValue(columnValue);
 		return columnModel;
 	}
-
 }

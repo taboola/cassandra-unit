@@ -147,7 +147,7 @@ public class ClasspathYamlDataSetTest {
 		assertThat(dataSet.getKeyspace().getStrategy(), is(StrategyModel.SIMPLE_STRATEGY));
 
 		assertThat(dataSet.getColumnFamilies(), notNullValue());
-		assertThat(dataSet.getColumnFamilies().size(), is(2));
+		assertThat(dataSet.getColumnFamilies().size(), is(4));
 
 		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("columnFamily1"));
@@ -214,5 +214,61 @@ public class ClasspathYamlDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(1).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
 				.getValue().getType(), is(GenericTypeEnum.LONG_TYPE));
 
+	}
+
+	@Test
+	public void shouldGetAStandardCounterColumnFamily() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetDefinedValues.yaml");
+		assertThat(dataSet.getColumnFamilies().get(2).getRows(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getKey().getValue(), is("key10"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getKey().getType(),
+				is(GenericTypeEnum.UTF_8_TYPE));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0).getName().getValue(),
+				is("columnName11"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0).getValue().getValue(),
+				is("11"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0).getValue().getType(),
+				is(GenericTypeEnum.COUNTER_TYPE));
+	}
+
+	@Test
+	public void shouldGetASuperCounterColumnFamily() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetDefinedValues.yaml");
+		assertThat(dataSet.getColumnFamilies().get(3), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getName(), is("superCounterColumnFamily"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getKey().getValue(), is("key10"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getKey().getType(),
+				is(GenericTypeEnum.UTF_8_TYPE));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getName().getValue(),
+				is("superColumnName11"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns(),
+				notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().size(),
+				is(1));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0),
+				notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
+				.getName().getValue(), is("columnName111"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
+				.getValue().getValue(), is("111"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
+				.getValue().getType(), is(GenericTypeEnum.COUNTER_TYPE));
+	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetCounterColumnFamilyBecauseThereIsFunctionOverridingDefaultValueType() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadCounterColumnFamilyWithFunction.yaml");
+		dataSet.getKeyspace();
 	}
 }

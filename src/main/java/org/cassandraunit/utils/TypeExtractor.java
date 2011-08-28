@@ -21,8 +21,7 @@ public class TypeExtractor {
 	public static GenericType extract(String valueToExtract, ComparatorType defaultValueType) {
 		String extractedValue = null;
 		GenericType genericType = null;
-		if (StringUtils.startsWithAny(valueToExtract, availableTypeFunctionArray)
-				&& StringUtils.endsWith(valueToExtract, endTypeFunction)) {
+		if (containFunctions(valueToExtract)) {
 			/* there is a type function defined */
 			String typeFunction = StringUtils.substringBefore(valueToExtract, startTypeFunction);
 			String tmp = StringUtils.substringAfter(valueToExtract, typeFunction + startTypeFunction);
@@ -38,5 +37,10 @@ public class TypeExtractor {
 			}
 		}
 		return genericType;
+	}
+
+	public static boolean containFunctions(String valueToExtract) {
+		return StringUtils.startsWithAny(valueToExtract, availableTypeFunctionArray)
+				&& StringUtils.endsWith(valueToExtract, endTypeFunction);
 	}
 }

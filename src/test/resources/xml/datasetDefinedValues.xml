@@ -77,7 +77,7 @@
 			<defaultColumnValueType>UTF8Type</defaultColumnValueType>
 		</columnFamily>
 		<columnFamily>
-			<name>counterColumnFamilyName</name>
+			<name>counterStandardColumnFamilyName</name>
 			<keyType>LongType</keyType>
 			<comparatorType>UTF8Type</comparatorType>
 			<defaultColumnValueType>CounterColumnType</defaultColumnValueType>
@@ -92,6 +92,28 @@
 					<value>12</value>
 				</column>
 			</row>
-		</columnFamily>		
+		</columnFamily>
+		<columnFamily>
+			<name>counterSuperColumnFamilyName</name>
+			<type>SUPER</type>
+			<keyType>LongType</keyType>
+			<comparatorType>UTF8Type</comparatorType>
+			<subComparatorType>UTF8Type</subComparatorType>
+			<defaultColumnValueType>CounterColumnType</defaultColumnValueType>
+			<row>
+				<key>10</key>
+				<superColumn>
+					<name>counter11</name>
+					<column>
+						<name>counter111</name>
+						<value>111</value>
+					</column>
+					<column>
+						<name>counter112</name>
+						<value>112</value>
+					</column>
+				</superColumn>
+			</row>
+		</columnFamily>
 	</columnFamilies>
 </keyspace>

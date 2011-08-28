@@ -125,15 +125,6 @@ public class ClasspathXmlDataSetTest {
 				is(ComparatorType.UTF8TYPE.getClassName()));
 		assertThat(dataSet.getColumnFamilies().get(1).getComparatorType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
-		
-    assertThat(dataSet.getColumnFamilies().get(2).getName(), is("counterColumnFamilyName"));
-    assertThat(dataSet.getColumnFamilies().get(2).getType(), is(ColumnType.STANDARD));
-    assertThat(dataSet.getColumnFamilies().get(2).getKeyType().getClassName(),
-        is(ComparatorType.LONGTYPE.getClassName()));
-    assertThat(dataSet.getColumnFamilies().get(2).getComparatorType().getClassName(),
-        is(ComparatorType.UTF8TYPE.getClassName()));
-    assertThat(dataSet.getColumnFamilies().get(2).getDefaultColumnValueType().getClassName(),
-        is(ComparatorType.COUNTERTYPE.getClassName()));
 	}
 
 	@Test
@@ -290,4 +281,85 @@ public class ClasspathXmlDataSetTest {
 				is(GenericTypeEnum.UTF_8_TYPE));
 	}
 
+	@Test
+	public void shouldGetCounterStandardColumnFamily() {
+		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+		assertThat(dataSet.getColumnFamilies().get(2).getName(), is("counterStandardColumnFamilyName"));
+		assertThat(dataSet.getColumnFamilies().get(2).getType(), is(ColumnType.STANDARD));
+		assertThat(dataSet.getColumnFamilies().get(2).getKeyType().getClassName(),
+				is(ComparatorType.LONGTYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(2).getKeyType().getClassName(),
+				is(ComparatorType.LONGTYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(2).getComparatorType().getClassName(),
+				is(ComparatorType.UTF8TYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(2).getDefaultColumnValueType().getClassName(),
+				is(ComparatorType.COUNTERTYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().size(), is(2));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0).getName().getValue(),
+				is("counter11"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0).getValue().getValue(),
+				is("11"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(0).getValue().getType(),
+				is(GenericTypeEnum.COUNTER_TYPE));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(1), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(1).getName().getValue(),
+				is("counter12"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(1).getValue().getValue(),
+				is("12"));
+		assertThat(dataSet.getColumnFamilies().get(2).getRows().get(0).getColumns().get(1).getValue().getType(),
+				is(GenericTypeEnum.COUNTER_TYPE));
+	}
+
+	@Test
+	public void shouldGetCounterSuperColumnFamily() {
+		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+		assertThat(dataSet.getColumnFamilies().get(3).getName(), is("counterSuperColumnFamilyName"));
+		assertThat(dataSet.getColumnFamilies().get(3).getType(), is(ColumnType.SUPER));
+		assertThat(dataSet.getColumnFamilies().get(3).getKeyType().getClassName(),
+				is(ComparatorType.LONGTYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(3).getComparatorType().getClassName(),
+				is(ComparatorType.UTF8TYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(3).getDefaultColumnValueType().getClassName(),
+				is(ComparatorType.COUNTERTYPE.getClassName()));
+
+		assertThat(dataSet.getColumnFamilies().get(3).getRows(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns(), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().size(), is(1));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0), notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getName().getValue(),
+				is("counter11"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns(),
+				notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().size(),
+				is(2));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0),
+				notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
+				.getName().getValue(), is("counter111"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
+				.getValue().getValue(), is("111"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(0)
+				.getValue().getType(), is(GenericTypeEnum.COUNTER_TYPE));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(1),
+				notNullValue());
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(1)
+				.getName().getValue(), is("counter112"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(1)
+				.getValue().getValue(), is("112"));
+		assertThat(dataSet.getColumnFamilies().get(3).getRows().get(0).getSuperColumns().get(0).getColumns().get(1)
+				.getValue().getType(), is(GenericTypeEnum.COUNTER_TYPE));
+
+	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetCounterColumnFamilyBecauseThereIsFunctionOverridingDefaultValueType() {
+		DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetBadCounterColumnFamilyWithFunction.xml");
+	}
 }
