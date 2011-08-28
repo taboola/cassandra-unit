@@ -22,7 +22,7 @@ import org.cassandraunit.type.GenericTypeEnum;
 /**
  * 
  * @author Jeremy Sevellec
- *
+ * 
  */
 public class MockDataSetHelper {
 
@@ -176,11 +176,78 @@ public class MockDataSetHelper {
 		columnFamilies.add(constructColumnFamily4ForDefinedValueSimple());
 		columnFamilies.add(constructColumnFamily5ForDefinedValueSimple());
 		columnFamilies.add(constructColumnFamily6ForDefinedValueSimple());
+		columnFamilies.add(constructColumnFamily7ForDefinedValueSimple());
 		keyspace.setColumnFamilies(columnFamilies);
 
 		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
 		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
 		return mockDataSet;
+	}
+
+	private static ColumnFamilyModel constructColumnFamily7ForDefinedValueSimple() {
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName7");
+		columnFamily.setType(ColumnType.SUPER);
+		columnFamily.setKeyType(ComparatorType.LONGTYPE);
+		columnFamily.setComparatorType(ComparatorType.UTF8TYPE);
+		columnFamily.setSubComparatorType(ComparatorType.UTF8TYPE);
+		columnFamily.setDefaultColumnValueType(ComparatorType.COUNTERTYPE);
+		List<RowModel> rows = new ArrayList<RowModel>();
+
+		/* row 1 */
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("10", GenericTypeEnum.LONG_TYPE));
+		List<SuperColumnModel> superColumns = new ArrayList<SuperColumnModel>();
+		row1.setSuperColumns(superColumns);
+		SuperColumnModel superColumn = new SuperColumnModel();
+		superColumn.setName(new GenericType("superColumnName11", GenericTypeEnum.UTF_8_TYPE));
+		superColumns.add(superColumn);
+
+		List<ColumnModel> columns = new ArrayList<ColumnModel>();
+		superColumn.setColumns(columns);
+
+		ColumnModel columnModel111 = new ColumnModel();
+		columnModel111.setName(new GenericType("counter111", GenericTypeEnum.UTF_8_TYPE));
+		columnModel111.setValue(new GenericType("111", GenericTypeEnum.COUNTER_TYPE));
+		columns.add(columnModel111);
+		ColumnModel columnModel112 = new ColumnModel();
+		columnModel112.setName(new GenericType("counter112", GenericTypeEnum.UTF_8_TYPE));
+		columnModel112.setValue(new GenericType("112", GenericTypeEnum.COUNTER_TYPE));
+		columns.add(columnModel112);
+
+		rows.add(row1);
+
+		columnFamily.setRows(rows);
+
+		return columnFamily;
+	}
+
+	private static ColumnFamilyModel constructColumnFamily6ForDefinedValueSimple() {
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("beautifulColumnFamilyName6");
+		columnFamily.setKeyType(ComparatorType.LONGTYPE);
+		columnFamily.setComparatorType(ComparatorType.UTF8TYPE);
+		columnFamily.setDefaultColumnValueType(ComparatorType.COUNTERTYPE);
+		List<RowModel> rows = new ArrayList<RowModel>();
+
+		/* row 1 */
+		RowModel row1 = new RowModel();
+		row1.setKey(new GenericType("10", GenericTypeEnum.LONG_TYPE));
+		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
+		ColumnModel columnModel11 = new ColumnModel();
+		columnModel11.setName(new GenericType("counter11", GenericTypeEnum.UTF_8_TYPE));
+		columnModel11.setValue(new GenericType("11", GenericTypeEnum.COUNTER_TYPE));
+		columns1.add(columnModel11);
+		ColumnModel columnModel12 = new ColumnModel();
+		columnModel12.setName(new GenericType("counter12", GenericTypeEnum.UTF_8_TYPE));
+		columnModel12.setValue(new GenericType("12", GenericTypeEnum.COUNTER_TYPE));
+		columns1.add(columnModel12);
+		row1.setColumns(columns1);
+		rows.add(row1);
+
+		columnFamily.setRows(rows);
+
+		return columnFamily;
 	}
 
 	private static ColumnFamilyModel constructColumnFamily5ForDefinedValueSimple() {
@@ -234,35 +301,6 @@ public class MockDataSetHelper {
 
 		return columnFamily;
 	}
-	
-	 private static ColumnFamilyModel constructColumnFamily6ForDefinedValueSimple() {
-	    ColumnFamilyModel columnFamily = new ColumnFamilyModel();
-	    columnFamily.setName("beautifulColumnFamilyName6");
-	    columnFamily.setKeyType(ComparatorType.LONGTYPE);
-	    columnFamily.setComparatorType(ComparatorType.UTF8TYPE);
-	    columnFamily.setDefaultColumnValueType(ComparatorType.COUNTERTYPE);
-	    List<RowModel> rows = new ArrayList<RowModel>();
-
-	    /* row 1 */
-	    RowModel row1 = new RowModel();
-	    row1.setKey(new GenericType("10", GenericTypeEnum.LONG_TYPE));
-	    List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
-	    ColumnModel columnModel11 = new ColumnModel();
-	    columnModel11.setName(new GenericType("counter11", GenericTypeEnum.UTF_8_TYPE));
-	    columnModel11.setValue(new GenericType("11", GenericTypeEnum.COUNTER_TYPE));
-	    columns1.add(columnModel11);
-	    ColumnModel columnModel12 = new ColumnModel();
-	    columnModel12.setName(new GenericType("counter12", GenericTypeEnum.UTF_8_TYPE));
-	    columnModel12.setValue(new GenericType("12", GenericTypeEnum.COUNTER_TYPE));
-	    columns1.add(columnModel12);
-	    row1.setColumns(columns1);
-	    rows.add(row1);
-
-	    columnFamily.setRows(rows);
-
-	    return columnFamily;
-	  }
-
 
 	private static ColumnFamilyModel constructColumnFamily3ForDefinedValueSimple() {
 		ColumnFamilyModel columnFamily = new ColumnFamilyModel();

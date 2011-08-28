@@ -16,7 +16,9 @@ import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.CounterSlice;
+import me.prettyprint.hector.api.beans.CounterSuperSlice;
 import me.prettyprint.hector.api.beans.HCounterColumn;
+import me.prettyprint.hector.api.beans.HCounterSuperColumn;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.OrderedSuperRows;
 import me.prettyprint.hector.api.beans.Row;
@@ -26,20 +28,21 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.exceptions.HInvalidRequestException;
 import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.query.CounterQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
+import me.prettyprint.hector.api.query.SuperSliceCounterQuery;
 
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 /**
  * 
  * @author Jeremy Sevellec
- *
+ * 
  */
 public class DataLoaderTest {
 
@@ -407,38 +410,6 @@ public class DataLoaderTest {
 			fail();
 		}
 	}
-	
-	@Test
-	public void shouldLoadDataWithStandardRowWithCounterColumnTypeSpecified() {
-	  String clusterName = "TestCluster7";
-	  String host = "localhost:9171";
-	  DataLoader dataLoader = new DataLoader(clusterName, host);
-
-	  try {
-	    dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
-
-	    /* verify */
-	    Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
-	    Keyspace keyspace = HFactory.createKeyspace("otherKeyspaceName", cluster);
-	    SliceCounterQuery<Long, String> query = HFactory.createCounterSliceQuery(keyspace, LongSerializer.get(), StringSerializer.get());
-	    query.setColumnFamily("beautifulColumnFamilyName6");
-	    query.setKey(10L);
-	    query.setRange(null, null, false, 100);
-	    QueryResult<CounterSlice<String>> result = query.execute();
-	    List<HCounterColumn<String>> columns = result.get().getColumns();
-	    assertThat(columns.size(), is(2));
-	    assertThat(columns.get(0), notNullValue());
-	    assertThat(columns.get(0).getName(), is("counter11"));
-	    assertThat(columns.get(0).getValue(), is(11L));
-	    assertThat(columns.get(1), notNullValue());
-	    assertThat(columns.get(1).getName(), is("counter12"));
-      assertThat(columns.get(1).getValue(), is(12L));	
-
-	  } catch (HInvalidRequestException e) {
-	    e.printStackTrace();
-	    fail();
-	  }
-	}
 
 	@Test
 	public void shouldLoadDataWithStandardRowWithDefaultColumnTypeSpecifiedAndColumnTypeFunction() {
@@ -482,6 +453,77 @@ public class DataLoaderTest {
 			DataLoader dataLoader = new DataLoader(clusterName, host);
 			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
 			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues());
+		} catch (HInvalidRequestException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	public void shouldLoadDataWithStandardRowWithCounterColumnTypeSpecified() {
+		String clusterName = "TestCluster10";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+
+		try {
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
+
+			/* verify */
+			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+			Keyspace keyspace = HFactory.createKeyspace("otherKeyspaceName", cluster);
+			SliceCounterQuery<Long, String> query = HFactory.createCounterSliceQuery(keyspace, LongSerializer.get(),
+					StringSerializer.get());
+			query.setColumnFamily("beautifulColumnFamilyName6");
+			query.setKey(10L);
+			query.setRange(null, null, false, 100);
+			QueryResult<CounterSlice<String>> result = query.execute();
+			List<HCounterColumn<String>> columns = result.get().getColumns();
+			assertThat(columns.size(), is(2));
+			assertThat(columns.get(0), notNullValue());
+			assertThat(columns.get(0).getName(), is("counter11"));
+			assertThat(columns.get(0).getValue(), is(11L));
+			assertThat(columns.get(1), notNullValue());
+			assertThat(columns.get(1).getName(), is("counter12"));
+			assertThat(columns.get(1).getValue(), is(12L));
+
+		} catch (HInvalidRequestException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	public void shouldLoadDataWithSuperRowWithCounterColumnTypeSpecified() {
+		String clusterName = "TestCluster11";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+
+		try {
+			dataLoader.load(MockDataSetHelper.getMockDataSetWithDefinedValuesSimple());
+
+			/* verify */
+			Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+			Keyspace keyspace = HFactory.createKeyspace("otherKeyspaceName", cluster);
+			SuperSliceCounterQuery<Long, String, String> query = HFactory.createSuperSliceCounterQuery(keyspace,
+					LongSerializer.get(), StringSerializer.get(), StringSerializer.get());
+			query.setColumnFamily("beautifulColumnFamilyName7").setKey(10L);
+			query.setRange(null, null, false, 100);
+			QueryResult<CounterSuperSlice<String, String>> result = query.execute();
+			List<HCounterSuperColumn<String, String>> superColumns = result.get().getSuperColumns();
+			assertThat(superColumns, notNullValue());
+			assertThat(superColumns.size(), is(1));
+			HCounterSuperColumn<String, String> columns = superColumns.get(0);
+
+			assertThat(columns.getColumns(), notNullValue());
+			assertThat(columns.getColumns().size(), is(2));
+			assertThat(columns.getColumns().get(0), notNullValue());
+			assertThat(columns.getColumns().get(0).getName(), is("counter111"));
+			assertThat(columns.getColumns().get(0).getValue(), is(111L));
+
+			assertThat(columns.getColumns().get(1), notNullValue());
+			assertThat(columns.getColumns().get(1).getName(), is("counter112"));
+			assertThat(columns.getColumns().get(1).getValue(), is(112L));
+
 		} catch (HInvalidRequestException e) {
 			e.printStackTrace();
 			fail();
