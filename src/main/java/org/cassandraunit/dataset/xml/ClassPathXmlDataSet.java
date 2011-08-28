@@ -223,6 +223,11 @@ public class ClassPathXmlDataSet implements DataSet {
 					.getTypeName())));
 		}
 
+		if (ComparatorType.COUNTERTYPE.getClassName().equals(defaultColumnValueType.getClassName())
+				&& TypeExtractor.containFunctions(xmlColumn.getValue())) {
+			throw new ParseException("Impossible to override Column value into a Counter column family");
+		}
+
 		GenericType columnValue = TypeExtractor.extract(xmlColumn.getValue(), defaultColumnValueType);
 		columnModel.setValue(columnValue);
 

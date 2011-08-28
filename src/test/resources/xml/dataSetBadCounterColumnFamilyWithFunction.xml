@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<keyspace xmlns="http://xml.dataset.cassandraunit.org">
+	<name>otherKeyspaceName</name>
+	<columnFamilies>
+		<columnFamily>
+			<name>amazingColumnFamilyName</name>
+			<type>STANDARD</type>
+			<defaultColumnValueType>CounterColumnType</defaultColumnValueType>
+			<row>
+				<key>10</key>
+				<column>
+					<name>counter11</name>
+					<value>utf8(badValue)</value>
+				</column>
+			</row>
+		</columnFamily>
+	</columnFamilies>
+</keyspace>

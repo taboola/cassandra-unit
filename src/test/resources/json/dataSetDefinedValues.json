@@ -35,5 +35,36 @@
                 }]
             }]
         }]
+    },
+    {
+        "name" : "standardCounterColumnFamily",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "CounterColumnType",
+        "rows" : [{
+            "key" : "key10",
+            "columns" : [{
+                "name" : "columnName11",
+                "value" : "11"
+            }]
+        }]
+    },
+    {
+        "name" : "superCounterColumnFamily",
+        "type" : "SUPER",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "subComparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "CounterColumnType",
+        "rows" : [{
+            "key" : "key10",
+            "superColumns" : [{
+                "name" : "superColumnName11",
+                "columns" : [{
+                    "name" : "columnName111",
+                    "value" : "111"
+                }]
+            }]
+        }]
     }]
 }
