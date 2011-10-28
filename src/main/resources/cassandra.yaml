@@ -7,7 +7,7 @@
 
 # The name of the cluster. This is mainly used to prevent machines in
 # one logical cluster from joining another.
-cluster_name: 'TestCluster'
+cluster_name: 'Test Cluster'
 
 # You should always specify InitialToken when setting up a production
 # cluster for the first time, and often when adding capacity later.
@@ -58,8 +58,6 @@ commitlog_directory: target/embeddedCassandra/commitlog
 # saved caches
 saved_caches_directory: target/embeddedCassandra/saved_caches
 
-# Size to allow commitlog to grow to before creating a new segment 
-commitlog_rotation_threshold_in_mb: 128
 
 # commitlog_sync may be either "periodic" or "batch." 
 # When in batch mode, Cassandra won't ack writes until the commit log
@@ -160,10 +158,6 @@ snapshot_before_compaction: false
 # change this to increase the compaction thread's priority.  In java, 1 is the
 # lowest priority and that is our default.
 # compaction_thread_priority: 1
-
-# The threshold size in megabytes the binary memtable must grow to,
-# before it's submitted for flushing to disk.
-binary_memtable_throughput_in_mb: 256
 
 # Add column indexes to a row after its contents reach this size.
 # Increase if your column values are large, or if you have a very large
@@ -371,3 +365,4 @@ index_interval: 128
 # NOTE: this keyspace definition is for demonstration purposes only.
 #       Cassandra will not load these definitions during startup. See
 #       http://wiki.apache.org/cassandra/FAQ#no_keyspaces for an explanation.
+  
