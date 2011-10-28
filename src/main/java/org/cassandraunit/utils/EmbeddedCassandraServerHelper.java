@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.util.List;
 
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
-import me.prettyprint.cassandra.testutils.EmbeddedServerHelper;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
@@ -113,7 +112,7 @@ public class EmbeddedCassandraServerHelper {
 	 */
 	private static void copy(String resource, String directory) throws IOException {
 		mkdir(directory);
-		InputStream is = EmbeddedServerHelper.class.getResourceAsStream(resource);
+		InputStream is = EmbeddedCassandraServerHelper.class.getResourceAsStream(resource);
 		String fileName = resource.substring(resource.lastIndexOf("/") + 1);
 		File file = new File(directory + System.getProperty("file.separator") + fileName);
 		OutputStream out = new FileOutputStream(file);

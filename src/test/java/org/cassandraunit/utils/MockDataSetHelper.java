@@ -90,8 +90,8 @@ public class MockDataSetHelper {
 		/* keyspace */
 		KeyspaceModel keyspace = new KeyspaceModel();
 		keyspace.setName("otherKeyspaceName");
-		keyspace.setStrategy(StrategyModel.LOCAL_STRATEGY);
-		keyspace.setReplicationFactor(2);
+		keyspace.setStrategy(StrategyModel.SIMPLE_STRATEGY);
+		keyspace.setReplicationFactor(1);
 		List<ColumnFamilyModel> columnFamilies = new ArrayList<ColumnFamilyModel>();
 
 		/* column family 1 */
@@ -167,8 +167,8 @@ public class MockDataSetHelper {
 		/* keyspace */
 		KeyspaceModel keyspace = new KeyspaceModel();
 		keyspace.setName("otherKeyspaceName");
-		keyspace.setStrategy(StrategyModel.LOCAL_STRATEGY);
-		keyspace.setReplicationFactor(2);
+		keyspace.setStrategy(StrategyModel.SIMPLE_STRATEGY);
+		keyspace.setReplicationFactor(1);
 		List<ColumnFamilyModel> columnFamilies = new ArrayList<ColumnFamilyModel>();
 		columnFamilies.add(constructColumnFamily1ForDefinedValueSimple());
 		columnFamilies.add(constructColumnFamily2ForDefinedValueSimple());
