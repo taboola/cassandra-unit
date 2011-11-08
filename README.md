@@ -19,8 +19,8 @@ Main features :
 
 Using/Compatibility :
 ---------------
-- Cassandra 0.8.X
-- Hector 0.8.0-X
+- Cassandra 1.0.X
+- Hector 1.0-X
 
 Where to start :
 ----------------

@@ -81,7 +81,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getKeyspace().getName(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("otherKeyspaceName"));
 		assertThat(dataSet.getKeyspace().getReplicationFactor(), is(2));
-		assertThat(dataSet.getKeyspace().getStrategy(), is(StrategyModel.LOCAL_STRATEGY));
+		assertThat(dataSet.getKeyspace().getStrategy(), is(StrategyModel.SIMPLE_STRATEGY));
 	}
 
 	@Test
