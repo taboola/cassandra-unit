@@ -11,6 +11,10 @@
 				<validationClass>UTF8Type</validationClass>
 				<indexType>KEYS</indexType>
 			</columnMetadata>
+			<columnMetadata>
+				<name>columnWithUTF8ValidationClass</name>
+				<validationClass>UTF8Type</validationClass>
+			</columnMetadata>
 		</columnFamily>
 	</columnFamilies>
 </keyspace>

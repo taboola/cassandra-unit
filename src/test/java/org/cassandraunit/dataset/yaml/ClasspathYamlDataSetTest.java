@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
@@ -270,5 +271,23 @@ public class ClasspathYamlDataSetTest {
 	public void shouldNotGetCounterColumnFamilyBecauseThereIsFunctionOverridingDefaultValueType() {
 		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetBadCounterColumnFamilyWithFunction.yaml");
 		dataSet.getKeyspace();
+	}
+
+	@Test
+	public void shouldGetAColumnFamilyWithSecondaryIndex() {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetWithSecondaryIndex.yaml");
+
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getColumnName(),
+				is("columnWithIndexAndUTF8ValidationClass"));
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getColumnIndexType(),
+				is(ColumnIndexType.KEYS));
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getValidationClass(),
+				is(ComparatorType.UTF8TYPE));
+
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnName(),
+				is("columnWithUTF8ValidationClass"));
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(), nullValue());
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
+				is(ComparatorType.UTF8TYPE));
 	}
 }
