@@ -3,12 +3,14 @@ package org.cassandraunit.dataset.commons;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadata;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
 import org.cassandraunit.model.RowModel;
@@ -115,12 +117,44 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 					.getDefaultColumnValueType().name()));
 		}
 
+		columnFamily.setColumnsMetadata(mapParsedColumsMetadataToColumnsMetadata(parsedColumnFamily
+				.getColumnsMetadata()));
+
 		/* data information */
 		columnFamily.setRows(mapParsedRowsToRowsModel(parsedColumnFamily, columnFamily.getKeyType(),
 				columnFamily.getComparatorType(), columnFamily.getSubComparatorType(),
 				columnFamily.getDefaultColumnValueType()));
 
 		return columnFamily;
+	}
+
+	private List<ColumnMetadata> mapParsedColumsMetadataToColumnsMetadata(
+			List<ParsedColumnMetadata> parsedColumnsMetadata) {
+		List<ColumnMetadata> columnMetadatas = new ArrayList<ColumnMetadata>();
+		for (ParsedColumnMetadata parsedColumnMetadata : parsedColumnsMetadata) {
+			columnMetadatas.add(mapParsedColumMetadataToColumnMetadata(parsedColumnMetadata));
+		}
+		return columnMetadatas;
+	}
+
+	private ColumnMetadata mapParsedColumMetadataToColumnMetadata(ParsedColumnMetadata parsedColumnMetadata) {
+		if (parsedColumnMetadata.getName() == null) {
+			throw new ParseException("column metadata name can't be empty");
+		}
+
+		if (parsedColumnMetadata.getValidationClass() == null) {
+			throw new ParseException("column metadata validation class can't be empty");
+		}
+
+		ColumnMetadata columnMetadata = new ColumnMetadata();
+		columnMetadata.setColumnName(parsedColumnMetadata.getName());
+		columnMetadata.setValidationClass(ComparatorType.getByClassName(parsedColumnMetadata.getValidationClass()
+				.name()));
+		if (parsedColumnMetadata.getIndexType() != null) {
+			columnMetadata.setColumnIndexType(ColumnIndexType.valueOf(parsedColumnMetadata.getIndexType().name()));
+		}
+
+		return columnMetadata;
 	}
 
 	private List<RowModel> mapParsedRowsToRowsModel(ParsedColumnFamily parsedColumnFamily, ComparatorType keyType,

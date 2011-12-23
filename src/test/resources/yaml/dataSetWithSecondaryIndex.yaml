@@ -1,0 +1,8 @@
+name: beautifulDefinedKeyspaceName
+replicationFactor: 1
+strategy: org.apache.cassandra.locator.SimpleStrategy
+columnFamilies:
+- name: columnFamily1
+  columnsMetadata:
+  - {name: columnWithIndexAndUTF8ValidationClass, validationClass: UTF8Type, indexType: KEYS}
+  - {name: columnWithUTF8ValidationClass, validationClass: UTF8Type}

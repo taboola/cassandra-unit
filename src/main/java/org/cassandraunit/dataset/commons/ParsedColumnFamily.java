@@ -18,6 +18,7 @@ public class ParsedColumnFamily {
 	private ParsedDataType comparatorType = ParsedDataType.BytesType;
 	private ParsedDataType subComparatorType = null;
 	private ParsedDataType defaultColumnValueType = ParsedDataType.BytesType;
+	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
 	public String getName() {
@@ -74,6 +75,14 @@ public class ParsedColumnFamily {
 
 	public List<ParsedRow> getRows() {
 		return rows;
+	}
+
+	public List<ParsedColumnMetadata> getColumnsMetadata() {
+		return columnsMetadata;
+	}
+
+	public void setColumnsMetadata(List<ParsedColumnMetadata> columnsMetadata) {
+		this.columnsMetadata = columnsMetadata;
 	}
 
 }
