@@ -6,11 +6,14 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
+import org.apache.cassandra.thrift.IndexType;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadata;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
 import org.cassandraunit.model.RowModel;
@@ -137,6 +140,20 @@ public class MockDataSetHelper {
 		columnFamily2.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
 
 		columnFamilies.add(columnFamily2);
+
+		/* column family 3 with index */
+		ColumnFamilyModel columnFamilyWithSecondaryIndex = new ColumnFamilyModel();
+		columnFamilyWithSecondaryIndex.setName("columnFamilyWithSecondaryIndex");
+		columnFamilyWithSecondaryIndex.setType(ColumnType.STANDARD);
+		columnFamilyWithSecondaryIndex.setKeyType(ComparatorType.UTF8TYPE);
+		columnFamilyWithSecondaryIndex.setComparatorType(ComparatorType.UTF8TYPE);
+		columnFamilyWithSecondaryIndex.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
+				"columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS));
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
+				"columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS));
+
+		columnFamilies.add(columnFamilyWithSecondaryIndex);
 
 		keyspace.setColumnFamilies(columnFamilies);
 

@@ -19,6 +19,9 @@ public class ColumnFamilyModel {
 	private ComparatorType comparatorType = ComparatorType.BYTESTYPE;
 	private ComparatorType subComparatorType = null;
 	private ComparatorType defaultColumnValueType = ComparatorType.BYTESTYPE;
+
+	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
+
 	private List<RowModel> rows = new ArrayList<RowModel>();
 
 	public String getName() {
@@ -76,9 +79,21 @@ public class ColumnFamilyModel {
 	public ComparatorType getDefaultColumnValueType() {
 		return defaultColumnValueType;
 	}
-	
+
 	public boolean isCounter() {
-	  return defaultColumnValueType.equals(ComparatorType.COUNTERTYPE);
+		return defaultColumnValueType.equals(ComparatorType.COUNTERTYPE);
+	}
+
+	public List<ColumnMetadata> getColumnsMetadata() {
+		return columnsMetadata;
+	}
+
+	public void setColumnsMetadata(List<ColumnMetadata> columnsMetadata) {
+		this.columnsMetadata = columnsMetadata;
+	}
+
+	public void addColumnMetadata(ColumnMetadata columnMetadata) {
+		columnsMetadata.add(columnMetadata);
 	}
 
 }
