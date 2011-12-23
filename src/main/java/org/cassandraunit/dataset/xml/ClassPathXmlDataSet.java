@@ -11,12 +11,14 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadata;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
 import org.cassandraunit.model.RowModel;
@@ -134,12 +136,39 @@ public class ClassPathXmlDataSet implements DataSet {
 					.getDefaultColumnValueType().value()));
 		}
 
+		columnFamily.setColumnsMetadata(mapXmlColumsMetadataToColumnsMetadata(xmlColumnFamily.getColumnMetadata()));
+
 		/* data information */
 		columnFamily.setRows(mapXmlRowsToRowsModel(xmlColumnFamily, columnFamily.getKeyType(),
 				columnFamily.getComparatorType(), columnFamily.getSubComparatorType(),
 				columnFamily.getDefaultColumnValueType()));
 
 		return columnFamily;
+	}
+
+	private List<ColumnMetadata> mapXmlColumsMetadataToColumnsMetadata(
+			List<org.cassandraunit.dataset.xml.ColumnMetadata> xmlColumnsMetadata) {
+
+		ArrayList<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
+
+		for (org.cassandraunit.dataset.xml.ColumnMetadata xmlColumnMetadata : xmlColumnsMetadata) {
+			columnsMetadata.add(mapXmlColumnMetadataToColumMetadata(xmlColumnMetadata));
+		}
+
+		return columnsMetadata;
+	}
+
+	private ColumnMetadata mapXmlColumnMetadataToColumMetadata(
+			org.cassandraunit.dataset.xml.ColumnMetadata xmlColumnMetadata) {
+		ColumnMetadata columnMetadata = new ColumnMetadata();
+		columnMetadata.setColumnName(xmlColumnMetadata.getName());
+		columnMetadata
+				.setValidationClass(ComparatorType.getByClassName(xmlColumnMetadata.getValidationClass().value()));
+		if (xmlColumnMetadata.getIndexType() != null) {
+			columnMetadata.setColumnIndexType(ColumnIndexType.valueOf(xmlColumnMetadata.getIndexType().value()));
+		}
+
+		return columnMetadata;
 	}
 
 	private List<RowModel> mapXmlRowsToRowsModel(org.cassandraunit.dataset.xml.ColumnFamily xmlColumnFamily,
