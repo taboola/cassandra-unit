@@ -16,11 +16,11 @@ public class ColumnMetadata {
 	private ComparatorType validationClass = null;
 	private ColumnIndexType columnIndexType = null;
 
-	public ColumnMetadata(String columnName, ComparatorType validationClass, ColumnIndexType indexType) {
+	public ColumnMetadata(String columnName, ComparatorType validationClass, ColumnIndexType columnIndexType) {
 		super();
 		this.columnName = columnName;
 		this.validationClass = validationClass;
-		this.setColumnIndexType(indexType);
+		this.setColumnIndexType(columnIndexType);
 	}
 
 	public String getColumnName() {
