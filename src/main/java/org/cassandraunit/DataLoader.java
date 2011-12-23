@@ -1,8 +1,10 @@
 package org.cassandraunit;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
@@ -10,6 +12,7 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.beans.HCounterSuperColumn;
 import me.prettyprint.hector.api.beans.HSuperColumn;
+import me.prettyprint.hector.api.ddl.ColumnDefinition;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
@@ -19,6 +22,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadata;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.KeyspaceModel;
 import org.cassandraunit.model.RowModel;
@@ -27,6 +31,8 @@ import org.cassandraunit.serializer.GenericTypeSerializer;
 import org.cassandraunit.type.GenericType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Charsets;
 
 /**
  * 
@@ -162,11 +168,12 @@ public class DataLoader {
 		List<ColumnFamilyDefinition> columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
 		for (ColumnFamilyModel columnFamily : dataSet.getColumnFamilies()) {
 			ColumnFamilyDefinition cfDef = HFactory.createColumnFamilyDefinition(dataSetKeyspace.getName(),
-					columnFamily.getName());
+					columnFamily.getName(),
+					ComparatorType.getByClassName(columnFamily.getComparatorType().getClassName()),
+					createColumnsDefinition(columnFamily.getColumnsMetadata()));
 			cfDef.setColumnType(columnFamily.getType());
 
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getClassName());
-			cfDef.setComparatorType(ComparatorType.getByClassName(columnFamily.getComparatorType().getClassName()));
 			if (columnFamily.isCounter()) {
 				cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
 			}
@@ -177,5 +184,25 @@ public class DataLoader {
 			columnFamilyDefinitions.add(cfDef);
 		}
 		return columnFamilyDefinitions;
+	}
+
+	private List<ColumnDefinition> createColumnsDefinition(List<ColumnMetadata> columnsMetadata) {
+		List<ColumnDefinition> columnsDefinition = new ArrayList<ColumnDefinition>();
+		for (ColumnMetadata columnMetadata : columnsMetadata) {
+			BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
+
+			String columnName = columnMetadata.getColumnName();
+			columnDefinition.setIndexName(columnName);
+			columnDefinition.setName(ByteBuffer.wrap(columnName.getBytes(Charsets.UTF_8)));
+
+			columnDefinition.setIndexType(columnMetadata.getColumnIndexType());
+
+			if (columnMetadata.getValidationClass() != null) {
+				columnDefinition.setValidationClass(columnMetadata.getValidationClass().getClassName());
+			}
+			columnsDefinition.add(columnDefinition);
+
+		}
+		return columnsDefinition;
 	}
 }

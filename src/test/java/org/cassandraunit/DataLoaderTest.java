@@ -23,6 +23,7 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.OrderedSuperRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.SuperRow;
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.exceptions.HInvalidRequestException;
@@ -130,7 +131,7 @@ public class DataLoaderTest {
 		String keyspaceName = "otherKeyspaceName";
 		assertThat(cluster.describeKeyspace(keyspaceName), notNullValue());
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs(), notNullValue());
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().size(), is(2));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().size(), is(3));
 
 		String firstColumnFamilyName = "beautifulColumnFamilyName";
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(0).getName(), is(firstColumnFamilyName));
@@ -143,12 +144,31 @@ public class DataLoaderTest {
 				is(ComparatorType.LONGTYPE.getClassName()));
 
 		String secondColumnFamilyName = "amazingColumnFamilyName";
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getName(), is(secondColumnFamilyName));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getKeyValidationClass(),
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(2).getName(), is(secondColumnFamilyName));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(2).getKeyValidationClass(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnType(), is(ColumnType.STANDARD));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getComparatorType().getClassName(),
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(2).getColumnType(), is(ColumnType.STANDARD));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(2).getComparatorType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
+
+		String thirdColumnFamilyName = "columnFamilyWithSecondaryIndex";
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getName(), is(thirdColumnFamilyName));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata(), notNullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0), notNullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0).getIndexName(),
+				is("columnWithSecondaryIndexAndValidationClassAsLongType"));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0).getIndexType(),
+				is(ColumnIndexType.KEYS));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0)
+				.getValidationClass(), is(ComparatorType.LONGTYPE.getClassName()));
+
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1), notNullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1).getIndexName(),
+				is("columnWithSecondaryIndexAndValidationClassAsUTF8Type"));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1).getIndexType(),
+				is(ColumnIndexType.KEYS));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1)
+				.getValidationClass(), is(ComparatorType.UTF8TYPE.getClassName()));
 
 	}
 
