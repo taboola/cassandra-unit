@@ -2,7 +2,6 @@ package org.cassandraunit;
 
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.factory.HFactory;
 
 import org.cassandraunit.dataset.DataSet;
 import org.junit.Before;
@@ -22,15 +21,11 @@ public abstract class AbstractCassandraUnit4TestCase {
 	@Before
 	public void before() throws Exception {
 		if (!initialized) {
-			cassandraUnit = new CassandraUnit();
+			cassandraUnit = new CassandraUnit(getDataSet());
 			cassandraUnit.before();
 
-			/* create structure and load data */
-			DataLoader dataLoader = new DataLoader(cassandraUnit.clusterName, cassandraUnit.host);
-			dataLoader.load(getDataSet());
-
 			cluster = cassandraUnit.cluster;
-			keyspace = HFactory.createKeyspace(getDataSet().getKeyspace().getName(), getCluster());
+			keyspace = cassandraUnit.keyspace;
 			initialized = true;
 		}
 
