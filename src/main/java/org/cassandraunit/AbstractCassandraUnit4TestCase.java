@@ -5,7 +5,6 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 
 import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Before;
 
 /**
@@ -15,6 +14,7 @@ import org.junit.Before;
  */
 public abstract class AbstractCassandraUnit4TestCase {
 
+	private CassandraUnit cassandraUnit;
 	private Keyspace keyspace = null;
 	private boolean initialized = false;
 	private Cluster cluster;
@@ -22,17 +22,14 @@ public abstract class AbstractCassandraUnit4TestCase {
 	@Before
 	public void before() throws Exception {
 		if (!initialized) {
-			/* start an embedded Cassandra */
-			EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-			String clusterName = "TestCluster";
-			String host = "localhost:9171";
+			cassandraUnit = new CassandraUnit();
+			cassandraUnit.before();
 
 			/* create structure and load data */
-			DataLoader dataLoader = new DataLoader(clusterName, host);
+			DataLoader dataLoader = new DataLoader(cassandraUnit.clusterName, cassandraUnit.host);
 			dataLoader.load(getDataSet());
 
-			/* get hector client object to query data in your test */
-			cluster = HFactory.getOrCreateCluster(clusterName, host);
+			cluster = cassandraUnit.cluster;
 			keyspace = HFactory.createKeyspace(getDataSet().getKeyspace().getName(), getCluster());
 			initialized = true;
 		}
