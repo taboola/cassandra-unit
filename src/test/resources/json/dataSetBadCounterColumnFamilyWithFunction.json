@@ -4,9 +4,9 @@
         "name" : "columnFamily1",
         "defaultColumnValueType" : "CounterColumnType",
         "rows" : [{
-            "key" : "key01",
+            "key" : "01",
             "columns" : [{
-                "name" : "columnName1",
+                "name" : "01",
                 "value" : "utf8(11)"
             }]
         }]

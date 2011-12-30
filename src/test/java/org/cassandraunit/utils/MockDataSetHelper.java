@@ -10,7 +10,6 @@ import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
-import org.apache.cassandra.thrift.IndexType;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnMetadata;
@@ -43,32 +42,32 @@ public class MockDataSetHelper {
 
 		/* row1 */
 		RowModel row1 = new RowModel();
-		row1.setKey(new GenericType("key10", GenericTypeEnum.BYTES_TYPE));
+		row1.setKey(new GenericType("10", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
 
-		columns1.add(constructDefaultColumnForMock("name11", "value11"));
-		columns1.add(constructDefaultColumnForMock("name12", "value12"));
+		columns1.add(constructDefaultColumnForMock("11", "11"));
+		columns1.add(constructDefaultColumnForMock("12", "12"));
 		row1.setColumns(columns1);
 		rows.add(row1);
 
 		/* row2 */
 		RowModel row2 = new RowModel();
-		row2.setKey(new GenericType("key20", GenericTypeEnum.BYTES_TYPE));
+		row2.setKey(new GenericType("20", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns2 = new ArrayList<ColumnModel>();
 
-		columns2.add(constructDefaultColumnForMock("name21", "value21"));
-		columns2.add(constructDefaultColumnForMock("name22", "value22"));
-		columns2.add(constructDefaultColumnForMock("name23", "value23"));
+		columns2.add(constructDefaultColumnForMock("21", "21"));
+		columns2.add(constructDefaultColumnForMock("22", "22"));
+		columns2.add(constructDefaultColumnForMock("23", "23"));
 		row2.setColumns(columns2);
 		rows.add(row2);
 
 		/* row3 */
 		RowModel row3 = new RowModel();
-		row3.setKey(new GenericType("key30", GenericTypeEnum.BYTES_TYPE));
+		row3.setKey(new GenericType("30", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns3 = new ArrayList<ColumnModel>();
 
-		columns3.add(constructDefaultColumnForMock("name31", "value31"));
-		columns3.add(constructDefaultColumnForMock("name32", "value32"));
+		columns3.add(constructDefaultColumnForMock("31", "31"));
+		columns3.add(constructDefaultColumnForMock("32", "32"));
 		row3.setColumns(columns3);
 		rows.add(row3);
 
@@ -275,14 +274,14 @@ public class MockDataSetHelper {
 
 		/* row 1 */
 		RowModel row1 = new RowModel();
-		row1.setKey(new GenericType("key01", GenericTypeEnum.BYTES_TYPE));
+		row1.setKey(new GenericType("01", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
 		ColumnModel columnModel11 = new ColumnModel();
-		columnModel11.setName(new GenericType("name01", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setName(new GenericType("01", GenericTypeEnum.BYTES_TYPE));
 		columnModel11.setValue(new GenericType("1", GenericTypeEnum.LONG_TYPE));
 		columns1.add(columnModel11);
 		ColumnModel columnModel12 = new ColumnModel();
-		columnModel12.setName(new GenericType("name02", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setName(new GenericType("02", GenericTypeEnum.BYTES_TYPE));
 		columnModel12.setValue(new GenericType("19652258", GenericTypeEnum.LONG_TYPE));
 		columns1.add(columnModel12);
 		row1.setColumns(columns1);
@@ -301,14 +300,14 @@ public class MockDataSetHelper {
 
 		/* row 1 */
 		RowModel row1 = new RowModel();
-		row1.setKey(new GenericType("key01", GenericTypeEnum.BYTES_TYPE));
+		row1.setKey(new GenericType("01", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
 		ColumnModel columnModel11 = new ColumnModel();
-		columnModel11.setName(new GenericType("name01", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setName(new GenericType("01", GenericTypeEnum.BYTES_TYPE));
 		columnModel11.setValue(new GenericType("1", GenericTypeEnum.LONG_TYPE));
 		columns1.add(columnModel11);
 		ColumnModel columnModel12 = new ColumnModel();
-		columnModel12.setName(new GenericType("name02", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setName(new GenericType("02", GenericTypeEnum.BYTES_TYPE));
 		columnModel12.setValue(new GenericType("19652258", GenericTypeEnum.LONG_TYPE));
 		columns1.add(columnModel12);
 		row1.setColumns(columns1);
@@ -334,12 +333,12 @@ public class MockDataSetHelper {
 		ColumnModel columnModel11 = new ColumnModel();
 		columnModel11
 				.setName(new GenericType("13816710-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.LEXICAL_UUID_TYPE));
-		columnModel11.setValue(new GenericType("value11", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setValue(new GenericType("11", GenericTypeEnum.BYTES_TYPE));
 		columns1.add(columnModel11);
 		ColumnModel columnModel12 = new ColumnModel();
 		columnModel12
 				.setName(new GenericType("13818e20-1dd2-11b2-879a-782bcb80ff6a", GenericTypeEnum.LEXICAL_UUID_TYPE));
-		columnModel12.setValue(new GenericType("value12", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setValue(new GenericType("12", GenericTypeEnum.BYTES_TYPE));
 		columns1.add(columnModel12);
 		row1.setColumns(columns1);
 		rows.add(row1);
@@ -363,11 +362,11 @@ public class MockDataSetHelper {
 		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
 		ColumnModel columnModel11 = new ColumnModel();
 		columnModel11.setName(new GenericType("11", GenericTypeEnum.INTEGER_TYPE));
-		columnModel11.setValue(new GenericType("value11", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setValue(new GenericType("11", GenericTypeEnum.BYTES_TYPE));
 		columns1.add(columnModel11);
 		ColumnModel columnModel12 = new ColumnModel();
 		columnModel12.setName(new GenericType("12", GenericTypeEnum.INTEGER_TYPE));
-		columnModel12.setValue(new GenericType("value12", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setValue(new GenericType("12", GenericTypeEnum.BYTES_TYPE));
 		columns1.add(columnModel12);
 		row1.setColumns(columns1);
 		rows.add(row1);
@@ -391,11 +390,11 @@ public class MockDataSetHelper {
 		List<ColumnModel> columns1 = new ArrayList<ColumnModel>();
 		ColumnModel columnModel11 = new ColumnModel();
 		columnModel11.setName(new GenericType("name11", GenericTypeEnum.UTF_8_TYPE));
-		columnModel11.setValue(new GenericType("value11", GenericTypeEnum.BYTES_TYPE));
+		columnModel11.setValue(new GenericType("11", GenericTypeEnum.BYTES_TYPE));
 		columns1.add(columnModel11);
 		ColumnModel columnModel12 = new ColumnModel();
 		columnModel12.setName(new GenericType("name12", GenericTypeEnum.UTF_8_TYPE));
-		columnModel12.setValue(new GenericType("value12", GenericTypeEnum.BYTES_TYPE));
+		columnModel12.setValue(new GenericType("12", GenericTypeEnum.BYTES_TYPE));
 		columns1.add(columnModel12);
 		row1.setColumns(columns1);
 		rows.add(row1);
@@ -406,11 +405,11 @@ public class MockDataSetHelper {
 		List<ColumnModel> columns2 = new ArrayList<ColumnModel>();
 		ColumnModel columnModel21 = new ColumnModel();
 		columnModel21.setName(new GenericType("name21", GenericTypeEnum.UTF_8_TYPE));
-		columnModel21.setValue(new GenericType("value21", GenericTypeEnum.BYTES_TYPE));
+		columnModel21.setValue(new GenericType("21", GenericTypeEnum.BYTES_TYPE));
 		columns2.add(columnModel21);
 		ColumnModel columnModel22 = new ColumnModel();
 		columnModel22.setName(new GenericType("name22", GenericTypeEnum.UTF_8_TYPE));
-		columnModel22.setValue(new GenericType("value22", GenericTypeEnum.BYTES_TYPE));
+		columnModel22.setValue(new GenericType("22", GenericTypeEnum.BYTES_TYPE));
 		columns2.add(columnModel22);
 		row2.setColumns(columns2);
 		rows.add(row2);
@@ -433,22 +432,22 @@ public class MockDataSetHelper {
 		List<RowModel> rows = new ArrayList<RowModel>();
 
 		RowModel row1 = new RowModel();
-		row1.setKey(new GenericType("key1", GenericTypeEnum.BYTES_TYPE));
+		row1.setKey(new GenericType("01", GenericTypeEnum.BYTES_TYPE));
 		List<SuperColumnModel> superColumns1 = new ArrayList<SuperColumnModel>();
 
 		SuperColumnModel superColumn11 = new SuperColumnModel();
-		superColumn11.setName(new GenericType("name11", GenericTypeEnum.BYTES_TYPE));
+		superColumn11.setName(new GenericType("11", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns11 = new ArrayList<ColumnModel>();
-		columns11.add(constructDefaultColumnForMock("name111", "value111"));
-		columns11.add(constructDefaultColumnForMock("name112", "value112"));
+		columns11.add(constructDefaultColumnForMock("1110", "1110"));
+		columns11.add(constructDefaultColumnForMock("1120", "1120"));
 		superColumn11.setColumns(columns11);
 		superColumns1.add(superColumn11);
 
 		SuperColumnModel superColumn12 = new SuperColumnModel();
-		superColumn12.setName(new GenericType("name12", GenericTypeEnum.BYTES_TYPE));
+		superColumn12.setName(new GenericType("12", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns12 = new ArrayList<ColumnModel>();
-		columns12.add(constructDefaultColumnForMock("name121", "value121"));
-		columns12.add(constructDefaultColumnForMock("name122", "value122"));
+		columns12.add(constructDefaultColumnForMock("1210", "1210"));
+		columns12.add(constructDefaultColumnForMock("1220", "1220"));
 		superColumn12.setColumns(columns12);
 		superColumns1.add(superColumn12);
 
@@ -456,13 +455,13 @@ public class MockDataSetHelper {
 		rows.add(row1);
 
 		RowModel row2 = new RowModel();
-		row2.setKey(new GenericType("key2", GenericTypeEnum.BYTES_TYPE));
+		row2.setKey(new GenericType("02", GenericTypeEnum.BYTES_TYPE));
 		List<SuperColumnModel> superColumns2 = new ArrayList<SuperColumnModel>();
 		SuperColumnModel superColumn21 = new SuperColumnModel();
-		superColumn21.setName(new GenericType("name21", GenericTypeEnum.BYTES_TYPE));
+		superColumn21.setName(new GenericType("21", GenericTypeEnum.BYTES_TYPE));
 		List<ColumnModel> columns21 = new ArrayList<ColumnModel>();
-		columns21.add(constructDefaultColumnForMock("name211", "value211"));
-		columns21.add(constructDefaultColumnForMock("name212", "value212"));
+		columns21.add(constructDefaultColumnForMock("2110", "2110"));
+		columns21.add(constructDefaultColumnForMock("2120", "2120"));
 		superColumn21.setColumns(columns21);
 		superColumns2.add(superColumn21);
 		row2.setSuperColumns(superColumns2);

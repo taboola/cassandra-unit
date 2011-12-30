@@ -7,7 +7,6 @@
         "type" : "STANDARD",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
-        "subComparatorType" : null,
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
             "key" : "key01",

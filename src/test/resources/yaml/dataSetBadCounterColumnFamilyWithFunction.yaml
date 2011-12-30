@@ -3,6 +3,6 @@ columnFamilies:
 - name: columnFamily1
   defaultColumnValueType: CounterColumnType
   rows:
-  - key: key01
+  - key: 01
     columns:
-    - {name: columnName1, value: utf8(badValue)}
+    - {name: 02, value: utf8(badValue)}
