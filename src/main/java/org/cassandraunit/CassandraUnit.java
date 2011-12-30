@@ -14,8 +14,8 @@ public class CassandraUnit extends ExternalResource {
 
 	private DataSet dataSet;
 
-	public String clusterName = "TestCluster";
-	public String host = "localhost:9171";
+	public static String clusterName = "TestCluster";
+	public static String host = "localhost:9171";
 
 	public CassandraUnit(DataSet dataSet) {
 		this.dataSet = dataSet;

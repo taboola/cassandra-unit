@@ -67,9 +67,9 @@
 			<name>beautifulColumnFamilyName4</name>
 			<defaultColumnValueType>LongType</defaultColumnValueType>
 			<row>
-				<key>key01</key>
+				<key>01</key>
 				<column>
-					<name>name01</name>
+					<name>01</name>
 					<value>1</value>
 				</column>
 				<column>
@@ -82,13 +82,13 @@
 			<name>beautifulColumnFamilyName5</name>
 			<defaultColumnValueType>UTF8Type</defaultColumnValueType>
 			<row>
-				<key>key01</key>
+				<key>01</key>
 				<column>
-					<name>name01</name>
+					<name>01</name>
 					<value>long(1)</value>
 				</column>
 				<column>
-					<name>name02</name>
+					<name>02</name>
 					<value>long(19652258)</value>
 				</column>
 			</row>

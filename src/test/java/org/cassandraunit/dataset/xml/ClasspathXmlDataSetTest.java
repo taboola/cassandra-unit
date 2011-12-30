@@ -133,12 +133,9 @@ public class ClasspathXmlDataSetTest {
 		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefaultValues.xml");
 		assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().size(), is(3));
-		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(0), "key10", 2, "name11", "value11",
-				"name12", "value12");
-		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(1), "key20", 3, "name21", "value21",
-				"name22", "value22");
-		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(2), "key30", 2, "name31", "value31",
-				"name32", "value32");
+		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(0), "10", 2, "11", "11", "12", "12");
+		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(1), "20", 3, "21", "21", "22", "22");
+		verifyStandardRow(dataSet.getColumnFamilies().get(0).getRows().get(2), "30", 2, "31", "31", "32", "32");
 	}
 
 	private void verifyStandardRow(RowModel row, String expectedRowkey, int expectedSize,
@@ -239,7 +236,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getValue().toString(),
-				is("value11"));
+				is("11"));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getValue().getType(),
 				is(GenericTypeEnum.BYTES_TYPE));
 
@@ -255,7 +252,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(1).getRows().get(0).getColumns(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(1).getRows().get(0).getColumns().get(0), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(1).getRows().get(0).getColumns().get(0).getValue().toString(),
-				is("value11"));
+				is("11"));
 		assertThat(dataSet.getColumnFamilies().get(1).getRows().get(0).getColumns().get(0).getValue().getType(),
 				is(GenericTypeEnum.UTF_8_TYPE));
 	}

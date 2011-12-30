@@ -116,18 +116,18 @@ public class ClasspathJsonDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().size(), is(1));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getKey().getValue(), is("key01"));
+		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getKey().getValue(), is("01"));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getKey().getType(),
 				is(GenericTypeEnum.BYTES_TYPE));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().size(), is(1));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0), notNullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getName().getValue(),
-				is("columnName1"));
+				is("02"));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getName().getType(),
 				is(GenericTypeEnum.BYTES_TYPE));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getValue().getValue(),
-				is("columnValue1"));
+				is("03"));
 		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getValue().getType(),
 				is(GenericTypeEnum.BYTES_TYPE));
 

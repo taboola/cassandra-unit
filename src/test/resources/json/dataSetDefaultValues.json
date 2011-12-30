@@ -3,10 +3,10 @@
     "columnFamilies" : [{
         "name" : "columnFamily1",
         "rows" : [{
-            "key" : "key01",
+            "key" : "01",
             "columns" : [{
-                "name" : "columnName1",
-                "value" : "columnValue1"
+                "name" : "02",
+                "value" : "03"
             }]
         }]
     }]

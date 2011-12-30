@@ -7,10 +7,10 @@
 		<columnFamily>
 			<name>beautifulColumnFamilyName</name>
 			<row>
-				<key>key01</key>
+				<key>01</key>
 				<column>
-					<name>name11</name>
-					<value>value11</value>
+					<name>11</name>
+					<value>11</value>
 				</column>
 			</row>
 		</columnFamily>
@@ -18,10 +18,10 @@
 			<name>beautifulColumnFamilyName2</name>
 			<defaultColumnValueType>UTF8Type</defaultColumnValueType>
 			<row>
-				<key>key01</key>
+				<key>01</key>
 				<column>
-					<name>name11</name>
-					<value>value11</value>
+					<name>11</name>
+					<value>11</value>
 				</column>
 			</row>
 		</columnFamily>
@@ -29,13 +29,13 @@
 			<name>beautifulColumnFamilyName3</name>
 			<defaultColumnValueType>UTF8Type</defaultColumnValueType>
 			<row>
-				<key>key01</key>
+				<key>01</key>
 				<column>
-					<name>name11</name>
+					<name>11</name>
 					<value>long(1)</value>
 				</column>
 				<column>
-					<name>name12</name>
+					<name>12</name>
 					<value>value12</value>
 				</column>
 			</row>
