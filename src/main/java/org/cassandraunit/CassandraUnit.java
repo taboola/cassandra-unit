@@ -35,6 +35,4 @@ public class CassandraUnit extends ExternalResource {
 		keyspace = HFactory.createKeyspace(dataSet.getKeyspace().getName(), cluster);
 	}
 
-	
-	
 }
