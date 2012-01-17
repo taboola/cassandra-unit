@@ -16,11 +16,7 @@ public class CassandraUnitCliLoader {
 
 	private static CommandLine commandLine = null;
 
-	private static boolean usageBeenPrinted;
-
-	static {
-
-	}
+	private static boolean usageBeenPrinted = false;
 
 	/**
 	 * @param args
@@ -39,6 +35,8 @@ public class CassandraUnitCliLoader {
 			} else {
 				if (containBadReplicationFactorArgumentValue()) {
 					printUsage("Bad argument value for option r");
+				} else {
+//					load();
 				}
 			}
 
@@ -77,6 +75,8 @@ public class CassandraUnitCliLoader {
 				.isRequired().create("h"));
 		options.addOption(OptionBuilder.withLongOpt("port").hasArg().withDescription("target port (required)")
 				.isRequired().create("p"));
+		options.addOption(OptionBuilder.withLongOpt("clusterName").hasArg().withDescription("cluster name").isRequired()
+				.create("c"));
 		options.addOption(OptionBuilder.withLongOpt("onlySchema").withDescription("only load schema (optional)")
 				.create("o"));
 		options.addOption(OptionBuilder.withLongOpt("replicationFactor").hasArg()

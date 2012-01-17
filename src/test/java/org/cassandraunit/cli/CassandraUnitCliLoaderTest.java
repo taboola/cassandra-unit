@@ -16,7 +16,7 @@ public class CassandraUnitCliLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetFileAndGetHostAndPortOptions() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-c", "TestCluster" };
 		CassandraUnitCliLoader.main(args);
 		CommandLine commandLine = CassandraUnitCliLoader.getCommandLine();
 		assertThat(commandLine.getOptionValue("f"), is("dataset.xsd"));
@@ -25,25 +25,34 @@ public class CassandraUnitCliLoaderTest {
 		assertThat(commandLine.getOptionValue("host"), is("myHost"));
 		assertThat(commandLine.getOptionValue("p"), is("3160"));
 		assertThat(commandLine.getOptionValue("port"), is("3160"));
+		assertThat(commandLine.getOptionValue("c"), is("TestCluster"));
+		assertThat(commandLine.getOptionValue("clusterName"), is("TestCluster"));
 	}
 
 	@Test
 	public void shouldPrintUsageBecausePortOptionIsMissing() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-c", "TestCluster" };
 		CassandraUnitCliLoader.main(args);
 		assertThat(CassandraUnitCliLoader.isUsageBeenPrinted(), is(true));
 	}
 
 	@Test
 	public void shouldPrintUsageBecauseHostOptionIsMissing() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-p", "3160" };
+		String[] args = { "-f", "dataset.xsd", "-p", "3160", "-c", "TestCluster" };
 		CassandraUnitCliLoader.main(args);
 		assertThat(CassandraUnitCliLoader.isUsageBeenPrinted(), is(true));
 	}
 
 	@Test
 	public void shouldPrintUsageBecauseFileOptionIsMissing() throws Exception {
-		String[] args = { "-h", "myHost", "-p", "3160" };
+		String[] args = { "-h", "myHost", "-p", "3160", "-c", "TestCluster" };
+		CassandraUnitCliLoader.main(args);
+		assertThat(CassandraUnitCliLoader.isUsageBeenPrinted(), is(true));
+	}
+
+	@Test
+	public void shouldPrintUsageBecauseClusterNameOptionIsMissing() throws Exception {
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160" };
 		CassandraUnitCliLoader.main(args);
 		assertThat(CassandraUnitCliLoader.isUsageBeenPrinted(), is(true));
 	}
@@ -64,7 +73,7 @@ public class CassandraUnitCliLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetOnlySchemaOption() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-o" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-c", "TestCluster", "-o" };
 		CassandraUnitCliLoader.main(args);
 		CommandLine commandLine = CassandraUnitCliLoader.getCommandLine();
 		assertThat(commandLine.hasOption("o"), is(true));
@@ -73,7 +82,7 @@ public class CassandraUnitCliLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetReplicationFactorOption() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-r", "1" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-c", "TestCluster", "-r", "1" };
 		CassandraUnitCliLoader.main(args);
 		CommandLine commandLine = CassandraUnitCliLoader.getCommandLine();
 		assertThat(commandLine.getOptionValue("r"), is("1"));
@@ -96,7 +105,7 @@ public class CassandraUnitCliLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetStrategyOption() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-s",
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "3160", "-c", "TestCluster", "-s",
 				"org.apache.cassandra.locator.SimpleStrategy" };
 		CassandraUnitCliLoader.main(args);
 		CommandLine commandLine = CassandraUnitCliLoader.getCommandLine();
