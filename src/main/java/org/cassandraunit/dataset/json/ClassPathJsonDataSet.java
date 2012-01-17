@@ -16,8 +16,7 @@ public class ClassPathJsonDataSet extends AbstractJsonDataSet implements DataSet
 
 	public ClassPathJsonDataSet(String dataSetLocation) {
 		this.dataSetLocation = dataSetLocation;
-		InputStream inputDataSetLocation = getInputDataSetLocation();
-		if (inputDataSetLocation == null) {
+		if (getInputDataSetLocation() == null) {
 			throw new ParseException("Dataset not found");
 		}
 	}

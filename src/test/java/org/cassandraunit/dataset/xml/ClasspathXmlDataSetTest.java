@@ -54,6 +54,7 @@ public class ClasspathXmlDataSetTest {
 	public void shouldNotGetAXmlDataSet() {
 		try {
 			DataSet dataSet = new ClassPathXmlDataSet("xml/invalidDataSet.xml");
+			dataSet.getKeyspace();
 			fail();
 		} catch (ParseException e) {
 			/* nothing to do, it what we want */
@@ -359,6 +360,7 @@ public class ClasspathXmlDataSetTest {
 	@Test(expected = ParseException.class)
 	public void shouldNotGetCounterColumnFamilyBecauseThereIsFunctionOverridingDefaultValueType() {
 		DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetBadCounterColumnFamilyWithFunction.xml");
+		dataSet.getKeyspace();
 	}
 
 	@Test
