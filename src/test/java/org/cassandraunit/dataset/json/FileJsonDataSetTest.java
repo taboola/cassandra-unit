@@ -61,13 +61,13 @@ public class FileJsonDataSetTest {
 
 	@Test(expected = ParseException.class)
 	public void shouldNotGetAJsonDataSetStructureBecauseOfNull() {
-		DataSet dataSet = new ClassPathJsonDataSet(null);
+		DataSet dataSet = new FileJsonDataSet(null);
 		dataSet.getKeyspace();
 	}
 
 	@Test(expected = ParseException.class)
 	public void shouldNotGetAJsonDataSetStructureBecauseOfFileNotFound() {
-		DataSet dataSet = new ClassPathJsonDataSet("/notfound.json");
+		DataSet dataSet = new FileJsonDataSet("/notfound.json");
 		dataSet.getKeyspace();
 	}
 }
