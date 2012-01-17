@@ -151,6 +151,8 @@ public class MockDataSetHelper {
 				"columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS));
 		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
 				"columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS));
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
+				"columnWithValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, null));
 
 		columnFamilies.add(columnFamilyWithSecondaryIndex);
 

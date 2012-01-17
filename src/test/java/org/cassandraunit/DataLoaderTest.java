@@ -2,9 +2,11 @@ package org.cassandraunit;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +43,8 @@ import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.common.base.Charsets;
 
 /**
  * 
@@ -159,6 +163,8 @@ public class DataLoaderTest {
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getName(), is(thirdColumnFamilyName));
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata(), notNullValue());
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0), notNullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0).getName(),
+				is(ByteBuffer.wrap("columnWithSecondaryIndexAndValidationClassAsLongType".getBytes(Charsets.UTF_8))));
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0).getIndexName(),
 				is("columnWithSecondaryIndexAndValidationClassAsLongType"));
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(0).getIndexType(),
@@ -169,9 +175,21 @@ public class DataLoaderTest {
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1), notNullValue());
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1).getIndexName(),
 				is("columnWithSecondaryIndexAndValidationClassAsUTF8Type"));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1).getName(),
+				is(ByteBuffer.wrap("columnWithSecondaryIndexAndValidationClassAsUTF8Type".getBytes(Charsets.UTF_8))));
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1).getIndexType(),
 				is(ColumnIndexType.KEYS));
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1)
+				.getValidationClass(), is(ComparatorType.UTF8TYPE.getClassName()));
+
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(2), notNullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(1).getName(),
+				is(ByteBuffer.wrap("columnWithSecondaryIndexAndValidationClassAsUTF8Type".getBytes(Charsets.UTF_8))));
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(2).getIndexName(),
+				nullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(2).getIndexType(),
+				nullValue());
+		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(1).getColumnMetadata().get(2)
 				.getValidationClass(), is(ComparatorType.UTF8TYPE.getClassName()));
 
 	}

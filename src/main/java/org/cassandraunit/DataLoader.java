@@ -192,10 +192,12 @@ public class DataLoader {
 			BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
 
 			String columnName = columnMetadata.getColumnName();
-			columnDefinition.setIndexName(columnName);
 			columnDefinition.setName(ByteBuffer.wrap(columnName.getBytes(Charsets.UTF_8)));
 
-			columnDefinition.setIndexType(columnMetadata.getColumnIndexType());
+			if (columnMetadata.getColumnIndexType() != null) {
+				columnDefinition.setIndexName(columnName);
+				columnDefinition.setIndexType(columnMetadata.getColumnIndexType());
+			}
 
 			if (columnMetadata.getValidationClass() != null) {
 				columnDefinition.setValidationClass(columnMetadata.getValidationClass().getClassName());
