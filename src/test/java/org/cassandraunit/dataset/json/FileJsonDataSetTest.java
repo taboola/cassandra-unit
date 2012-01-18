@@ -4,18 +4,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-
-import java.io.File;
-import java.io.InputStream;
-
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
-import org.apache.commons.io.FileUtils;
+import org.cassandraunit.dataset.AbstractFileDataSetTest;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.StrategyModel;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -23,24 +18,17 @@ import org.junit.Test;
  * @author Jeremy Sevellec
  * 
  */
-public class FileJsonDataSetTest {
+public class FileJsonDataSetTest extends AbstractFileDataSetTest {
 
-	private String targetDataSetPathFileName = null;
-
-	@Before
-	public void before() throws Exception {
-		String dataSetFileName = "dataSetDefaultValues.json";
-		InputStream dataSetInputStream = this.getClass().getResourceAsStream("/json/" + dataSetFileName);
-
-		String tmpPath = FileUtils.getTempDirectoryPath() + "/cassandra-unit/dataset/";
-		targetDataSetPathFileName = tmpPath + dataSetFileName;
-		FileUtils.copyInputStreamToFile(dataSetInputStream, new File(targetDataSetPathFileName));
+	@Override
+	public String getDataSetClasspathRessource() {
+		return "/json/dataSetDefaultValues.json";
 	}
 
 	@Test
 	public void shouldGetAJsonDataSetStructure() throws Exception {
 
-		DataSet dataSet = new FileJsonDataSet(targetDataSetPathFileName);
+		DataSet dataSet = new FileJsonDataSet(super.targetDataSetPathFileName);
 		assertThat(dataSet, notNullValue());
 		assertThat(dataSet.getKeyspace(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("beautifulKeyspaceName"));
@@ -70,4 +58,5 @@ public class FileJsonDataSetTest {
 		DataSet dataSet = new FileJsonDataSet("/notfound.json");
 		dataSet.getKeyspace();
 	}
+
 }

@@ -4,13 +4,9 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.InputStream;
-
-import org.apache.commons.io.FileUtils;
+import org.cassandraunit.dataset.AbstractFileDataSetTest;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,24 +14,17 @@ import org.junit.Test;
  * @author Jeremy Sevellec
  * 
  */
-public class FileXmlDataSetTest {
+public class FileXmlDataSetTest extends AbstractFileDataSetTest {
 
-	private String targetDataSetPathFileName = null;
-
-	@Before
-	public void before() throws Exception {
-		String dataSetFileName = "datasetDefaultValues.xml";
-		InputStream dataSetInputStream = this.getClass().getResourceAsStream("/xml/" + dataSetFileName);
-
-		String tmpPath = FileUtils.getTempDirectoryPath() + "/cassandra-unit/dataset/";
-		targetDataSetPathFileName = tmpPath + dataSetFileName;
-		FileUtils.copyInputStreamToFile(dataSetInputStream, new File(targetDataSetPathFileName));
+	@Override
+	public String getDataSetClasspathRessource() {
+		return "/xml/datasetDefaultValues.xml";
 	}
 
 	@Test
 	public void shouldGetAXmlDataSet() {
 
-		DataSet dataSet = new FileXmlDataSet(targetDataSetPathFileName);
+		DataSet dataSet = new FileXmlDataSet(super.targetDataSetPathFileName);
 		assertThat(dataSet, notNullValue());
 	}
 
@@ -58,4 +47,5 @@ public class FileXmlDataSetTest {
 			/* nothing to do, it what we want */
 		}
 	}
+
 }

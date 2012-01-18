@@ -4,18 +4,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-
-import java.io.File;
-import java.io.InputStream;
-
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
-import org.apache.commons.io.FileUtils;
+import org.cassandraunit.dataset.AbstractFileDataSetTest;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.StrategyModel;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -23,23 +18,16 @@ import org.junit.Test;
  * @author Jeremy Sevellec
  * 
  */
-public class FileYamlDataSetTest {
+public class FileYamlDataSetTest extends AbstractFileDataSetTest {
 
-	private String targetDataSetPathFileName = null;
-
-	@Before
-	public void before() throws Exception {
-		String dataSetFileName = "dataSetDefaultValues.yaml";
-		InputStream dataSetInputStream = this.getClass().getResourceAsStream("/yaml/" + dataSetFileName);
-
-		String tmpPath = FileUtils.getTempDirectoryPath() + "/cassandra-unit/dataset/";
-		targetDataSetPathFileName = tmpPath + dataSetFileName;
-		FileUtils.copyInputStreamToFile(dataSetInputStream, new File(targetDataSetPathFileName));
+	@Override
+	public String getDataSetClasspathRessource() {
+		return "/yaml/dataSetDefaultValues.yaml";
 	}
 
 	@Test
 	public void shouldGetAYamlDataSetStructure() {
-		DataSet dataSet = new FileYamlDataSet(targetDataSetPathFileName);
+		DataSet dataSet = new FileYamlDataSet(super.targetDataSetPathFileName);
 		assertThat(dataSet, notNullValue());
 		assertThat(dataSet.getKeyspace(), notNullValue());
 		assertThat(dataSet.getKeyspace().getName(), is("beautifulKeyspaceName"));
@@ -69,4 +57,5 @@ public class FileYamlDataSetTest {
 		DataSet dataSet = new FileYamlDataSet("/unknown.yaml");
 		dataSet.getKeyspace();
 	}
+
 }
