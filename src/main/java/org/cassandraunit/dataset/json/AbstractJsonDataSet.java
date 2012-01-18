@@ -12,8 +12,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public abstract class AbstractJsonDataSet extends AbstractCommonsParserDataSet {
 
+	protected String dataSetLocation = null;
+
+	public AbstractJsonDataSet(String dataSetLocation) {
+		this.dataSetLocation = dataSetLocation;
+		if (getInputDataSetLocation(dataSetLocation) == null) {
+			throw new ParseException("Dataset not found");
+		}
+	}
+
 	protected ParsedKeyspace getParsedKeyspace() {
-		InputStream inputDataSetLocation = getInputDataSetLocation();
+		InputStream inputDataSetLocation = getInputDataSetLocation(dataSetLocation);
 		if (inputDataSetLocation == null) {
 			throw new ParseException("Dataset not found");
 		}
@@ -30,6 +39,6 @@ public abstract class AbstractJsonDataSet extends AbstractCommonsParserDataSet {
 		}
 	}
 
-	protected abstract InputStream getInputDataSetLocation();
+	protected abstract InputStream getInputDataSetLocation(String dataSetLocation);
 
 }

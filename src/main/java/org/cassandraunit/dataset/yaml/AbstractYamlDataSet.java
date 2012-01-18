@@ -11,9 +11,18 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 public abstract class AbstractYamlDataSet extends AbstractCommonsParserDataSet implements DataSet {
 
+	private String dataSetLocation = null;
+
+	public AbstractYamlDataSet(String dataSetLocation) {
+		this.dataSetLocation = dataSetLocation;
+		if (getInputDataSetLocation(dataSetLocation) == null) {
+			throw new ParseException("Dataset not found");
+		}
+	}
+
 	@Override
 	protected ParsedKeyspace getParsedKeyspace() {
-		InputStream inputDataSetLocation = getInputDataSetLocation();
+		InputStream inputDataSetLocation = getInputDataSetLocation(dataSetLocation);
 		if (inputDataSetLocation == null) {
 			throw new ParseException("Dataset not found in classpath");
 		}
@@ -27,6 +36,6 @@ public abstract class AbstractYamlDataSet extends AbstractCommonsParserDataSet i
 		}
 	}
 
-	protected abstract InputStream getInputDataSetLocation();
+	protected abstract InputStream getInputDataSetLocation(String dataSetLocation);
 
 }

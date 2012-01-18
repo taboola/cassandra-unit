@@ -5,21 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.dataset.ParseException;
 
 public class FileJsonDataSet extends AbstractJsonDataSet implements DataSet {
 
-	String dataSetLocation = null;
-
 	public FileJsonDataSet(String dataSetLocation) {
-		this.dataSetLocation = dataSetLocation;
-		if (getInputDataSetLocation() == null) {
-			throw new ParseException("Dataset not found");
-		}
+		super(dataSetLocation);
 	}
 
 	@Override
-	protected InputStream getInputDataSetLocation() {
+	protected InputStream getInputDataSetLocation(String dataSetLocation) {
 		if (dataSetLocation == null) {
 			return null;
 		}

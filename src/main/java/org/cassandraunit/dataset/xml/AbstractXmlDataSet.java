@@ -36,10 +36,19 @@ import org.xml.sax.SAXException;
  */
 public abstract class AbstractXmlDataSet implements DataSet {
 
+	private String dataSetLocation = null;
+
 	private KeyspaceModel keyspace = null;
 
+	public AbstractXmlDataSet(String dataSetLocation) {
+		this.dataSetLocation = dataSetLocation;
+		if (getInputDataSetLocation(dataSetLocation) == null) {
+			throw new ParseException("Dataset not found");
+		}
+	}
+
 	private org.cassandraunit.dataset.xml.Keyspace getXmlKeyspace() {
-		InputStream inputDataSetLocation = getInputDataSetLocation();
+		InputStream inputDataSetLocation = getInputDataSetLocation(dataSetLocation);
 		if (inputDataSetLocation == null) {
 			throw new ParseException("Dataset not found in classpath");
 		}
@@ -59,12 +68,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 	}
 
-	protected abstract InputStream getInputDataSetLocation();
-
-	private InputStream getInputDataSetLocation(String dataSetLocation) {
-		InputStream inputDataSetLocation = this.getClass().getResourceAsStream("/" + dataSetLocation);
-		return inputDataSetLocation;
-	}
+	protected abstract InputStream getInputDataSetLocation(String dataSetLocation);
 
 	private Unmarshaller getUnmarshaller() throws JAXBException, SAXException, URISyntaxException {
 		JAXBContext jc = JAXBContext.newInstance(org.cassandraunit.dataset.xml.Keyspace.class);
