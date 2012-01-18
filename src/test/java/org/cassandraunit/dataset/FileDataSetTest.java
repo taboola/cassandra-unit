@@ -1,12 +1,8 @@
 package org.cassandraunit.dataset;
 
 import static org.cassandraunit.SampleDataSetChecker.assertDataSetDefaultValues;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.cassandraunit.utils.FileTmpHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,18 +19,12 @@ public class FileDataSetTest {
 
 	@Before
 	public void before() throws Exception {
-		targetXmlDataSetPathFileName = copyClassPathDataSetToTmpDirectory("/xml/datasetDefaultValues.xml");
-		targetJsonDataSetPathFileName = copyClassPathDataSetToTmpDirectory("/json/dataSetDefaultValues.json");
-		targetYamlDataSetPathFileName = copyClassPathDataSetToTmpDirectory("/yaml/dataSetDefaultValues.yaml");
-	}
-
-	private String copyClassPathDataSetToTmpDirectory(String initialClasspathDataSetLocation) throws IOException {
-		InputStream dataSetInputStream = this.getClass().getResourceAsStream(initialClasspathDataSetLocation);
-		String dataSetFileName = StringUtils.substringAfterLast(initialClasspathDataSetLocation, "/");
-		String tmpPath = FileUtils.getTempDirectoryPath() + "/cassandra-unit/dataset/";
-		String targetDataSetPathFileName = tmpPath + dataSetFileName;
-		FileUtils.copyInputStreamToFile(dataSetInputStream, new File(targetDataSetPathFileName));
-		return targetDataSetPathFileName;
+		targetXmlDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
+				"/xml/datasetDefaultValues.xml");
+		targetJsonDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
+				"/json/dataSetDefaultValues.json");
+		targetYamlDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
+				"/yaml/dataSetDefaultValues.yaml");
 	}
 
 	@Test

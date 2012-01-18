@@ -7,6 +7,8 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.cassandraunit.DataLoader;
+import org.cassandraunit.dataset.FileDataSet;
 
 public class CassandraUnitCommandLineLoader {
 
@@ -23,28 +25,60 @@ public class CassandraUnitCommandLineLoader {
 	 * @throws ParseException
 	 */
 	public static void main(String[] args) {
-		clear();
+		boolean exit = parseCommandLine(args);
+		if (exit) {
+			System.exit(1);
+		} else {
+			load();
+		}
 
+	}
+
+	protected static boolean parseCommandLine(String[] args) {
+		clearStaticAttributes();
 		initOptions();
-
 		commandLineParser = new PosixParser();
+		boolean exit = false;
 		try {
 			commandLine = commandLineParser.parse(options, args);
 			if (commandLine.getOptions().length == 0) {
+				exit = true;
 				printUsage();
 			} else {
 				if (containBadReplicationFactorArgumentValue()) {
 					printUsage("Bad argument value for option r");
-				} else {
-//					load();
+					exit = true;
 				}
 			}
-
-			System.out.println("Load complete");
 		} catch (ParseException e) {
 			printUsage(e.getMessage());
+			exit = true;
 		}
 
+		return exit;
+
+	}
+
+	protected static void load() {
+		String host = commandLine.getOptionValue("h");
+		String port = commandLine.getOptionValue("p");
+		String file = commandLine.getOptionValue("f");
+		String clusterName = commandLine.getOptionValue("c");
+		boolean onlySchema = commandLine.hasOption("o");
+		boolean overrideReplicationFactor = false;
+		int replicationFactor = 0;
+		if (commandLine.hasOption("r")) {
+			overrideReplicationFactor = true;
+			replicationFactor = Integer.parseInt(commandLine.getOptionValue("r"));
+		}
+		boolean overrideStrategy = false;
+		if (commandLine.hasOption("s")) {
+			overrideStrategy = true;
+			String strategy = commandLine.getOptionValue("s");
+		}
+
+		DataLoader dataLoader = new DataLoader(clusterName, host + ":" + port);
+		dataLoader.load(new FileDataSet(file));
 	}
 
 	private static boolean containBadReplicationFactorArgumentValue() {
@@ -75,8 +109,8 @@ public class CassandraUnitCommandLineLoader {
 				.isRequired().create("h"));
 		options.addOption(OptionBuilder.withLongOpt("port").hasArg().withDescription("target port (required)")
 				.isRequired().create("p"));
-		options.addOption(OptionBuilder.withLongOpt("clusterName").hasArg().withDescription("cluster name").isRequired()
-				.create("c"));
+		options.addOption(OptionBuilder.withLongOpt("clusterName").hasArg().withDescription("cluster name")
+				.isRequired().create("c"));
 		options.addOption(OptionBuilder.withLongOpt("onlySchema").withDescription("only load schema (optional)")
 				.create("o"));
 		options.addOption(OptionBuilder.withLongOpt("replicationFactor").hasArg()
@@ -86,7 +120,7 @@ public class CassandraUnitCommandLineLoader {
 
 	}
 
-	private static void clear() {
+	private static void clearStaticAttributes() {
 		commandLine = null;
 		commandLineParser = null;
 		options = null;

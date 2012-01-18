@@ -1,10 +1,6 @@
 package org.cassandraunit.dataset;
 
-import java.io.File;
-import java.io.InputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.cassandraunit.utils.FileTmpHelper;
 import org.junit.Before;
 
 public abstract class AbstractFileDataSetTest {
@@ -13,16 +9,9 @@ public abstract class AbstractFileDataSetTest {
 
 	@Before
 	public void before() throws Exception {
-		String dataSetFileName = getFileNameFromDatSetClassPathResource(getDataSetClasspathRessource());
-		InputStream dataSetInputStream = this.getClass().getResourceAsStream(getDataSetClasspathRessource());
 
-		String tmpPath = FileUtils.getTempDirectoryPath() + "/cassandra-unit/dataset/";
-		targetDataSetPathFileName = tmpPath + dataSetFileName;
-		FileUtils.copyInputStreamToFile(dataSetInputStream, new File(targetDataSetPathFileName));
-	}
-
-	private String getFileNameFromDatSetClassPathResource(String dataSetClasspathRessource) {
-		return StringUtils.substringAfterLast(dataSetClasspathRessource, "/");
+		targetDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
+				getDataSetClasspathRessource());
 	}
 
 	public abstract String getDataSetClasspathRessource();
