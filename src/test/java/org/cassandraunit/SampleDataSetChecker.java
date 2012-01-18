@@ -2,6 +2,7 @@ package org.cassandraunit;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.cassandraunit.SampleDataSetChecker.assertDataSetLoaded;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SampleDataSetChecker {
 	public static void assertDataSetLoaded(Keyspace keyspace) {
 		RangeSlicesQuery<byte[], byte[], byte[]> query = HFactory.createRangeSlicesQuery(keyspace,
 				BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
-		query.setColumnFamily("beautifulColumnFamilyName");
+		query.setColumnFamily("columnFamily1");
 		query.setRange(null, null, false, Integer.MAX_VALUE);
 		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
 		List<Row<byte[], byte[], byte[]>> rows = result.get().getList();

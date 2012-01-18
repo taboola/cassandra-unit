@@ -92,7 +92,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getColumnFamilies(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().isEmpty(), is(false));
 		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("beautifulColumnFamilyName"));
+		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("columnFamily1"));
 		assertThat(dataSet.getColumnFamilies().get(0).getType(), is(ColumnType.STANDARD));
 		assertThat(dataSet.getColumnFamilies().get(0).getKeyType().getClassName(),
 				is(ComparatorType.BYTESTYPE.getClassName()));

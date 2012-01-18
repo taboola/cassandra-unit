@@ -3,7 +3,7 @@
 	<name>beautifulKeyspaceName</name>
 	<columnFamilies>
 		<columnFamily>
-			<name>beautifulColumnFamilyName</name>
+			<name>columnFamily1</name>
 			<row>
 				<key>10</key>
 				<column>

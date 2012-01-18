@@ -13,7 +13,6 @@ public abstract class AbstractFileDataSetTest {
 
 	@Before
 	public void before() throws Exception {
-		// String dataSetFileName = "dataSetDefaultValues.json";
 		String dataSetFileName = getFileNameFromDatSetClassPathResource(getDataSetClasspathRessource());
 		InputStream dataSetInputStream = this.getClass().getResourceAsStream(getDataSetClasspathRessource());
 
@@ -23,8 +22,7 @@ public abstract class AbstractFileDataSetTest {
 	}
 
 	private String getFileNameFromDatSetClassPathResource(String dataSetClasspathRessource) {
-		StringUtils.substringAfterLast(dataSetClasspathRessource, "/");
-		return null;
+		return StringUtils.substringAfterLast(dataSetClasspathRessource, "/");
 	}
 
 	public abstract String getDataSetClasspathRessource();
