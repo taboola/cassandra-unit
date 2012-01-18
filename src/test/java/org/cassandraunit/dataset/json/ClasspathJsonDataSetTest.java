@@ -10,7 +10,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.dataset.yaml.ClassPathYamlDataSet;
+import org.cassandraunit.dataset.yaml.AbstractYamlDataSet;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -270,7 +270,7 @@ public class ClasspathJsonDataSetTest {
 
 	@Test
 	public void shouldGetAColumnFamilyWithSecondaryIndex() {
-		DataSet dataSet = new ClassPathYamlDataSet("json/dataSetWithSecondaryIndex.json");
+		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithSecondaryIndex.json");
 
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getColumnName(),
 				is("columnWithIndexAndUTF8ValidationClass"));
