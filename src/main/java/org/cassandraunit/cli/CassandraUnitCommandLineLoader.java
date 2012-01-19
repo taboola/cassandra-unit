@@ -9,6 +9,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.FileDataSet;
+import org.cassandraunit.model.StrategyModel;
 
 public class CassandraUnitCommandLineLoader {
 
@@ -48,6 +49,9 @@ public class CassandraUnitCommandLineLoader {
 				if (containBadReplicationFactorArgumentValue()) {
 					printUsage("Bad argument value for option r");
 					exit = true;
+				} else if (containBadStrategyArgumentValue()) {
+					printUsage("Bad argument value for option s");
+					exit = true;
 				}
 			}
 		} catch (ParseException e) {
@@ -63,7 +67,6 @@ public class CassandraUnitCommandLineLoader {
 		String host = commandLine.getOptionValue("h");
 		String port = commandLine.getOptionValue("p");
 		String file = commandLine.getOptionValue("f");
-		String clusterName = commandLine.getOptionValue("c");
 		boolean onlySchema = commandLine.hasOption("o");
 		boolean overrideReplicationFactor = false;
 		int replicationFactor = 0;
@@ -77,7 +80,7 @@ public class CassandraUnitCommandLineLoader {
 			String strategy = commandLine.getOptionValue("s");
 		}
 
-		DataLoader dataLoader = new DataLoader(clusterName, host + ":" + port);
+		DataLoader dataLoader = new DataLoader("clusterToLoad", host + ":" + port);
 		dataLoader.load(new FileDataSet(file));
 	}
 
@@ -92,7 +95,19 @@ public class CassandraUnitCommandLineLoader {
 			}
 		}
 		return false;
+	}
 
+	private static boolean containBadStrategyArgumentValue() {
+		String strategy = commandLine.getOptionValue("s");
+		if (strategy != null && !strategy.trim().isEmpty()) {
+			try {
+				StrategyModel.fromValue(strategy);
+				return false;
+			} catch (IllegalArgumentException e) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static void printUsage(String message) {
@@ -109,8 +124,6 @@ public class CassandraUnitCommandLineLoader {
 				.isRequired().create("h"));
 		options.addOption(OptionBuilder.withLongOpt("port").hasArg().withDescription("target port (required)")
 				.isRequired().create("p"));
-		options.addOption(OptionBuilder.withLongOpt("clusterName").hasArg().withDescription("cluster name")
-				.isRequired().create("c"));
 		options.addOption(OptionBuilder.withLongOpt("onlySchema").withDescription("only load schema (optional)")
 				.create("o"));
 		options.addOption(OptionBuilder.withLongOpt("replicationFactor").hasArg()

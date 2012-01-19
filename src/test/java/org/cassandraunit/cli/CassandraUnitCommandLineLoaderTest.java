@@ -22,7 +22,7 @@ public class CassandraUnitCommandLineLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetFileAndGetHostAndPortOptions() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160", "-c", "TestCluster" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160" };
 		CassandraUnitCommandLineLoader.parseCommandLine(args);
 		CommandLine commandLine = CassandraUnitCommandLineLoader.getCommandLine();
 		assertThat(commandLine.getOptionValue("f"), is("dataset.xsd"));
@@ -31,8 +31,6 @@ public class CassandraUnitCommandLineLoaderTest {
 		assertThat(commandLine.getOptionValue("host"), is("myHost"));
 		assertThat(commandLine.getOptionValue("p"), is("9160"));
 		assertThat(commandLine.getOptionValue("port"), is("9160"));
-		assertThat(commandLine.getOptionValue("c"), is("TestCluster"));
-		assertThat(commandLine.getOptionValue("clusterName"), is("TestCluster"));
 	}
 
 	@Test
@@ -57,13 +55,6 @@ public class CassandraUnitCommandLineLoaderTest {
 	}
 
 	@Test
-	public void shouldPrintUsageBecauseClusterNameOptionIsMissing() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160" };
-		CassandraUnitCommandLineLoader.parseCommandLine(args);
-		assertThat(CassandraUnitCommandLineLoader.isUsageBeenPrinted(), is(true));
-	}
-
-	@Test
 	public void shouldPrintUsageBecauseHostArgumentIsMissing() throws Exception {
 		String[] args = { "-h", "-p", "3160" };
 		CassandraUnitCommandLineLoader.parseCommandLine(args);
@@ -79,7 +70,7 @@ public class CassandraUnitCommandLineLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetOnlySchemaOption() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160", "-c", "TestCluster", "-o" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160", "-o" };
 		CassandraUnitCommandLineLoader.parseCommandLine(args);
 		CommandLine commandLine = CassandraUnitCommandLineLoader.getCommandLine();
 		assertThat(commandLine.hasOption("o"), is(true));
@@ -88,7 +79,7 @@ public class CassandraUnitCommandLineLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetReplicationFactorOption() throws Exception {
-		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160", "-c", "TestCluster", "-r", "1" };
+		String[] args = { "-f", "dataset.xsd", "-h", "myHost", "-p", "9160", "-r", "1" };
 		CassandraUnitCommandLineLoader.parseCommandLine(args);
 		CommandLine commandLine = CassandraUnitCommandLineLoader.getCommandLine();
 		assertThat(commandLine.getOptionValue("r"), is("1"));
@@ -111,12 +102,19 @@ public class CassandraUnitCommandLineLoaderTest {
 
 	@Test
 	public void shouldLaunchCliAndGetStrategyOption() throws Exception {
-		String[] args = { "-f", "dataset.xml", "-h", "myHost", "-p", "9160", "-c", "TestCluster", "-s",
+		String[] args = { "-f", "dataset.xml", "-h", "myHost", "-p", "9160", "-s",
 				"org.apache.cassandra.locator.SimpleStrategy" };
 		CassandraUnitCommandLineLoader.parseCommandLine(args);
 		CommandLine commandLine = CassandraUnitCommandLineLoader.getCommandLine();
 		assertThat(commandLine.getOptionValue("s"), is("org.apache.cassandra.locator.SimpleStrategy"));
 		assertThat(commandLine.getOptionValue("strategy"), is("org.apache.cassandra.locator.SimpleStrategy"));
+	}
+
+	@Test
+	public void shouldPrintUsageBecauseStrategyArgumentIsBad() throws Exception {
+		String[] args = { "-f", "dataset.xml", "-h", "myHost", "-p", "9160", "-s", "bad" };
+		CassandraUnitCommandLineLoader.parseCommandLine(args);
+		assertThat(CassandraUnitCommandLineLoader.isUsageBeenPrinted(), is(true));
 	}
 
 	@Test
@@ -128,7 +126,7 @@ public class CassandraUnitCommandLineLoaderTest {
 		String clusterName = "TestCluster";
 		String host = "localhost";
 		String port = "9171";
-		String[] args = { "-f", targetFileDataSet, "-h", host, "-p", port, "-c", clusterName };
+		String[] args = { "-f", targetFileDataSet, "-h", host, "-p", port };
 		CassandraUnitCommandLineLoader.main(args);
 
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host + ":" + port);
