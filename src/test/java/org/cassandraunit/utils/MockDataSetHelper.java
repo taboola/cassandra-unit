@@ -30,6 +30,14 @@ public class MockDataSetHelper {
 
 	public static DataSet getMockDataSetWithDefaultValues() {
 		DataSet mockDataSet = mock(DataSet.class);
+		KeyspaceModel keyspace = contructDefaultValuesKeyspace();
+
+		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
+		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
+		return mockDataSet;
+	}
+
+	private static KeyspaceModel contructDefaultValuesKeyspace() {
 		/* keyspace */
 		KeyspaceModel keyspace = new KeyspaceModel();
 		keyspace.setName("beautifulKeyspaceName");
@@ -74,10 +82,7 @@ public class MockDataSetHelper {
 		columnFamily.setRows(rows);
 		columnFamilies.add(columnFamily);
 		keyspace.setColumnFamilies(columnFamilies);
-
-		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
-		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
-		return mockDataSet;
+		return keyspace;
 	}
 
 	private static ColumnModel constructDefaultColumnForMock(String name, String value) {
@@ -471,6 +476,26 @@ public class MockDataSetHelper {
 		columnFamily.setRows(rows);
 		columnFamilies.add(columnFamily);
 		keyspace.setColumnFamilies(columnFamilies);
+
+		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
+		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
+		return mockDataSet;
+	}
+
+	public static DataSet getMockDataSetWithDefaultValuesAndReplicationFactor2() {
+		DataSet mockDataSet = mock(DataSet.class);
+		KeyspaceModel keyspace = contructDefaultValuesKeyspace();
+		keyspace.setReplicationFactor(2);
+
+		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
+		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
+		return mockDataSet;
+	}
+
+	public static DataSet getMockDataSetWithDefaultValuesAndNetworkTopologyStrategy() {
+		DataSet mockDataSet = mock(DataSet.class);
+		KeyspaceModel keyspace = contructDefaultValuesKeyspace();
+		keyspace.setStrategy(StrategyModel.NETWORK_TOPOLOGY_STRATEGY);
 
 		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
 		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());

@@ -4,11 +4,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.cassandraunit.SampleDataSetChecker.assertDataSetLoaded;
 
 import java.util.List;
 
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
@@ -69,5 +69,21 @@ public class SampleDataSetChecker {
 		} catch (DecoderException e) {
 			return null;
 		}
+	}
+
+	public static void assertDefaultValuesSchemaExist(Cluster cluster) {
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName"), notNullValue());
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs(), notNullValue());
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().size(), is(1));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getName(),
+				is("beautifulColumnFamilyName"));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getColumnType(),
+				is(ColumnType.STANDARD));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getKeyValidationClass(),
+				is(ComparatorType.BYTESTYPE.getClassName()));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getComparatorType(),
+				is(ComparatorType.BYTESTYPE));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getKeyValidationClass(),
+				is(ComparatorType.BYTESTYPE.getClassName()));
 	}
 }

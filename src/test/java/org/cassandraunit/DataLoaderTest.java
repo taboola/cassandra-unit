@@ -1,6 +1,8 @@
 package org.cassandraunit;
 
+import static org.cassandraunit.SampleDataSetChecker.assertDefaultValuesSchemaExist;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -37,6 +39,7 @@ import me.prettyprint.hector.api.query.SuperSliceCounterQuery;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
 import org.junit.BeforeClass;
@@ -107,19 +110,7 @@ public class DataLoaderTest {
 
 		/* test */
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName"), notNullValue());
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs(), notNullValue());
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().size(), is(1));
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getName(),
-				is("beautifulColumnFamilyName"));
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getColumnType(),
-				is(ColumnType.STANDARD));
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getKeyValidationClass(),
-				is(ComparatorType.BYTESTYPE.getClassName()));
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getComparatorType(),
-				is(ComparatorType.BYTESTYPE));
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getKeyValidationClass(),
-				is(ComparatorType.BYTESTYPE.getClassName()));
+		assertDefaultValuesSchemaExist(cluster);
 	}
 
 	@Test
@@ -560,5 +551,63 @@ public class DataLoaderTest {
 		} catch (DecoderException e) {
 			return null;
 		}
+	}
+
+	@Test
+	public void shouldLoadDataSetButOnlySchema() throws Exception {
+		String clusterName = "TestCluster12";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+		LoadingOption loadingOption = new LoadingOption();
+		loadingOption.setOnlySchema(true);
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValues(), loadingOption);
+
+		/* test */
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+		assertDefaultValuesSchemaExist(cluster);
+
+		Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
+		RangeSlicesQuery<byte[], byte[], byte[]> query = HFactory.createRangeSlicesQuery(keyspace,
+				BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
+		query.setColumnFamily("beautifulColumnFamilyName");
+		query.setRange(null, null, false, Integer.MAX_VALUE);
+		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
+		List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
+		assertThat(rows.isEmpty(), is(true));
+	}
+
+	@Test
+	public void shouldLoadDataSetButOverrideReplicationFactor() throws Exception {
+		String clusterName = "TestCluster13";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+		LoadingOption loadingOption = new LoadingOption();
+		loadingOption.setReplicationFactor(1);
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValuesAndReplicationFactor2(), loadingOption);
+
+		/* test */
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+		assertDefaultValuesSchemaExist(cluster);
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getReplicationFactor(), not(2));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getReplicationFactor(), is(1));
+	}
+
+	@Test
+	public void shouldLoadDataSetButOverrideStrategy() throws Exception {
+		String clusterName = "TestCluster14";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+		LoadingOption loadingOption = new LoadingOption();
+		loadingOption.setStrategy(StrategyModel.SIMPLE_STRATEGY);
+
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithDefaultValuesAndNetworkTopologyStrategy(), loadingOption);
+
+		/* test */
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+		assertDefaultValuesSchemaExist(cluster);
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getStrategyClass(),
+				not("org.apache.cassandra.locator.NetworkTopologyStrategy"));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getStrategyClass(),
+				is("org.apache.cassandra.locator.SimpleStrategy"));
 	}
 }
