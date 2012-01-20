@@ -15,7 +15,7 @@ CassandraUnit helps you writing isolated Junit Test in a Test Driven Development
 Main features :
 ---------------
 - Start an embedded Cassandra.
-- Create structure (keyspace and Column family's) and load Data from an XmlDataSet.
+- Create structure (keyspace and Column family's) and load Data from an XML, JSON or YAML DataSet.
 
 Using/Compatibility :
 ---------------
@@ -37,6 +37,3 @@ License :
 ---------
 This project is licensed under LGPL V3.0 :
 http://www.gnu.org/licenses/gpl-3.0.html
-
-
-More documentation coming soon...

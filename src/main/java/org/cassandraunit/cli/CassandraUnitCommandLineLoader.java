@@ -82,6 +82,8 @@ public class CassandraUnitCommandLineLoader {
 
 		DataLoader dataLoader = new DataLoader("clusterToLoad", host + ":" + port);
 		dataLoader.load(new FileDataSet(file), loadingOption);
+		System.out.println("Loading completed");
+		System.exit(0);
 	}
 
 	private static boolean containBadReplicationFactorArgumentValue() {
@@ -143,7 +145,9 @@ public class CassandraUnitCommandLineLoader {
 	private static void printUsage() {
 		usageBeenPrinted = true;
 		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp("load", options);
+		formatter.setWidth(100);
+		formatter.printHelp("CassandraUnitLoader is a tool to load CassandraUnit data Set into cassandra cluster",
+				options);
 	}
 
 	protected static CommandLine getCommandLine() {
