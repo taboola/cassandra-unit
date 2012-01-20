@@ -8,6 +8,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.cassandraunit.DataLoader;
+import org.cassandraunit.LoadingOption;
 import org.cassandraunit.dataset.FileDataSet;
 import org.cassandraunit.model.StrategyModel;
 
@@ -67,21 +68,20 @@ public class CassandraUnitCommandLineLoader {
 		String host = commandLine.getOptionValue("h");
 		String port = commandLine.getOptionValue("p");
 		String file = commandLine.getOptionValue("f");
-		boolean onlySchema = commandLine.hasOption("o");
-		boolean overrideReplicationFactor = false;
-		int replicationFactor = 0;
+		LoadingOption loadingOption = new LoadingOption();
+		loadingOption.setOnlySchema(commandLine.hasOption("o"));
+
 		if (commandLine.hasOption("r")) {
-			overrideReplicationFactor = true;
-			replicationFactor = Integer.parseInt(commandLine.getOptionValue("r"));
+			loadingOption.setReplicationFactor(Integer.parseInt(commandLine.getOptionValue("r")));
 		}
-		boolean overrideStrategy = false;
+
 		if (commandLine.hasOption("s")) {
-			overrideStrategy = true;
-			String strategy = commandLine.getOptionValue("s");
+
+			loadingOption.setStrategy(StrategyModel.fromValue(commandLine.getOptionValue("s")));
 		}
 
 		DataLoader dataLoader = new DataLoader("clusterToLoad", host + ":" + port);
-		dataLoader.load(new FileDataSet(file));
+		dataLoader.load(new FileDataSet(file), loadingOption);
 	}
 
 	private static boolean containBadReplicationFactorArgumentValue() {

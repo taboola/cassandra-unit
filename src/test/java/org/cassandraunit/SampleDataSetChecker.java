@@ -75,8 +75,7 @@ public class SampleDataSetChecker {
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName"), notNullValue());
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs(), notNullValue());
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().size(), is(1));
-		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getName(),
-				is("beautifulColumnFamilyName"));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getName(), is("columnFamily1"));
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getColumnType(),
 				is(ColumnType.STANDARD));
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getKeyValidationClass(),
@@ -85,5 +84,16 @@ public class SampleDataSetChecker {
 				is(ComparatorType.BYTESTYPE));
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getCfDefs().get(0).getKeyValidationClass(),
 				is(ComparatorType.BYTESTYPE.getClassName()));
+	}
+
+	public static void assertDefaultValuesDataIsEmpty(Cluster cluster) {
+		Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
+		RangeSlicesQuery<byte[], byte[], byte[]> query = HFactory.createRangeSlicesQuery(keyspace,
+				BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
+		query.setColumnFamily("columnFamily1");
+		query.setRange(null, null, false, Integer.MAX_VALUE);
+		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
+		List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
+		assertThat(rows.isEmpty(), is(true));
 	}
 }

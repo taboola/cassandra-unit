@@ -45,7 +45,7 @@ public class MockDataSetHelper {
 
 		/* column family */
 		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
-		columnFamily.setName("beautifulColumnFamilyName");
+		columnFamily.setName("columnFamily1");
 		List<RowModel> rows = new ArrayList<RowModel>();
 
 		/* row1 */

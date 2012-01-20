@@ -1,5 +1,6 @@
 package org.cassandraunit;
 
+import static org.cassandraunit.SampleDataSetChecker.assertDefaultValuesDataIsEmpty;
 import static org.cassandraunit.SampleDataSetChecker.assertDefaultValuesSchemaExist;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -181,7 +182,7 @@ public class DataLoaderTest {
 			Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
 			RangeSlicesQuery<byte[], byte[], byte[]> query = HFactory.createRangeSlicesQuery(keyspace,
 					BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
-			query.setColumnFamily("beautifulColumnFamilyName");
+			query.setColumnFamily("columnFamily1");
 			query.setRange(null, null, false, Integer.MAX_VALUE);
 			QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
 			List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
@@ -566,14 +567,7 @@ public class DataLoaderTest {
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
 		assertDefaultValuesSchemaExist(cluster);
 
-		Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
-		RangeSlicesQuery<byte[], byte[], byte[]> query = HFactory.createRangeSlicesQuery(keyspace,
-				BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
-		query.setColumnFamily("beautifulColumnFamilyName");
-		query.setRange(null, null, false, Integer.MAX_VALUE);
-		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
-		List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
-		assertThat(rows.isEmpty(), is(true));
+		assertDefaultValuesDataIsEmpty(cluster);
 	}
 
 	@Test

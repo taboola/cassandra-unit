@@ -1,10 +1,13 @@
 package org.cassandraunit.cli;
 
+import static org.cassandraunit.SampleDataSetChecker.assertDataSetLoaded;
+import static org.cassandraunit.SampleDataSetChecker.assertDefaultValuesDataIsEmpty;
+import static org.cassandraunit.SampleDataSetChecker.assertDefaultValuesSchemaExist;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import me.prettyprint.hector.api.Cluster;
-import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
+import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 
 import org.apache.commons.cli.CommandLine;
@@ -130,12 +133,51 @@ public class CassandraUnitCommandLineLoaderTest {
 		CassandraUnitCommandLineLoader.main(args);
 
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host + ":" + port);
-		KeyspaceDefinition keyspaceDefinition = cluster.describeKeyspace("beautifulKeyspaceName");
-		assertThat(keyspaceDefinition, notNullValue());
-		assertThat(keyspaceDefinition.getReplicationFactor(), is(1));
-		assertThat(keyspaceDefinition.getStrategyClass(), is("org.apache.cassandra.locator.SimpleStrategy"));
-		assertThat(keyspaceDefinition.getCfDefs().get(0).getName(), is("columnFamily1"));
+		Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
+		assertDataSetLoaded(keyspace);
 		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+	}
 
+	@Test
+	public void shouldLoadDataWithOnLySchema() throws Exception {
+		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+
+		String targetFileDataSet = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
+				"/xml/datasetDefaultValues.xml");
+		String clusterName = "TestCluster";
+		String host = "localhost";
+		String port = "9171";
+		String[] args = { "-f", targetFileDataSet, "-h", host, "-p", port, "-o" };
+		CassandraUnitCommandLineLoader.main(args);
+
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host + ":" + port);
+		Keyspace keyspace = HFactory.createKeyspace("beautifulKeyspaceName", cluster);
+		assertDefaultValuesSchemaExist(cluster);
+		assertDefaultValuesDataIsEmpty(cluster);
+		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+	}
+
+	@Test
+	public void shouldLoadDataSetButOverrideReplicationFactorAndStrategy() throws Exception {
+		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+		String targetFileDataSet = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
+				"/xml/datasetForCommandLineLoader.xml");
+		String clusterName = "TestCluster";
+		String host = "localhost";
+		String port = "9171";
+		String[] args = { "-f", targetFileDataSet, "-h", host, "-p", port, "-r", "1", "-s",
+				"org.apache.cassandra.locator.SimpleStrategy" };
+		CassandraUnitCommandLineLoader.main(args);
+
+		/* test */
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+		assertDefaultValuesSchemaExist(cluster);
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getReplicationFactor(), not(2));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getReplicationFactor(), is(1));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getStrategyClass(),
+				not("org.apache.cassandra.locator.NetworkTopologyStrategy"));
+		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getStrategyClass(),
+				is("org.apache.cassandra.locator.SimpleStrategy"));
+		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
 	}
 }
