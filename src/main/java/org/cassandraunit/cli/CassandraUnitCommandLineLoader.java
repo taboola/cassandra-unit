@@ -65,6 +65,7 @@ public class CassandraUnitCommandLineLoader {
 	}
 
 	protected static void load() {
+	    System.out.println("Start Loading...");
 		String host = commandLine.getOptionValue("h");
 		String port = commandLine.getOptionValue("p");
 		String file = commandLine.getOptionValue("f");
