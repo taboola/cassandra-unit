@@ -174,9 +174,9 @@ public class DataLoader {
 			cfDef.setColumnType(columnFamily.getType());
 
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getClassName());
-			if (columnFamily.isCounter()) {
+//			if (columnFamily.isCounter()) {
 				cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
-			}
+//			}
 			if (columnFamily.getType().equals(ColumnType.SUPER) && columnFamily.getSubComparatorType() != null) {
 				cfDef.setSubComparatorType(columnFamily.getSubComparatorType());
 			}

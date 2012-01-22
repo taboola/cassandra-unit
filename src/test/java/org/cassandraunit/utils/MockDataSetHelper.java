@@ -151,8 +151,8 @@ public class MockDataSetHelper {
 				"columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS));
 		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
 				"columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS));
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
-				"columnWithValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, null));
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata("columnWithValidationClassAsUTF8Type",
+				ComparatorType.UTF8TYPE, null));
 
 		columnFamilies.add(columnFamilyWithSecondaryIndex);
 
@@ -471,6 +471,26 @@ public class MockDataSetHelper {
 		rows.add(row2);
 
 		columnFamily.setRows(rows);
+		columnFamilies.add(columnFamily);
+		keyspace.setColumnFamilies(columnFamilies);
+
+		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
+		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
+		return mockDataSet;
+	}
+
+	public static DataSet getMockDataSetWithSchemaAndDefaultColumnValueValidator() {
+		DataSet mockDataSet = mock(DataSet.class);
+		/* keyspace */
+		KeyspaceModel keyspace = new KeyspaceModel();
+		keyspace.setName("keyspace");
+		List<ColumnFamilyModel> columnFamilies = new ArrayList<ColumnFamilyModel>();
+
+		/* column family */
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("columnFamily");
+		columnFamily.setDefaultColumnValueType(ComparatorType.LONGTYPE);
+
 		columnFamilies.add(columnFamily);
 		keyspace.setColumnFamilies(columnFamilies);
 

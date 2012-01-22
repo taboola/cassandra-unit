@@ -102,6 +102,22 @@ public class DataLoaderTest {
 	}
 
 	@Test
+	public void shouldCreateKeyspaceWithDefaultColumnValueValidator() {
+		String clusterName = "TestCluster30";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithSchemaAndDefaultColumnValueValidator());
+
+		/* test */
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+		assertThat(cluster.describeKeyspace("keyspace"), notNullValue());
+		assertThat(cluster.describeKeyspace("keyspace").getCfDefs().get(0).getName(), is("columnFamily"));
+		assertThat(cluster.describeKeyspace("keyspace").getCfDefs().get(0).getDefaultValidationClass(),
+				is(ComparatorType.LONGTYPE.getClassName()));
+	}
+
+	@Test
 	public void shouldCreateKeyspaceAndColumnFamiliesWithDefaultValues() {
 		String clusterName = "TestCluster4";
 		String host = "localhost:9171";
