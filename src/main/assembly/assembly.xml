@@ -11,6 +11,10 @@
 			<source>src/main/cli/script/cu-loader</source>
 			<fileMode>755</fileMode>
 		</file>
+		<file>
+			<outputDirectory>/bin</outputDirectory>
+			<source>src/main/cli/script/cu-loader.bat</source>
+		</file>
 	</files>
 
 	<dependencySets>
