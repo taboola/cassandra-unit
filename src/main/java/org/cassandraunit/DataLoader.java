@@ -54,24 +54,45 @@ public class DataLoader {
 	}
 
 	public void load(DataSet dataSet) {
+		load(dataSet, new LoadingOption());
+	}
+
+	public void load(DataSet dataSet, LoadingOption loadingOption) {
 		KeyspaceModel dataSetKeyspace = dataSet.getKeyspace();
 
 		dropKeyspaceIfExist(dataSetKeyspace.getName());
 
-		KeyspaceDefinition keyspaceDefinition = createKeyspaceDefinition(dataSet);
+		KeyspaceDefinition keyspaceDefinition = createKeyspaceDefinition(dataSet, loadingOption);
 
 		cluster.addKeyspace(keyspaceDefinition, true);
 
 		log.info("creating keyspace : {}", keyspaceDefinition.getName());
 		Keyspace keyspace = HFactory.createKeyspace(dataSet.getKeyspace().getName(), cluster);
-		log.info("loading data into keyspace : {}", keyspaceDefinition.getName());
-		loadData(dataSet, keyspace);
+
+		if (!loadingOption.isOnlySchema()) {
+			log.info("loading data into keyspace : {}", keyspaceDefinition.getName());
+			loadData(dataSet, keyspace);
+		}
 	}
 
-	private KeyspaceDefinition createKeyspaceDefinition(DataSet dataSet) {
+	private KeyspaceModel overrideKeyspaceValueIfneeded(KeyspaceModel keyspace, LoadingOption loadingOption) {
+		if (loadingOption.isOverrideReplicationFactor()) {
+			keyspace.setReplicationFactor(loadingOption.getReplicationFactor());
+		}
+
+		if (loadingOption.isOverrideStrategy()) {
+			keyspace.setStrategy(loadingOption.getStrategy());
+		}
+
+		return keyspace;
+	}
+
+	private KeyspaceDefinition createKeyspaceDefinition(DataSet dataSet, LoadingOption loadingOption) {
 		List<ColumnFamilyDefinition> columnFamilyDefinitions = createColumnFamilyDefinitions(dataSet);
 
 		KeyspaceModel dataSetKeyspace = dataSet.getKeyspace();
+
+		dataSetKeyspace = overrideKeyspaceValueIfneeded(dataSetKeyspace, loadingOption);
 
 		KeyspaceDefinition keyspaceDefinition = HFactory.createKeyspaceDefinition(dataSetKeyspace.getName(),
 				dataSetKeyspace.getStrategy().value(), dataSetKeyspace.getReplicationFactor(), columnFamilyDefinitions);

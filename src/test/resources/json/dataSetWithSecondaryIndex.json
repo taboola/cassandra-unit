@@ -7,11 +7,11 @@
         "columnsMetadata" : [{
             "name" : "columnWithIndexAndUTF8ValidationClass",
             "validationClass" : "UTF8Type",
-            "indexType" : "KEYS",
+            "indexType" : "KEYS"
         },
         {
             "name" : "columnWithUTF8ValidationClass",
-            "validationClass" : "UTF8Type",
+            "validationClass" : "UTF8Type"
         }]
     }]
 }
