@@ -19,6 +19,7 @@ public class ColumnFamilyModel {
 	private ComparatorType comparatorType = ComparatorType.BYTESTYPE;
 	private ComparatorType subComparatorType = null;
 	private ComparatorType defaultColumnValueType = ComparatorType.BYTESTYPE;
+	private String comparatorTypeAlias = null;
 
 	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
 
@@ -94,6 +95,14 @@ public class ColumnFamilyModel {
 
 	public void addColumnMetadata(ColumnMetadata columnMetadata) {
 		columnsMetadata.add(columnMetadata);
+	}
+
+	public String getComparatorTypeAlias() {
+		return comparatorTypeAlias;
+	}
+
+	public void setComparatorTypeAlias(String comparatorTypeAlias) {
+		this.comparatorTypeAlias = comparatorTypeAlias;
 	}
 
 }

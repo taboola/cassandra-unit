@@ -522,4 +522,23 @@ public class MockDataSetHelper {
 		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
 		return mockDataSet;
 	}
+
+	public static DataSet getMockDataSetWithCompositeType() {
+		DataSet mockDataSet = mock(DataSet.class);
+		KeyspaceModel keyspace = new KeyspaceModel();
+		keyspace.setName("compositeKeyspace");
+		keyspace.getColumnFamilies();
+
+		/* column family */
+		ColumnFamilyModel columnFamily = new ColumnFamilyModel();
+		columnFamily.setName("columnFamilyWithCompositeType");
+		columnFamily.setComparatorType(ComparatorType.COMPOSITETYPE);
+		columnFamily.setComparatorTypeAlias("(LongType,UTF8Type,IntegerType)");
+		keyspace.getColumnFamilies().add(columnFamily);
+
+		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
+		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
+
+		return mockDataSet;
+	}
 }

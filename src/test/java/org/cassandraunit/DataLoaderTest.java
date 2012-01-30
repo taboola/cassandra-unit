@@ -638,4 +638,23 @@ public class DataLoaderTest {
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getStrategyClass(),
 				is("org.apache.cassandra.locator.SimpleStrategy"));
 	}
+
+	@Test
+	public void shouldCreateKeyspaceWithCompositeType() {
+		String clusterName = "TestCluster15";
+		String host = "localhost:9171";
+		DataLoader dataLoader = new DataLoader(clusterName, host);
+		dataLoader.load(MockDataSetHelper.getMockDataSetWithCompositeType());
+		/* test */
+		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
+		assertThat(cluster.describeKeyspace("compositeKeyspace").getCfDefs().get(0).getName(),
+				is("columnFamilyWithCompositeType"));
+		assertThat(
+				cluster.describeKeyspace("compositeKeyspace").getCfDefs().get(0).getComparatorType().getTypeName(),
+				is(ComparatorType
+						.getByClassName(
+								"CompositeType(org.apache.cassandra.db.marshal.LongType,org.apache.cassandra.db.marshal.UTF8Type,org.apache.cassandra.db.marshal.IntegerType)")
+						.getTypeName()));
+
+	}
 }
