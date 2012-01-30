@@ -1,0 +1,7 @@
+{
+    "name" : "compositeKeyspace",
+    "columnFamilies" : [{
+        "name" : "columnFamilyWithCompositeType",
+        "comparatorType" : "CompositeType(LongType,UTF8Type,IntegerType)"
+    }]
+}

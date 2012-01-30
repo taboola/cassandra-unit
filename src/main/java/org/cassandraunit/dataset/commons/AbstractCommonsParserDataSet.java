@@ -7,6 +7,7 @@ import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
+import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
@@ -18,6 +19,7 @@ import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
+import org.cassandraunit.utils.ComparatorTypeHelper;
 import org.cassandraunit.utils.TypeExtractor;
 
 /**
@@ -103,8 +105,8 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 		}
 
 		if (parsedColumnFamily.getComparatorType() != null) {
-			columnFamily
-					.setComparatorType(ComparatorType.getByClassName(parsedColumnFamily.getComparatorType().name()));
+			ComparatorTypeHelper.verify(parsedColumnFamily.getComparatorType());
+			columnFamily.setComparatorType(ComparatorType.getByClassName(parsedColumnFamily.getComparatorType()));
 		}
 
 		if (parsedColumnFamily.getSubComparatorType() != null) {

@@ -40,7 +40,7 @@ public class YamlDataSetExampleTest {
 	private ParsedColumnFamily constructSuperColumnFamily() {
 		ParsedColumnFamily parsedColumnFamily = new ParsedColumnFamily();
 		parsedColumnFamily.setType(ColumnType.SUPER);
-		parsedColumnFamily.setComparatorType(ParsedDataType.BytesType);
+		parsedColumnFamily.setComparatorType("UTF8Type");
 		parsedColumnFamily.setSubComparatorType(ParsedDataType.BytesType);
 		parsedColumnFamily.setKeyType(ParsedDataType.BytesType);
 		parsedColumnFamily.setName("SuperColumnFamilyName");

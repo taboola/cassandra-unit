@@ -2,6 +2,6 @@
     "name" : "beautifulKeyspaceName",
     "columnFamilies" : [{
         "name" : "columnFamily1",
-        "comparatorType" : "UNKNOWN"
+        "keyType" : "UNKNOWN"
     }]
 }

@@ -10,7 +10,6 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.dataset.yaml.AbstractYamlDataSet;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -285,4 +284,10 @@ public class ClasspathJsonDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
 	}
+
+//	@Test
+//	public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
+//		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithCompositeType.json");
+//		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("columnFamilyWithCompositeType"));
+//	}
 }
