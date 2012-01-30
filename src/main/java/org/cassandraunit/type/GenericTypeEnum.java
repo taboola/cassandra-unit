@@ -8,7 +8,8 @@ package org.cassandraunit.type;
 public enum GenericTypeEnum {
 
 	BYTES_TYPE("BytesType"), INTEGER_TYPE("IntegerType"), LEXICAL_UUID_TYPE("LexicalUUIDType"), LONG_TYPE("LongType"), TIME_UUID_TYPE(
-			"TimeUUIDType"), UTF_8_TYPE("UTF8Type"), UUID_TYPE("UUIDType"), COUNTER_TYPE("CounterColumnType");
+			"TimeUUIDType"), UTF_8_TYPE("UTF8Type"), UUID_TYPE("UUIDType"), COUNTER_TYPE("CounterColumnType"), COMPOSITE_TYPE(
+			"CompositeType");
 
 	private final String value;
 

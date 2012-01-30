@@ -14,12 +14,15 @@ import java.util.List;
 import java.util.UUID;
 
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.CounterSlice;
 import me.prettyprint.hector.api.beans.CounterSuperSlice;
 import me.prettyprint.hector.api.beans.HCounterColumn;
@@ -38,10 +41,12 @@ import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
+import me.prettyprint.hector.api.query.SliceQuery;
 import me.prettyprint.hector.api.query.SuperSliceCounterQuery;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
@@ -655,6 +660,53 @@ public class DataLoaderTest {
 						.getByClassName(
 								"CompositeType(org.apache.cassandra.db.marshal.LongType,org.apache.cassandra.db.marshal.UTF8Type,org.apache.cassandra.db.marshal.IntegerType)")
 						.getTypeName()));
+
+		Keyspace keyspace = HFactory.createKeyspace("compositeKeyspace", cluster);
+
+		SliceQuery<String, Composite, String> query = HFactory.createSliceQuery(keyspace, StringSerializer.get(),
+				new CompositeSerializer(), StringSerializer.get());
+		query.setColumnFamily("columnFamilyWithCompositeType");
+		query.setKey("row1");
+
+		// Create a composite search range
+		Composite start = new Composite();
+		start.addComponent(11L, LongSerializer.get());
+		start.addComponent("ab", StringSerializer.get());
+		start.addComponent(0, IntegerSerializer.get());
+
+		Composite finish = new Composite();
+		finish.addComponent(11L, LongSerializer.get());
+		finish.addComponent("ab", StringSerializer.get());
+		finish.addComponent(Integer.MAX_VALUE, IntegerSerializer.get());
+		query.setRange(start, finish, false, 100);
+
+		// Now search.
+		ColumnSlice<Composite, String> columnSlice = query.execute().get();
+		assertThat(columnSlice.getColumns().size(), is(2));
+		assertThat(columnSlice.getColumns().get(0).getValue(), is("v2"));
+		assertThat(columnSlice.getColumns().get(1).getValue(), is("v3"));
+
+		SliceQuery<String, Composite, String> query2 = HFactory.createSliceQuery(keyspace, StringSerializer.get(),
+				new CompositeSerializer(), StringSerializer.get());
+		query2.setColumnFamily("columnFamilyWithCompositeType");
+		query2.setKey("row1");
+
+		// Create a composite search range
+		Composite start2 = new Composite();
+		start2.addComponent(12L, LongSerializer.get());
+		start2.addComponent("a", StringSerializer.get());
+
+		Composite finish2 = new Composite();
+		finish2.addComponent(12L, LongSerializer.get());
+		finish2.addComponent(Character.toString(Character.MAX_VALUE), StringSerializer.get());
+		query2.setRange(start2, finish2, false, 100);
+
+		// Now search.
+		ColumnSlice<Composite, String> columnSlice2 = query2.execute().get();
+		assertThat(columnSlice2.getColumns().size(), is(3));
+		assertThat(columnSlice2.getColumns().get(0).getValue(), is("v4"));
+		assertThat(columnSlice2.getColumns().get(1).getValue(), is("v5"));
+		assertThat(columnSlice2.getColumns().get(2).getValue(), is("v6"));
 
 	}
 }
