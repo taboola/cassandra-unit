@@ -4,12 +4,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
+import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -285,9 +290,40 @@ public class ClasspathJsonDataSetTest {
 				is(ComparatorType.UTF8TYPE));
 	}
 
-//	@Test
-//	public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
-//		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithCompositeType.json");
-//		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("columnFamilyWithCompositeType"));
-//	}
+	@Test
+	public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithCompositeType.json");
+		ColumnFamilyModel columnFamilyModel = dataSet.getColumnFamilies().get(0);
+		assertThat(columnFamilyModel.getName(), is("columnFamilyWithCompositeType"));
+		assertThat(columnFamilyModel.getComparatorType().getTypeName(), is(ComparatorType.COMPOSITETYPE.getTypeName()));
+		assertThat(columnFamilyModel.getComparatorTypeAlias(), is("(LongType,UTF8Type,IntegerType)"));
+
+		GenericTypeEnum[] expecTedTypesBelongingCompositeType = new GenericTypeEnum[] { GenericTypeEnum.LONG_TYPE,
+				GenericTypeEnum.UTF_8_TYPE, GenericTypeEnum.INTEGER_TYPE };
+
+		List<ColumnModel> columns = columnFamilyModel.getRows().get(0).getColumns();
+		assertThat(columns.get(0).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columns.get(0).getName().getCompositeValues(), is(new String[] { "11", "aa", "11" }));
+		assertThat(columns.get(0).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+
+		assertThat(columns.get(1).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columns.get(1).getName().getCompositeValues(), is(new String[] { "11", "ab", "11" }));
+		assertThat(columns.get(1).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+
+		assertThat(columns.get(2).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columns.get(2).getName().getCompositeValues(), is(new String[] { "11", "ab", "12" }));
+		assertThat(columns.get(2).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+
+		assertThat(columns.get(3).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columns.get(3).getName().getCompositeValues(), is(new String[] { "12", "aa", "11" }));
+		assertThat(columns.get(3).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+
+		assertThat(columns.get(4).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columns.get(4).getName().getCompositeValues(), is(new String[] { "12", "ab", "11" }));
+		assertThat(columns.get(4).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+
+		assertThat(columns.get(5).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columns.get(5).getName().getCompositeValues(), is(new String[] { "12", "ab", "12" }));
+		assertThat(columns.get(5).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+	}
 }

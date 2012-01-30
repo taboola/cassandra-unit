@@ -1,12 +1,15 @@
 package org.cassandraunit.utils;
 
+import me.prettyprint.hector.api.ddl.ComparatorType;
+
 import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.dataset.commons.ParsedDataType;
+import org.cassandraunit.type.GenericTypeEnum;
 
 public class ComparatorTypeHelper {
 
-	public static void verify(String comparatorType) {
+	public static ComparatorType verifyAndExtract(String comparatorType) {
 
 		final String COMPOSITE_TYPE = "CompositeType";
 		if (StringUtils.startsWith(comparatorType, COMPOSITE_TYPE)) {
@@ -35,11 +38,14 @@ public class ComparatorTypeHelper {
 
 			if (error) {
 				throw new ParseException("CompositeType has to be like that : CompositeType(<type>,...,<type>)");
+			} else {
+				return ComparatorType.COMPOSITETYPE;
 			}
 		} else {
 			/* standard Type */
 			try {
 				ParsedDataType.valueOf(comparatorType);
+				return ComparatorType.getByClassName(comparatorType);
 			} catch (IllegalArgumentException e) {
 				throw new ParseException("ComparatorType value is not allowed");
 			}
@@ -55,4 +61,17 @@ public class ComparatorTypeHelper {
 		return !StringUtils.startsWith(aliasType, "(") || !StringUtils.endsWith(aliasType, ")");
 	}
 
+	public static GenericTypeEnum[] extractGenericTypesFromTypeAlias(String comparatorTypeAlias) {
+		String aliasTypeWithoutParenthesis = StringUtils.removeStart(StringUtils.removeEnd(comparatorTypeAlias, ")"),
+				"(");
+		String[] types = StringUtils.split(aliasTypeWithoutParenthesis, ",");
+
+		GenericTypeEnum[] genericTypesEnum = new GenericTypeEnum[types.length];
+
+		for (int i = 0; i < types.length; i++) {
+			genericTypesEnum[i] = GenericTypeEnum.fromValue(types[i]);
+		}
+
+		return genericTypesEnum;
+	}
 }

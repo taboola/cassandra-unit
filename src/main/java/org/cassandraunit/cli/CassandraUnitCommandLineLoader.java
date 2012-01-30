@@ -84,7 +84,7 @@ public class CassandraUnitCommandLineLoader {
 		DataLoader dataLoader = new DataLoader("clusterToLoad", host + ":" + port);
 		dataLoader.load(new FileDataSet(file), loadingOption);
 		System.out.println("Loading completed");
-		System.exit(0);
+//		System.exit(0);
 	}
 
 	private static boolean containBadReplicationFactorArgumentValue() {
