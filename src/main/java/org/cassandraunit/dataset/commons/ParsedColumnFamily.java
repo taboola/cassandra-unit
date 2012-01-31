@@ -14,7 +14,7 @@ public class ParsedColumnFamily {
 
 	private String name;
 	private ColumnType type = ColumnType.STANDARD;
-	private ParsedDataType keyType = ParsedDataType.BytesType;
+	private String keyType = "BytesType";
 	private String comparatorType = "BytesType";
 	private ParsedDataType subComparatorType = null;
 	private ParsedDataType defaultColumnValueType = ParsedDataType.BytesType;
@@ -37,11 +37,11 @@ public class ParsedColumnFamily {
 		this.type = type;
 	}
 
-	public void setKeyType(ParsedDataType keyType) {
+	public void setKeyType(String keyType) {
 		this.keyType = keyType;
 	}
 
-	public ParsedDataType getKeyType() {
+	public String getKeyType() {
 		return keyType;
 	}
 

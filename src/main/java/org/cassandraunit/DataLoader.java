@@ -194,7 +194,7 @@ public class DataLoader {
 					createColumnsDefinition(columnFamily.getColumnsMetadata()));
 			cfDef.setColumnType(columnFamily.getType());
 
-			cfDef.setKeyValidationClass(columnFamily.getKeyType().getClassName());
+			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
 			cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
 

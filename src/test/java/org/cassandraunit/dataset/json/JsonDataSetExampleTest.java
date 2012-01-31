@@ -42,7 +42,7 @@ public class JsonDataSetExampleTest {
 		ParsedColumnFamily columnFamily1 = new ParsedColumnFamily();
 		columnFamily1.setName("columnFamily1");
 		columnFamily1.setType(ColumnType.STANDARD);
-		columnFamily1.setKeyType(ParsedDataType.UTF8Type);
+		columnFamily1.setKeyType("UTF8Type");
 		columnFamily1.setComparatorType("UTF8Type");
 		columnFamily1.setDefaultColumnValueType(ParsedDataType.UTF8Type);
 		List<ParsedRow> rows1 = new ArrayList<ParsedRow>();
@@ -61,7 +61,7 @@ public class JsonDataSetExampleTest {
 		ParsedColumnFamily columnFamily2 = new ParsedColumnFamily();
 		columnFamily2.setName("columnFamily1");
 		columnFamily2.setType(ColumnType.SUPER);
-		columnFamily2.setKeyType(ParsedDataType.UTF8Type);
+		columnFamily2.setKeyType("UTF8Type");
 		columnFamily2.setComparatorType("UTF8Type");
 		columnFamily2.setDefaultColumnValueType(ParsedDataType.UTF8Type);
 		List<ParsedRow> rows2 = new ArrayList<ParsedRow>();

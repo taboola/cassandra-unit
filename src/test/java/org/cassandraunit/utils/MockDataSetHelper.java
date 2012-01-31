@@ -586,6 +586,27 @@ public class MockDataSetHelper {
 		columnFamily.getRows().add(row);
 		keyspace.getColumnFamilies().add(columnFamily);
 
+		/* column family 2 with composite Type row key */
+		ColumnFamilyModel columnFamily2 = new ColumnFamilyModel();
+		columnFamily2.setName("columnFamilyWithRowKeyCompositeType");
+		columnFamily2.setKeyType(ComparatorType.COMPOSITETYPE);
+		columnFamily2.setKeyTypeAlias("(LongType,UTF8Type)");
+		columnFamily2.setComparatorType(ComparatorType.UTF8TYPE);
+		columnFamily2.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+
+		/* row1 */
+		RowModel row21 = new RowModel();
+		row21.setKey(new GenericType(new String[] { "12", "az" }, new GenericTypeEnum[] { GenericTypeEnum.LONG_TYPE,
+				GenericTypeEnum.UTF_8_TYPE }));
+
+		/* column1 */
+		ColumnModel column21 = new ColumnModel();
+		column21.setName(new GenericType("a", GenericTypeEnum.UTF_8_TYPE));
+		column21.setValue(new GenericType("a", GenericTypeEnum.UTF_8_TYPE));
+		row21.getColumns().add(column21);
+		columnFamily2.getRows().add(row21);
+
+		keyspace.getColumnFamilies().add(columnFamily2);
 		when(mockDataSet.getKeyspace()).thenReturn(keyspace);
 		when(mockDataSet.getColumnFamilies()).thenReturn(keyspace.getColumnFamilies());
 

@@ -100,10 +100,13 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 			columnFamily.setType(ColumnType.valueOf(parsedColumnFamily.getType().toString()));
 		}
 
+		/* keyType */
 		if (parsedColumnFamily.getKeyType() != null) {
-			columnFamily.setKeyType(ComparatorType.getByClassName(parsedColumnFamily.getKeyType().name()));
+			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(parsedColumnFamily.getKeyType());
+			columnFamily.setKeyType(keyType);
 		}
 
+		/* comparatorType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType = null;
 		if (parsedColumnFamily.getComparatorType() != null) {
 			ComparatorType comparatorType = ComparatorTypeHelper.verifyAndExtract(parsedColumnFamily
@@ -118,6 +121,7 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 			}
 		}
 
+		/* subComparatorType */
 		if (parsedColumnFamily.getSubComparatorType() != null) {
 			columnFamily.setSubComparatorType(ComparatorType.getByClassName(parsedColumnFamily.getSubComparatorType()
 					.name()));

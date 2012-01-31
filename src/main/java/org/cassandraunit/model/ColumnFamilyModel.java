@@ -16,10 +16,11 @@ public class ColumnFamilyModel {
 	private String name;
 	private ColumnType type = ColumnType.STANDARD;
 	private ComparatorType keyType = ComparatorType.BYTESTYPE;
+	private String keyTypeAlias = "";
 	private ComparatorType comparatorType = ComparatorType.BYTESTYPE;
+	private String comparatorTypeAlias = "";
 	private ComparatorType subComparatorType = null;
 	private ComparatorType defaultColumnValueType = ComparatorType.BYTESTYPE;
-	private String comparatorTypeAlias = null;
 
 	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
 
@@ -103,6 +104,14 @@ public class ColumnFamilyModel {
 
 	public void setComparatorTypeAlias(String comparatorTypeAlias) {
 		this.comparatorTypeAlias = comparatorTypeAlias;
+	}
+
+	public String getKeyTypeAlias() {
+		return keyTypeAlias;
+	}
+
+	public void setKeyTypeAlias(String keyTypeAlias) {
+		this.keyTypeAlias = keyTypeAlias;
 	}
 
 }
