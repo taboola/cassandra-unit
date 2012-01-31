@@ -298,4 +298,10 @@ public class ClasspathYamlDataSetTest {
 		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetWithCompositeType.yaml");
 		assertThatKeyspaceModelWithCompositeTypeIsOk(dataSet);
 	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetWithBadCompositeType.yaml");
+		dataSet.getKeyspace();
+	}
 }

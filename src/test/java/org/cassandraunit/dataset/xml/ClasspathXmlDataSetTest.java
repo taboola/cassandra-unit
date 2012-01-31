@@ -386,4 +386,10 @@ public class ClasspathXmlDataSetTest {
 		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithCompositeType.xml");
 		assertThatKeyspaceModelWithCompositeTypeIsOk(dataSet);
 	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithBadCompositeType.xml");
+		dataSet.getKeyspace();
+	}
 }

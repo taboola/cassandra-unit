@@ -234,8 +234,13 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 			columnModel.setName(new GenericType(parsedColumn.getName(), GenericTypeEnum.BYTES_TYPE));
 		} else if (ComparatorType.COMPOSITETYPE.getTypeName().equals(comparatorType.getTypeName())) {
 			/* composite type */
-			columnModel.setName(new GenericType(StringUtils.split(parsedColumn.getName(), ":"),
-					typesBelongingCompositeTypeForComparatorType));
+			try {
+				columnModel.setName(new GenericType(StringUtils.split(parsedColumn.getName(), ":"),
+						typesBelongingCompositeTypeForComparatorType));
+			} catch (IllegalArgumentException e) {
+				throw new ParseException(parsedColumn.getName()
+						+ " doesn't fit with the schema declaration of your composite type");
+			}
 		} else {
 			/* simple type */
 			columnModel.setName(new GenericType(parsedColumn.getName(), GenericTypeEnum.fromValue(comparatorType
