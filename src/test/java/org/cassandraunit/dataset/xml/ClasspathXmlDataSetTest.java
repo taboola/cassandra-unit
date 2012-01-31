@@ -1,5 +1,6 @@
 package org.cassandraunit.dataset.xml;
 
+import static org.cassandraunit.SampleDataSetChecker.assertThatKeyspaceModelWithCompositeTypeIsOk;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -378,5 +379,11 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(), nullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
+	}
+
+	@Test
+	public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithCompositeType.xml");
+		assertThatKeyspaceModelWithCompositeTypeIsOk(dataSet);
 	}
 }
