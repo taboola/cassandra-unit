@@ -1,5 +1,6 @@
 package org.cassandraunit.dataset.yaml;
 
+import static org.cassandraunit.SampleDataSetChecker.assertThatKeyspaceModelWithCompositeTypeIsOk;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -10,6 +11,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
+import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -289,5 +291,11 @@ public class ClasspathYamlDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(), nullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
+	}
+
+	@Test
+	public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathYamlDataSet("yaml/dataSetWithCompositeType.yaml");
+		assertThatKeyspaceModelWithCompositeTypeIsOk(dataSet);
 	}
 }
