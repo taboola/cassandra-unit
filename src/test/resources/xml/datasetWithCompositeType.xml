@@ -33,5 +33,16 @@
 				</column>
 			</row>
 		</columnFamily>
+		<columnFamily>
+			<name>columnFamilyWithRowKeyCompositeType</name>
+			<keyType>CompositeType(LongType,UTF8Type)</keyType>
+			<row>
+				<key>11:a</key>
+				<column>
+					<name>a</name>
+					<value>a</value>
+				</column>
+			</row>
+		</columnFamily>
 	</columnFamilies>
 </keyspace>

@@ -101,9 +101,17 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 		}
 
 		/* keyType */
+		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {
 			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(parsedColumnFamily.getKeyType());
 			columnFamily.setKeyType(keyType);
+			if (ComparatorType.COMPOSITETYPE.getTypeName().equals(keyType.getTypeName())) {
+				String keyTypeAlias = StringUtils.removeStart(parsedColumnFamily.getKeyType(),
+						ComparatorType.COMPOSITETYPE.getTypeName());
+				columnFamily.setKeyTypeAlias(keyTypeAlias);
+				typesBelongingCompositeTypeForKeyType = ComparatorTypeHelper
+						.extractGenericTypesFromTypeAlias(keyTypeAlias);
+			}
 		}
 
 		/* comparatorType */
@@ -137,8 +145,9 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 
 		/* data information */
 		columnFamily.setRows(mapParsedRowsToRowsModel(parsedColumnFamily, columnFamily.getKeyType(),
-				columnFamily.getComparatorType(), typesBelongingCompositeTypeForComparatorType,
-				columnFamily.getSubComparatorType(), columnFamily.getDefaultColumnValueType()));
+				typesBelongingCompositeTypeForKeyType, columnFamily.getComparatorType(),
+				typesBelongingCompositeTypeForComparatorType, columnFamily.getSubComparatorType(),
+				columnFamily.getDefaultColumnValueType()));
 
 		return columnFamily;
 	}
@@ -173,22 +182,27 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 	}
 
 	private List<RowModel> mapParsedRowsToRowsModel(ParsedColumnFamily parsedColumnFamily, ComparatorType keyType,
-			ComparatorType comparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType,
-			ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+			GenericTypeEnum[] typesBelongingCompositeTypeForKeyType, ComparatorType comparatorType,
+			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType subComparatorType,
+			ComparatorType defaultColumnValueType) {
 		List<RowModel> rowsModel = new ArrayList<RowModel>();
 		for (ParsedRow jsonRow : parsedColumnFamily.getRows()) {
-			rowsModel.add(mapsParsedRowToRowModel(jsonRow, keyType, comparatorType,
-					typesBelongingCompositeTypeForComparatorType, subComparatorType, defaultColumnValueType));
+			rowsModel.add(mapsParsedRowToRowModel(jsonRow, keyType, typesBelongingCompositeTypeForKeyType,
+					comparatorType, typesBelongingCompositeTypeForComparatorType, subComparatorType,
+					defaultColumnValueType));
 		}
 		return rowsModel;
 	}
 
 	private RowModel mapsParsedRowToRowModel(ParsedRow parsedRow, ComparatorType keyType,
-			ComparatorType comparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType,
-			ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+			GenericTypeEnum[] typesBelongingCompositeTypeForKeyType, ComparatorType comparatorType,
+			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType subComparatorType,
+			ComparatorType defaultColumnValueType) {
 		RowModel row = new RowModel();
 
-		row.setKey(new GenericType(parsedRow.getKey(), GenericTypeEnum.fromValue(keyType.getTypeName())));
+		row.setKey(TypeExtractor.constructGenericType(parsedRow.getKey(), keyType,
+				typesBelongingCompositeTypeForKeyType));
+
 		row.setColumns(mapParsedColumnsToColumnsModel(parsedRow.getColumns(), comparatorType,
 				typesBelongingCompositeTypeForComparatorType, defaultColumnValueType));
 		row.setSuperColumns(mapParsedSuperColumnsToSuperColumnsModel(parsedRow.getSuperColumns(), comparatorType,
@@ -234,22 +248,8 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType defaultColumnValueType) {
 		ColumnModel columnModel = new ColumnModel();
 
-		if (comparatorType == null) {
-			columnModel.setName(new GenericType(parsedColumn.getName(), GenericTypeEnum.BYTES_TYPE));
-		} else if (ComparatorType.COMPOSITETYPE.getTypeName().equals(comparatorType.getTypeName())) {
-			/* composite type */
-			try {
-				columnModel.setName(new GenericType(StringUtils.split(parsedColumn.getName(), ":"),
-						typesBelongingCompositeTypeForComparatorType));
-			} catch (IllegalArgumentException e) {
-				throw new ParseException(parsedColumn.getName()
-						+ " doesn't fit with the schema declaration of your composite type");
-			}
-		} else {
-			/* simple type */
-			columnModel.setName(new GenericType(parsedColumn.getName(), GenericTypeEnum.fromValue(comparatorType
-					.getTypeName())));
-		}
+		columnModel.setName(TypeExtractor.constructGenericType(parsedColumn.getName(), comparatorType,
+				typesBelongingCompositeTypeForComparatorType));
 
 		if (ComparatorType.COUNTERTYPE.getClassName().equals(defaultColumnValueType.getClassName())
 				&& TypeExtractor.containFunctions(parsedColumn.getValue())) {
@@ -260,4 +260,5 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 		columnModel.setValue(columnValue);
 		return columnModel;
 	}
+
 }

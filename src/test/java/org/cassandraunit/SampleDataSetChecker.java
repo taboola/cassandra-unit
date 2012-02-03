@@ -133,5 +133,14 @@ public class SampleDataSetChecker {
 		assertThat(columns.get(5).getName().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
 		assertThat(columns.get(5).getName().getCompositeValues(), is(new String[] { "12", "ab", "12" }));
 		assertThat(columns.get(5).getName().getTypesBelongingCompositeType(), is(expecTedTypesBelongingCompositeType));
+
+		ColumnFamilyModel columnFamilyModel2 = dataSet.getColumnFamilies().get(1);
+		assertThat(columnFamilyModel2.getKeyType().getTypeName(), is(ComparatorType.COMPOSITETYPE.getTypeName()));
+		assertThat(columnFamilyModel2.getKeyTypeAlias(), is("(LongType,UTF8Type)"));
+
+		assertThat(columnFamilyModel2.getRows().get(0).getKey().getType(), is(GenericTypeEnum.COMPOSITE_TYPE));
+		assertThat(columnFamilyModel2.getRows().get(0).getKey().getCompositeValues(), is(new String[] { "11", "a" }));
+		assertThat(columnFamilyModel2.getRows().get(0).getKey().getTypesBelongingCompositeType(),
+				is(new GenericTypeEnum[] { GenericTypeEnum.LONG_TYPE, GenericTypeEnum.UTF_8_TYPE }));
 	}
 }

@@ -11,3 +11,11 @@ columnFamilies:
     - {name: "12:aa:11", value: v4}
     - {name: "12:ab:11", value: v5}
     - {name: "12:ab:12", value: v6}
+- name: columnFamilyWithRowKeyCompositeType
+  keyType: CompositeType(LongType,UTF8Type)
+  comparatorType: UTF8Type
+  defaultColumnValueType: UTF8Type 
+  rows:
+  - key: "11:a"
+    columns:
+    - {name: a, value: a}

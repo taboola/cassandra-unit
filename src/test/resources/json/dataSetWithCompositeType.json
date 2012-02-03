@@ -30,5 +30,18 @@
                 "value" : "v6"
             }]
         }]
+    },
+    {
+        "name" : "columnFamilyWithRowKeyCompositeType",
+        "keyType" : "CompositeType(LongType,UTF8Type)",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+            "key" : "11:a",
+            "columns" : [{
+                "name" : "a",
+                "value" : "a"
+            }]
+        }]
     }]
 }

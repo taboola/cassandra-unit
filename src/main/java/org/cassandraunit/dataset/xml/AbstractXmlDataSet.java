@@ -125,8 +125,17 @@ public abstract class AbstractXmlDataSet implements DataSet {
 			columnFamily.setType(ColumnType.valueOf(xmlColumnFamily.getType().toString()));
 		}
 
+		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {
-			columnFamily.setKeyType(ComparatorType.getByClassName(xmlColumnFamily.getKeyType().value()));
+			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getKeyType());
+			columnFamily.setKeyType(keyType);
+			if (ComparatorType.COMPOSITETYPE.getTypeName().equals(keyType.getTypeName())) {
+				String keyTypeAlias = StringUtils.removeStart(xmlColumnFamily.getKeyType(),
+						ComparatorType.COMPOSITETYPE.getTypeName());
+				columnFamily.setKeyTypeAlias(keyTypeAlias);
+				typesBelongingCompositeTypeForKeyType = ComparatorTypeHelper
+						.extractGenericTypesFromTypeAlias(keyTypeAlias);
+			}
 		}
 
 		GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType = null;
@@ -156,8 +165,9 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 		/* data information */
 		columnFamily.setRows(mapXmlRowsToRowsModel(xmlColumnFamily, columnFamily.getKeyType(),
-				columnFamily.getComparatorType(), typesBelongingCompositeTypeForComparatorType,
-				columnFamily.getSubComparatorType(), columnFamily.getDefaultColumnValueType()));
+				typesBelongingCompositeTypeForKeyType, columnFamily.getComparatorType(),
+				typesBelongingCompositeTypeForComparatorType, columnFamily.getSubComparatorType(),
+				columnFamily.getDefaultColumnValueType()));
 
 		return columnFamily;
 	}
@@ -188,23 +198,25 @@ public abstract class AbstractXmlDataSet implements DataSet {
 	}
 
 	private List<RowModel> mapXmlRowsToRowsModel(org.cassandraunit.dataset.xml.ColumnFamily xmlColumnFamily,
-			ComparatorType keyType, ComparatorType comparatorType,
-			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType subcomparatorType,
-			ComparatorType defaultColumnValueType) {
+			ComparatorType keyType, GenericTypeEnum[] typesBelongingCompositeTypeForKeyType,
+			ComparatorType comparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType,
+			ComparatorType subcomparatorType, ComparatorType defaultColumnValueType) {
 		List<RowModel> rowsModel = new ArrayList<RowModel>();
 		for (Row rowType : xmlColumnFamily.getRow()) {
-			rowsModel.add(mapsXmlRowToRowModel(rowType, keyType, comparatorType,
+			rowsModel.add(mapsXmlRowToRowModel(rowType, keyType, typesBelongingCompositeTypeForKeyType, comparatorType,
 					typesBelongingCompositeTypeForComparatorType, subcomparatorType, defaultColumnValueType));
 		}
 		return rowsModel;
 	}
 
-	private RowModel mapsXmlRowToRowModel(Row xmlRow, ComparatorType keyType, ComparatorType comparatorType,
+	private RowModel mapsXmlRowToRowModel(Row xmlRow, ComparatorType keyType,
+			GenericTypeEnum[] typesBelongingCompositeTypeForKeyType, ComparatorType comparatorType,
 			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType subComparatorType,
 			ComparatorType defaultColumnValueType) {
 		RowModel row = new RowModel();
 
-		row.setKey(new GenericType(xmlRow.getKey(), GenericTypeEnum.fromValue(keyType.getTypeName())));
+		row.setKey(TypeExtractor.constructGenericType(xmlRow.getKey(), keyType, typesBelongingCompositeTypeForKeyType));
+
 		row.setColumns(mapXmlColumnsToColumnsModel(xmlRow.getColumn(), comparatorType,
 				typesBelongingCompositeTypeForComparatorType, defaultColumnValueType));
 		row.setSuperColumns(mapXmlSuperColumnsToSuperColumnsModel(xmlRow.getSuperColumn(), comparatorType,
