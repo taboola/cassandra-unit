@@ -15,6 +15,7 @@ import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
+import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
@@ -26,6 +27,7 @@ import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
+import org.cassandraunit.utils.ComparatorTypeHelper;
 import org.cassandraunit.utils.TypeExtractor;
 import org.xml.sax.SAXException;
 
@@ -123,12 +125,30 @@ public abstract class AbstractXmlDataSet implements DataSet {
 			columnFamily.setType(ColumnType.valueOf(xmlColumnFamily.getType().toString()));
 		}
 
+		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {
-			columnFamily.setKeyType(ComparatorType.getByClassName(xmlColumnFamily.getKeyType().value()));
+			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getKeyType());
+			columnFamily.setKeyType(keyType);
+			if (ComparatorType.COMPOSITETYPE.getTypeName().equals(keyType.getTypeName())) {
+				String keyTypeAlias = StringUtils.removeStart(xmlColumnFamily.getKeyType(),
+						ComparatorType.COMPOSITETYPE.getTypeName());
+				columnFamily.setKeyTypeAlias(keyTypeAlias);
+				typesBelongingCompositeTypeForKeyType = ComparatorTypeHelper
+						.extractGenericTypesFromTypeAlias(keyTypeAlias);
+			}
 		}
 
+		GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType = null;
 		if (xmlColumnFamily.getComparatorType() != null) {
-			columnFamily.setComparatorType(ComparatorType.getByClassName(xmlColumnFamily.getComparatorType().value()));
+			ComparatorType comparatorType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getComparatorType());
+			columnFamily.setComparatorType(comparatorType);
+			if (ComparatorType.COMPOSITETYPE.getTypeName().equals(comparatorType.getTypeName())) {
+				String comparatorTypeAlias = StringUtils.removeStart(xmlColumnFamily.getComparatorType(),
+						ComparatorType.COMPOSITETYPE.getTypeName());
+				columnFamily.setComparatorTypeAlias(comparatorTypeAlias);
+				typesBelongingCompositeTypeForComparatorType = ComparatorTypeHelper
+						.extractGenericTypesFromTypeAlias(comparatorTypeAlias);
+			}
 		}
 
 		if (xmlColumnFamily.getSubComparatorType() != null) {
@@ -145,7 +165,8 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 		/* data information */
 		columnFamily.setRows(mapXmlRowsToRowsModel(xmlColumnFamily, columnFamily.getKeyType(),
-				columnFamily.getComparatorType(), columnFamily.getSubComparatorType(),
+				typesBelongingCompositeTypeForKeyType, columnFamily.getComparatorType(),
+				typesBelongingCompositeTypeForComparatorType, columnFamily.getSubComparatorType(),
 				columnFamily.getDefaultColumnValueType()));
 
 		return columnFamily;
@@ -177,22 +198,27 @@ public abstract class AbstractXmlDataSet implements DataSet {
 	}
 
 	private List<RowModel> mapXmlRowsToRowsModel(org.cassandraunit.dataset.xml.ColumnFamily xmlColumnFamily,
-			ComparatorType keyType, ComparatorType comparatorType, ComparatorType subcomparatorType,
-			ComparatorType defaultColumnValueType) {
+			ComparatorType keyType, GenericTypeEnum[] typesBelongingCompositeTypeForKeyType,
+			ComparatorType comparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType,
+			ComparatorType subcomparatorType, ComparatorType defaultColumnValueType) {
 		List<RowModel> rowsModel = new ArrayList<RowModel>();
 		for (Row rowType : xmlColumnFamily.getRow()) {
-			rowsModel.add(mapsXmlRowToRowModel(rowType, keyType, comparatorType, subcomparatorType,
-					defaultColumnValueType));
+			rowsModel.add(mapsXmlRowToRowModel(rowType, keyType, typesBelongingCompositeTypeForKeyType, comparatorType,
+					typesBelongingCompositeTypeForComparatorType, subcomparatorType, defaultColumnValueType));
 		}
 		return rowsModel;
 	}
 
-	private RowModel mapsXmlRowToRowModel(Row xmlRow, ComparatorType keyType, ComparatorType comparatorType,
-			ComparatorType subComparatorType, ComparatorType defaultColumnValueType) {
+	private RowModel mapsXmlRowToRowModel(Row xmlRow, ComparatorType keyType,
+			GenericTypeEnum[] typesBelongingCompositeTypeForKeyType, ComparatorType comparatorType,
+			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType subComparatorType,
+			ComparatorType defaultColumnValueType) {
 		RowModel row = new RowModel();
 
-		row.setKey(new GenericType(xmlRow.getKey(), GenericTypeEnum.fromValue(keyType.getTypeName())));
-		row.setColumns(mapXmlColumnsToColumnsModel(xmlRow.getColumn(), comparatorType, defaultColumnValueType));
+		row.setKey(TypeExtractor.constructGenericType(xmlRow.getKey(), keyType, typesBelongingCompositeTypeForKeyType));
+
+		row.setColumns(mapXmlColumnsToColumnsModel(xmlRow.getColumn(), comparatorType,
+				typesBelongingCompositeTypeForComparatorType, defaultColumnValueType));
 		row.setSuperColumns(mapXmlSuperColumnsToSuperColumnsModel(xmlRow.getSuperColumn(), comparatorType,
 				subComparatorType, defaultColumnValueType));
 		return row;
@@ -234,7 +260,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 		superColumnModel.setName(new GenericType(xmlSuperColumn.getName(), GenericTypeEnum.fromValue(comparatorType
 				.getTypeName())));
 
-		superColumnModel.setColumns(mapXmlColumnsToColumnsModel(xmlSuperColumn.getColumn(), subComparatorType,
+		superColumnModel.setColumns(mapXmlColumnsToColumnsModel(xmlSuperColumn.getColumn(), subComparatorType, null,
 				defaultColumnValueType));
 		return superColumnModel;
 	}
@@ -244,15 +270,26 @@ public abstract class AbstractXmlDataSet implements DataSet {
 	 * 
 	 * @param xmlColumn
 	 *            xml column
+	 * @param typesBelongingCompositeTypeForComparatorType
 	 * @return column
 	 */
 	private ColumnModel mapXmlColumnToColumnModel(Column xmlColumn, ComparatorType comparatorType,
-			ComparatorType defaultColumnValueType) {
+			GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType, ComparatorType defaultColumnValueType) {
 		ColumnModel columnModel = new ColumnModel();
 
 		if (comparatorType == null) {
 			columnModel.setName(new GenericType(xmlColumn.getName(), GenericTypeEnum.BYTES_TYPE));
+		} else if (ComparatorType.COMPOSITETYPE.getTypeName().equals(comparatorType.getTypeName())) {
+			/* composite type */
+			try {
+				columnModel.setName(new GenericType(StringUtils.split(xmlColumn.getName(), ":"),
+						typesBelongingCompositeTypeForComparatorType));
+			} catch (IllegalArgumentException e) {
+				throw new ParseException(xmlColumn.getName()
+						+ " doesn't fit with the schema declaration of your composite type");
+			}
 		} else {
+			/* simple type */
 			columnModel.setName(new GenericType(xmlColumn.getName(), GenericTypeEnum.fromValue(comparatorType
 					.getTypeName())));
 		}
@@ -273,13 +310,16 @@ public abstract class AbstractXmlDataSet implements DataSet {
 	 * 
 	 * @param xmlColumns
 	 *            xml column
+	 * @param typesBelongingCompositeTypeForComparatorType
 	 * @return columns
 	 */
 	private List<ColumnModel> mapXmlColumnsToColumnsModel(List<Column> xmlColumns,
-			ComparatorType columnNameComparatorType, ComparatorType defaultColumnValueType) {
+			ComparatorType columnNameComparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType,
+			ComparatorType defaultColumnValueType) {
 		List<ColumnModel> columnsModel = new ArrayList<ColumnModel>();
 		for (Column xmlColumn : xmlColumns) {
-			columnsModel.add(mapXmlColumnToColumnModel(xmlColumn, columnNameComparatorType, defaultColumnValueType));
+			columnsModel.add(mapXmlColumnToColumnModel(xmlColumn, columnNameComparatorType,
+					typesBelongingCompositeTypeForComparatorType, defaultColumnValueType));
 		}
 		return columnsModel;
 	}

@@ -3,6 +3,7 @@ package org.cassandraunit.utils;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.apache.commons.lang.StringUtils;
+import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 
@@ -42,5 +43,26 @@ public class TypeExtractor {
 	public static boolean containFunctions(String valueToExtract) {
 		return StringUtils.startsWithAny(valueToExtract, availableTypeFunctionArray)
 				&& StringUtils.endsWith(valueToExtract, endTypeFunction);
+	}
+
+	public static GenericType constructGenericType(String rowKeyOrColumnName, ComparatorType type,
+			GenericTypeEnum[] typesBelongingCompositeType) {
+		GenericType key = null;
+
+		if (type == null) {
+			key = new GenericType(rowKeyOrColumnName, GenericTypeEnum.BYTES_TYPE);
+		} else if (ComparatorType.COMPOSITETYPE.getTypeName().equals(type.getTypeName())) {
+			/* composite type */
+			try {
+				key = new GenericType(StringUtils.split(rowKeyOrColumnName, ":"), typesBelongingCompositeType);
+			} catch (IllegalArgumentException e) {
+				throw new ParseException(rowKeyOrColumnName
+						+ " doesn't fit with the schema declaration of your composite type");
+			}
+		} else {
+			/* simple type */
+			key = new GenericType(rowKeyOrColumnName, GenericTypeEnum.fromValue(type.getTypeName()));
+		}
+		return key;
 	}
 }

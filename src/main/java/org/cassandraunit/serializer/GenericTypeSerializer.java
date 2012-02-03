@@ -6,10 +6,12 @@ import java.util.UUID;
 import me.prettyprint.cassandra.serializers.AbstractSerializer;
 import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
+import me.prettyprint.hector.api.beans.Composite;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -82,11 +84,29 @@ public class GenericTypeSerializer extends AbstractSerializer<GenericType> {
 			case COUNTER_TYPE:
 				byteBuffer = LongSerializer.get().toByteBuffer(Long.parseLong(genericType.getValue()));
 				break;
+			case COMPOSITE_TYPE:
+				byteBuffer = new CompositeSerializer().toByteBuffer(createComposite(genericType));
+				break;
 			default:
 				byteBuffer = BytesArraySerializer.get().toByteBuffer(genericType.getValue().getBytes());
 				break;
 			}
 		}
 		return byteBuffer;
+	}
+
+	private Composite createComposite(GenericType genericType) {
+		if (!GenericTypeEnum.COMPOSITE_TYPE.equals(genericType.getType())) {
+			throw new IllegalArgumentException("the generricType must be a CompositeType");
+		}
+
+		Composite composite = new Composite();
+		for (int i = 0; i < genericType.getCompositeValues().length; i++) {
+			composite.addComponent(
+					new GenericType(genericType.getCompositeValues()[i],
+							genericType.getTypesBelongingCompositeType()[i]), GenericTypeSerializer.get());
+		}
+		return composite;
+
 	}
 }

@@ -1,16 +1,22 @@
 package org.cassandraunit.dataset.json;
 
+import static org.cassandraunit.SampleDataSetChecker.assertThatKeyspaceModelWithCompositeTypeIsOk;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.dataset.yaml.AbstractYamlDataSet;
+import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
+import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -284,5 +290,17 @@ public class ClasspathJsonDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(), nullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
+	}
+
+	@Test
+	public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithCompositeType.json");
+		assertThatKeyspaceModelWithCompositeTypeIsOk(dataSet);
+	}
+
+	@Test(expected = ParseException.class)
+	public void shouldNotGetAColumnFamilyWithCompositeType() throws Exception {
+		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithBadCompositeType.json");
+		dataSet.getKeyspace();
 	}
 }

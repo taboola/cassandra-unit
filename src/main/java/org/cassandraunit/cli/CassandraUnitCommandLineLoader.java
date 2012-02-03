@@ -65,7 +65,7 @@ public class CassandraUnitCommandLineLoader {
 	}
 
 	protected static void load() {
-	    System.out.println("Start Loading...");
+		System.out.println("Start Loading...");
 		String host = commandLine.getOptionValue("h");
 		String port = commandLine.getOptionValue("p");
 		String file = commandLine.getOptionValue("f");
@@ -84,7 +84,6 @@ public class CassandraUnitCommandLineLoader {
 		DataLoader dataLoader = new DataLoader("clusterToLoad", host + ":" + port);
 		dataLoader.load(new FileDataSet(file), loadingOption);
 		System.out.println("Loading completed");
-		System.exit(0);
 	}
 
 	private static boolean containBadReplicationFactorArgumentValue() {

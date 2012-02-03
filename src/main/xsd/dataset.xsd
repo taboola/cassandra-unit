@@ -31,8 +31,8 @@
 		<sequence>
 			<element name="name" type="string" minOccurs="1" maxOccurs="1" />
 			<element name="type" type="tns:ColumnFamilyType" minOccurs="0" maxOccurs="1" />
-			<element name="keyType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
-			<element name="comparatorType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
+			<element name="keyType" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="comparatorType" type="string" minOccurs="0" maxOccurs="1" />
 			<element name="subComparatorType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
 			<element name="defaultColumnValueType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
 			<element name="columnMetadata" type="tns:ColumnMetadata" minOccurs="0" maxOccurs="unbounded" />

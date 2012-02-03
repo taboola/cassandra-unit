@@ -194,12 +194,16 @@ public class DataLoader {
 					createColumnsDefinition(columnFamily.getColumnsMetadata()));
 			cfDef.setColumnType(columnFamily.getType());
 
-			cfDef.setKeyValidationClass(columnFamily.getKeyType().getClassName());
-//			if (columnFamily.isCounter()) {
-				cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
-//			}
+			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
+
+			cfDef.setDefaultValidationClass(columnFamily.getDefaultColumnValueType().getClassName());
+
 			if (columnFamily.getType().equals(ColumnType.SUPER) && columnFamily.getSubComparatorType() != null) {
 				cfDef.setSubComparatorType(columnFamily.getSubComparatorType());
+			}
+
+			if (ComparatorType.COMPOSITETYPE.equals(columnFamily.getComparatorType())) {
+				cfDef.setComparatorTypeAlias(columnFamily.getComparatorTypeAlias());
 			}
 
 			columnFamilyDefinitions.add(cfDef);

@@ -14,12 +14,15 @@ import java.util.List;
 import java.util.UUID;
 
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.CounterSlice;
 import me.prettyprint.hector.api.beans.CounterSuperSlice;
 import me.prettyprint.hector.api.beans.HCounterColumn;
@@ -38,6 +41,7 @@ import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
+import me.prettyprint.hector.api.query.SliceQuery;
 import me.prettyprint.hector.api.query.SuperSliceCounterQuery;
 
 import org.apache.commons.codec.DecoderException;
@@ -638,4 +642,5 @@ public class DataLoaderTest {
 		assertThat(cluster.describeKeyspace("beautifulKeyspaceName").getStrategyClass(),
 				is("org.apache.cassandra.locator.SimpleStrategy"));
 	}
+
 }
