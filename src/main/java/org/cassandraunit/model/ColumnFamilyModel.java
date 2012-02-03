@@ -20,7 +20,7 @@ public class ColumnFamilyModel {
 	private ComparatorType comparatorType = ComparatorType.BYTESTYPE;
 	private String comparatorTypeAlias = "";
 	private ComparatorType subComparatorType = null;
-	private ComparatorType defaultColumnValueType = ComparatorType.BYTESTYPE;
+	private ComparatorType defaultColumnValueType = null;
 
 	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
 
@@ -83,7 +83,7 @@ public class ColumnFamilyModel {
 	}
 
 	public boolean isCounter() {
-		return defaultColumnValueType.equals(ComparatorType.COUNTERTYPE);
+		return defaultColumnValueType != null && defaultColumnValueType.equals(ComparatorType.COUNTERTYPE);
 	}
 
 	public List<ColumnMetadata> getColumnsMetadata() {

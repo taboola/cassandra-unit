@@ -294,7 +294,8 @@ public abstract class AbstractXmlDataSet implements DataSet {
 					.getTypeName())));
 		}
 
-		if (ComparatorType.COUNTERTYPE.getClassName().equals(defaultColumnValueType.getClassName())
+		if (defaultColumnValueType != null
+				&& ComparatorType.COUNTERTYPE.getClassName().equals(defaultColumnValueType.getClassName())
 				&& TypeExtractor.containFunctions(xmlColumn.getValue())) {
 			throw new ParseException("Impossible to override Column value into a Counter column family");
 		}

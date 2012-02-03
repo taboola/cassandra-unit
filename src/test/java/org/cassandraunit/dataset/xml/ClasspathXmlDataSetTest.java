@@ -100,8 +100,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getComparatorType().getClassName(),
 				is(ComparatorType.BYTESTYPE.getClassName()));
 		assertThat(dataSet.getColumnFamilies().get(0).getSubComparatorType(), nullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getDefaultColumnValueType().getClassName(),
-				is(ComparatorType.BYTESTYPE.getClassName()));
+		assertThat(dataSet.getColumnFamilies().get(0).getDefaultColumnValueType(), nullValue());
 
 	}
 
