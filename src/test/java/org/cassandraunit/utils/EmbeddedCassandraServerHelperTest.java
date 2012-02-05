@@ -1,4 +1,4 @@
-package org.cassandraunit.testutils;
+package org.cassandraunit.utils;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
