@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
@@ -16,7 +19,8 @@ import org.apache.cassandra.config.ConfigurationException;
 import org.apache.cassandra.config.DatabaseDescriptor;
 import org.apache.cassandra.db.commitlog.CommitLog;
 import org.apache.cassandra.io.util.FileUtils;
-import org.apache.cassandra.service.EmbeddedCassandraService;
+import org.apache.cassandra.thrift.CassandraDaemon;
+import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +38,16 @@ public class EmbeddedCassandraServerHelper {
 
 	private static final String TMP = "target/embeddedCassandra";
 
-	private static final String yamlFile = "/cassandra.yaml";
-
-	private static EmbeddedCassandraService embeddedCassandraService = null;
+	private static CassandraDaemon cassandraDaemon = null;
+	static ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public EmbeddedCassandraServerHelper() {
 
+	}
+
+	public static void startEmbeddedCassandra() throws TTransportException, IOException, InterruptedException,
+			ConfigurationException {
+		startEmbeddedCassandra("cu-cassandra.yaml");
 	}
 
 	/**
@@ -49,40 +57,64 @@ public class EmbeddedCassandraServerHelper {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void startEmbeddedCassandra() throws TTransportException, IOException, InterruptedException,
-			ConfigurationException {
+	public static void startEmbeddedCassandra(String yamlFile) throws TTransportException, IOException,
+			InterruptedException, ConfigurationException {
 
-		if (embeddedCassandraService == null) {
+		if (!StringUtils.startsWith(yamlFile, "/")) {
+			yamlFile = "/" + yamlFile;
+		}
+
+		if (cassandraDaemon == null) {
 			log.debug("Starting cassandra...");
 			log.debug("Initialization needed");
-			/* new JVM, so init all an instance off Cassandra */
-			/* delete tmp dir first */
 			rmdir(TMP);
-
-			/* make a tmp dir and copy cassandra.yaml and log4j.properties to it */
 			copy("/log4j-embedded-cassandra.properties", TMP);
 			copy(yamlFile, TMP);
 
-			/* set system properties for cassandra */
 			System.setProperty("cassandra.config", "file:" + TMP + yamlFile);
 			System.setProperty("log4j.configuration", "file:" + TMP + "/log4j-embedded-cassandra.properties");
 			System.setProperty("cassandra-foreground", "true");
-			cleanupAndLeaveDirs();
-			embeddedCassandraService = new EmbeddedCassandraService();
-			embeddedCassandraService.start();
-		} else {
-			/* nothing to do */
-		}
 
+			cleanupAndLeaveDirs();
+			executor.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					cassandraDaemon = new CassandraDaemon();
+					cassandraDaemon.activate();
+				}
+			});
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				throw new AssertionError(e);
+			}
+		} else {
+			/* nothing to do Cassandra is already started */
+		}
 	}
 
+	/**
+	 * stop the embedded cassandra
+	 */
+	public static void stopEmbeddedCassandra() {
+		executor.shutdown();
+		executor.shutdownNow();
+		log.debug("Cassandra is stopped");
+	}
+
+	/**
+	 * drop all keyspaces (expect system)
+	 */
 	public static void cleanEmbeddedCassandra() {
-		log.debug("Cleaning cassandra keyspaces");
 		dropKeyspaces();
 	}
 
 	private static void dropKeyspaces() {
-		Cluster cluster = HFactory.getOrCreateCluster("TestCluster", new CassandraHostConfigurator("localhost:9171"));
+		String host = DatabaseDescriptor.getRpcAddress().getHostName();
+		int port = DatabaseDescriptor.getRpcPort();
+		log.debug("Cleaning cassandra keyspaces on " + host + ":" + port);
+		Cluster cluster = HFactory.getOrCreateCluster("TestCluster", new CassandraHostConfigurator(host + ":" + port));
 		/* get all keyspace */
 		List<KeyspaceDefinition> keyspaces = cluster.describeKeyspaces();
 

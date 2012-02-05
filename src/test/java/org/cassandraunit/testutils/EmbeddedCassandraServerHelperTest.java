@@ -10,29 +10,40 @@ import me.prettyprint.hector.api.factory.HFactory;
 
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Test;
+
 /**
  * 
  * @author Jeremy Sevellec
- *
+ * 
  */
 public class EmbeddedCassandraServerHelperTest {
 
 	@Test
 	public void shouldStartAndCleanAnEmbeddedCassandra() throws Exception {
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-		testIfTheEmbeddedCassandraServerIsUp();
+		testIfTheEmbeddedCassandraServerIsUpOnHost("127.0.0.1:9171");
 		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-		testIfTheEmbeddedCassandraServerIsUp();
+		testIfTheEmbeddedCassandraServerIsUpOnHost("127.0.0.1:9171");
 		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+		EmbeddedCassandraServerHelper.stopEmbeddedCassandra();
+	}
+
+	@Test
+	public void shouldStartTheEmbeddedCassandraServerWithAnotherCassandraYamlConf() throws Exception {
+		EmbeddedCassandraServerHelper.startEmbeddedCassandra("another-cassandra.yaml");
+		testIfTheEmbeddedCassandraServerIsUpOnHost("127.0.0.1:9175");
+		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+		EmbeddedCassandraServerHelper.stopEmbeddedCassandra();
 
 	}
 
-	private void testIfTheEmbeddedCassandraServerIsUp() {
-		Cluster cluster = HFactory.getOrCreateCluster("TestCluster", new CassandraHostConfigurator("127.0.0.1:9171"));
+	private void testIfTheEmbeddedCassandraServerIsUpOnHost(String hostAndPort) {
+		Cluster cluster = HFactory.getOrCreateCluster("TestCluster", new CassandraHostConfigurator(hostAndPort));
 		assertThat(cluster.getConnectionManager().getActivePools().size(), is(1));
 		KeyspaceDefinition keyspaceDefinition = cluster.describeKeyspace("system");
 		assertThat(keyspaceDefinition, notNullValue());
 		assertThat(keyspaceDefinition.getReplicationFactor(), is(1));
 	}
+
 }
