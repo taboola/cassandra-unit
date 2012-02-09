@@ -25,7 +25,12 @@ https://github.com/jsevellec/cassandra-unit/wiki
 and you can watch cassandra-unit-examples project.
 https://github.com/jsevellec/cassandra-unit-examples
 
+Mailing List :
+--------------
+cassandra-unit-users@googlegroups.com (http://groups.google.com/group/cassandra-unit-users)
+
 License :
 ---------
 This project is licensed under LGPL V3.0 :
 http://www.gnu.org/licenses/gpl-3.0.html
+
