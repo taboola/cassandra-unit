@@ -1,11 +1,11 @@
 WELCOME to CassandraUnit
 ========================
 
+Everything is in the wiki : 
 https://github.com/jsevellec/cassandra-unit/wiki
 
 What is it?
 -----------
-
 Like over *Unit project, CassandraUnit is a Java utility test tool.
 It helps you create your Java Application with Cassandra Database backend.
 CassandraUnit is for Cassandra what DBUnit is for Relational Database.
@@ -17,23 +17,20 @@ Main features :
 - Start an embedded Cassandra.
 - Create structure (keyspace and Column family's) and load Data from an XML, JSON or YAML DataSet.
 
-Using/Compatibility :
----------------
-- Cassandra 1.0.X
-- Hector 1.0-X
-
 Where to start :
 ----------------
-You can start watching Unit tests in the cassandra-unit-examples project.
+You can start by reading the wiki : 
+https://github.com/jsevellec/cassandra-unit/wiki
+
+and you can watch cassandra-unit-examples project.
 https://github.com/jsevellec/cassandra-unit-examples
 
-How to use it in your project :
-----------------
-- cassandra-unit available in public maven repository
-- you can build it using maven : mvn install
-
+Mailing List :
+--------------
+cassandra-unit-users@googlegroups.com (http://groups.google.com/group/cassandra-unit-users)
 
 License :
 ---------
 This project is licensed under LGPL V3.0 :
 http://www.gnu.org/licenses/gpl-3.0.html
+

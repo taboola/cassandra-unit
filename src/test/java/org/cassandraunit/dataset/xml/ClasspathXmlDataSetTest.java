@@ -10,6 +10,7 @@ import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
+import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.RowModel;
@@ -52,16 +53,15 @@ public class ClasspathXmlDataSetTest {
 	}
 
 	@Test
-	public void shouldNotGetAXmlDataSet() {
+	public void shouldNotGetAXmlDataSetBecauseItIsInvalid() {
 		try {
 			DataSet dataSet = new ClassPathXmlDataSet("xml/invalidDataSet.xml");
 			dataSet.getKeyspace();
 			fail();
 		} catch (ParseException e) {
 			/* nothing to do, it what we want */
-			assertThat(
-					e.getMessage(),
-					is("javax.xml.bind.UnmarshalException\n - with linked exception:\n[org.xml.sax.SAXParseException: cvc-complex-type.2.4.a: Invalid content was found starting with element 'columnFamily'. One of '{\"http://xml.dataset.cassandraunit.org\":columnFamilies}' is expected.]"));
+			assertThat(StringUtils.contains(e.getMessage(),
+					"Invalid content was found starting with element 'columnFamily'"), is(Boolean.TRUE));
 		}
 	}
 
