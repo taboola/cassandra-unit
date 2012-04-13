@@ -285,10 +285,18 @@ public class ClasspathJsonDataSetTest {
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
 
-		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnName(),
+        assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnName(),
+                is("columnWithIndexAndIndexNameAndUTF8ValidationClass"));
+        assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(),
+                is(ColumnIndexType.KEYS));
+        assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
+                is(ComparatorType.UTF8TYPE));
+        assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getIndexName(),is("indexNameOfTheIndex"));
+
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getColumnName(),
 				is("columnWithUTF8ValidationClass"));
-		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(), nullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getValidationClass(),
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getColumnIndexType(), nullValue());
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
 	}
 

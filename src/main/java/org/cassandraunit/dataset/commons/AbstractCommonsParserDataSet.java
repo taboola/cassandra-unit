@@ -177,7 +177,10 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 		if (parsedColumnMetadata.getIndexType() != null) {
 			columnMetadata.setColumnIndexType(ColumnIndexType.valueOf(parsedColumnMetadata.getIndexType().name()));
 		}
-		columnMetadata.setIndexName(parsedColumnMetadata.getIndexName());
+
+        if (parsedColumnMetadata.getIndexName() != null) {
+            columnMetadata.setIndexName(parsedColumnMetadata.getIndexName());
+        }
 
 		return columnMetadata;
 	}

@@ -10,6 +10,12 @@
             "indexType" : "KEYS"
         },
         {
+            "name" : "columnWithIndexAndIndexNameAndUTF8ValidationClass",
+            "validationClass" : "UTF8Type",
+            "indexType" : "KEYS",
+            "indexName" : "indexNameOfTheIndex"
+        },
+        {
             "name" : "columnWithUTF8ValidationClass",
             "validationClass" : "UTF8Type"
         }]
