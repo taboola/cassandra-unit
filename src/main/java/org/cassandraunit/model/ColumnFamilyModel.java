@@ -22,6 +22,8 @@ public class ColumnFamilyModel {
 	private ComparatorType subComparatorType = null;
 	private ComparatorType defaultColumnValueType = null;
 
+    private String comment = "";
+
 	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
 
 	private List<RowModel> rows = new ArrayList<RowModel>();
@@ -114,4 +116,11 @@ public class ColumnFamilyModel {
 		this.keyTypeAlias = keyTypeAlias;
 	}
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

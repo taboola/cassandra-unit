@@ -31,6 +31,7 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.OrderedSuperRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.SuperRow;
+import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
@@ -154,14 +155,16 @@ public class DataLoaderTest {
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().size(), is(3));
 
 		String firstColumnFamilyName = "beautifulColumnFamilyName";
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(0).getName(), is(firstColumnFamilyName));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(0).getKeyValidationClass(),
+        ColumnFamilyDefinition beautifulColumnFamily = cluster.describeKeyspace(keyspaceName).getCfDefs().get(0);
+        assertThat(beautifulColumnFamily.getName(), is(firstColumnFamilyName));
+		assertThat(beautifulColumnFamily.getKeyValidationClass(),
 				is(ComparatorType.TIMEUUIDTYPE.getClassName()));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(0).getColumnType(), is(ColumnType.SUPER));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(0).getComparatorType().getClassName(),
+		assertThat(beautifulColumnFamily.getColumnType(), is(ColumnType.SUPER));
+		assertThat(beautifulColumnFamily.getComparatorType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(0).getSubComparatorType().getClassName(),
+		assertThat(beautifulColumnFamily.getSubComparatorType().getClassName(),
 				is(ComparatorType.LONGTYPE.getClassName()));
+        assertThat(beautifulColumnFamily.getComment(), is("amazing comment"));
 
 		String secondColumnFamilyName = "amazingColumnFamilyName";
 		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().get(2).getName(), is(secondColumnFamilyName));

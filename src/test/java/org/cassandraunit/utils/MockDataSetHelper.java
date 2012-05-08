@@ -102,13 +102,16 @@ public class MockDataSetHelper {
 		List<ColumnFamilyModel> columnFamilies = new ArrayList<ColumnFamilyModel>();
 
 		/* column family 1 */
-		ColumnFamilyModel columnFamily1 = new ColumnFamilyModel();
-		columnFamily1.setName("beautifulColumnFamilyName");
-		columnFamily1.setType(ColumnType.SUPER);
-		columnFamily1.setKeyType(ComparatorType.TIMEUUIDTYPE);
-		columnFamily1.setComparatorType(ComparatorType.UTF8TYPE);
-		columnFamily1.setSubComparatorType(ComparatorType.LONGTYPE);
-		columnFamily1.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+		ColumnFamilyModel beautifulColumnFamily = new ColumnFamilyModel();
+		beautifulColumnFamily.setName("beautifulColumnFamilyName");
+		beautifulColumnFamily.setType(ColumnType.SUPER);
+		beautifulColumnFamily.setKeyType(ComparatorType.TIMEUUIDTYPE);
+		beautifulColumnFamily.setComparatorType(ComparatorType.UTF8TYPE);
+		beautifulColumnFamily.setSubComparatorType(ComparatorType.LONGTYPE);
+		beautifulColumnFamily.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+
+        beautifulColumnFamily.setComment("amazing comment");
+
 		List<RowModel> rows = new ArrayList<RowModel>();
 
 		/* row1 */
@@ -132,8 +135,8 @@ public class MockDataSetHelper {
 		row2.setSuperColumns(superColumns2);
 		rows.add(row2);
 
-		columnFamily1.setRows(rows);
-		columnFamilies.add(columnFamily1);
+		beautifulColumnFamily.setRows(rows);
+		columnFamilies.add(beautifulColumnFamily);
 
 		/* column family 2 */
 		ColumnFamilyModel columnFamily2 = new ColumnFamilyModel();

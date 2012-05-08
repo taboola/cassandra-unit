@@ -193,6 +193,7 @@ public class DataLoader {
 					ComparatorType.getByClassName(columnFamily.getComparatorType().getClassName()),
 					createColumnsDefinition(columnFamily.getColumnsMetadata()));
 			cfDef.setColumnType(columnFamily.getType());
+            cfDef.setComment(columnFamily.getComment());
 
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
