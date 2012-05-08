@@ -21,8 +21,8 @@ public class ColumnFamilyModel {
 	private String comparatorTypeAlias = "";
 	private ComparatorType subComparatorType = null;
 	private ComparatorType defaultColumnValueType = null;
-
     private String comment = "";
+    private String compactionStrategy = null;
 
 	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
 
@@ -122,5 +122,13 @@ public class ColumnFamilyModel {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getCompactionStrategy() {
+        return compactionStrategy;
+    }
+
+    public void setCompactionStrategy(String compactionStrategy) {
+        this.compactionStrategy = compactionStrategy;
     }
 }

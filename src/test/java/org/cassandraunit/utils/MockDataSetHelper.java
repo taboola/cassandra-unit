@@ -111,6 +111,7 @@ public class MockDataSetHelper {
 		beautifulColumnFamily.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
 
         beautifulColumnFamily.setComment("amazing comment");
+        beautifulColumnFamily.setCompactionStrategy("LeveledCompactionStrategy");
 
 		List<RowModel> rows = new ArrayList<RowModel>();
 
