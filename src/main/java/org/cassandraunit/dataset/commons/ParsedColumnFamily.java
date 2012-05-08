@@ -19,6 +19,7 @@ public class ParsedColumnFamily {
 	private ParsedDataType subComparatorType = null;
 	private ParsedDataType defaultColumnValueType = ParsedDataType.BytesType;
     private String comment = "";
+    private String compactionStrategy = null;
 	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
@@ -92,5 +93,13 @@ public class ParsedColumnFamily {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getCompactionStrategy() {
+        return compactionStrategy;
+    }
+
+    public void setCompactionStrategy(String compactionStrategy) {
+        this.compactionStrategy = compactionStrategy;
     }
 }

@@ -12,6 +12,7 @@
 			<subComparatorType>LongType</subComparatorType>
 			<defaultColumnValueType>UTF8Type</defaultColumnValueType>
             <comment>amazing comment</comment>
+            <compactionStrategy>LeveledCompactionStrategy</compactionStrategy>
 			<row>
 				<key>13816710-1dd2-11b2-879a-782bcb80ff6a</key>
 				<superColumn>

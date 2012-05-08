@@ -123,6 +123,7 @@ public class ClasspathXmlDataSetTest {
 		assertThat(beautifulColumnFamily.getDefaultColumnValueType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
         assertThat(beautifulColumnFamily.getComment(),is("amazing comment"));
+        assertThat(beautifulColumnFamily.getCompactionStrategy(),is("LeveledCompactionStrategy"));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));

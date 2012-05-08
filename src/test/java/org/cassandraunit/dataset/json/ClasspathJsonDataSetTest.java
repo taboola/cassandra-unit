@@ -160,6 +160,7 @@ public class ClasspathJsonDataSetTest {
 				is(ComparatorType.UTF8TYPE.getTypeName()));
 		assertThat(columnFamily1.getSubComparatorType(), is(nullValue()));
         assertThat(columnFamily1.getComment(),is("amazing comment"));
+        assertThat(columnFamily1.getCompactionStrategy(),is("LeveledCompactionStrategy"));
 
 		assertThat(columnFamily1.getRows(), notNullValue());
 		assertThat(columnFamily1.getRows().size(), is(1));

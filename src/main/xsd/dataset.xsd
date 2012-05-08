@@ -36,6 +36,7 @@
 			<element name="subComparatorType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
 			<element name="defaultColumnValueType" type="tns:DataType" minOccurs="0" maxOccurs="1" />
             <element name="comment" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="compactionStrategy" type="string" minOccurs="0" maxOccurs="1" />
 			<element name="columnMetadata" type="tns:ColumnMetadata" minOccurs="0" maxOccurs="unbounded" />
 			<element name="row" type="tns:Row" minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
