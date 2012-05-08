@@ -100,6 +100,8 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 			columnFamily.setType(ColumnType.valueOf(parsedColumnFamily.getType().toString()));
 		}
 
+        columnFamily.setComment(parsedColumnFamily.getComment());
+
 		/* keyType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {

@@ -12,6 +12,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
+import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -152,30 +153,32 @@ public class ClasspathYamlDataSetTest {
 		assertThat(dataSet.getColumnFamilies(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().size(), is(4));
 
-		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("columnFamily1"));
-		assertThat(dataSet.getColumnFamilies().get(0).getKeyType().getTypeName(),
+        ColumnFamilyModel columnFamily1 = dataSet.getColumnFamilies().get(0);
+        assertThat(columnFamily1, notNullValue());
+		assertThat(columnFamily1.getName(), is("columnFamily1"));
+		assertThat(columnFamily1.getKeyType().getTypeName(),
 				is(ComparatorType.UTF8TYPE.getTypeName()));
-		assertThat(dataSet.getColumnFamilies().get(0).getComparatorType().getTypeName(),
+		assertThat(columnFamily1.getComparatorType().getTypeName(),
 				is(ComparatorType.UTF8TYPE.getTypeName()));
-		assertThat(dataSet.getColumnFamilies().get(0).getSubComparatorType(), is(nullValue()));
+		assertThat(columnFamily1.getSubComparatorType(), is(nullValue()));
+        assertThat(columnFamily1.getComment(),is("amazing comment"));
 
-		assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().size(), is(1));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getKey().getValue(), is("key01"));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getKey().getType(),
+		assertThat(columnFamily1.getRows(), notNullValue());
+		assertThat(columnFamily1.getRows().size(), is(1));
+		assertThat(columnFamily1.getRows().get(0), notNullValue());
+		assertThat(columnFamily1.getRows().get(0).getKey().getValue(), is("key01"));
+		assertThat(columnFamily1.getRows().get(0).getKey().getType(),
 				is(GenericTypeEnum.UTF_8_TYPE));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns(), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().size(), is(1));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getName().getValue(),
+		assertThat(columnFamily1.getRows().get(0).getColumns(), notNullValue());
+		assertThat(columnFamily1.getRows().get(0).getColumns().size(), is(1));
+		assertThat(columnFamily1.getRows().get(0).getColumns().get(0), notNullValue());
+		assertThat(columnFamily1.getRows().get(0).getColumns().get(0).getName().getValue(),
 				is("columnName1"));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getName().getType(),
+		assertThat(columnFamily1.getRows().get(0).getColumns().get(0).getName().getType(),
 				is(GenericTypeEnum.UTF_8_TYPE));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getValue().getValue(),
+		assertThat(columnFamily1.getRows().get(0).getColumns().get(0).getValue().getValue(),
 				is("columnValue1"));
-		assertThat(dataSet.getColumnFamilies().get(0).getRows().get(0).getColumns().get(0).getValue().getType(),
+		assertThat(columnFamily1.getRows().get(0).getColumns().get(0).getValue().getType(),
 				is(GenericTypeEnum.UTF_8_TYPE));
 
 		assertThat(dataSet.getColumnFamilies().get(1), notNullValue());

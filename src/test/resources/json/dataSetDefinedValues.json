@@ -8,6 +8,7 @@
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
         "defaultColumnValueType" : "UTF8Type",
+        "comment" : "amazing comment",
         "rows" : [{
             "key" : "key01",
             "columns" : [{

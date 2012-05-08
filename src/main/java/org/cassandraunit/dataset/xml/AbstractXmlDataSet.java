@@ -124,6 +124,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 		if (xmlColumnFamily.getType() != null) {
 			columnFamily.setType(ColumnType.valueOf(xmlColumnFamily.getType().toString()));
 		}
+        columnFamily.setComment(xmlColumnFamily.getComment());
 
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {

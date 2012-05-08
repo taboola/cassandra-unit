@@ -13,6 +13,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
+import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.RowModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
@@ -109,17 +110,19 @@ public class ClasspathXmlDataSetTest {
 		DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
 		assertThat(dataSet.getColumnFamilies(), notNullValue());
 		assertThat(dataSet.getColumnFamilies().isEmpty(), is(false));
-		assertThat(dataSet.getColumnFamilies().get(0), notNullValue());
-		assertThat(dataSet.getColumnFamilies().get(0).getName(), is("beautifulColumnFamilyName"));
-		assertThat(dataSet.getColumnFamilies().get(0).getType(), is(ColumnType.SUPER));
-		assertThat(dataSet.getColumnFamilies().get(0).getKeyType().getClassName(),
+        ColumnFamilyModel beautifulColumnFamily = dataSet.getColumnFamilies().get(0);
+        assertThat(beautifulColumnFamily, notNullValue());
+		assertThat(beautifulColumnFamily.getName(), is("beautifulColumnFamilyName"));
+		assertThat(beautifulColumnFamily.getType(), is(ColumnType.SUPER));
+		assertThat(beautifulColumnFamily.getKeyType().getClassName(),
 				is(ComparatorType.TIMEUUIDTYPE.getClassName()));
-		assertThat(dataSet.getColumnFamilies().get(0).getComparatorType().getClassName(),
+		assertThat(beautifulColumnFamily.getComparatorType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
-		assertThat(dataSet.getColumnFamilies().get(0).getSubComparatorType().getClassName(),
+		assertThat(beautifulColumnFamily.getSubComparatorType().getClassName(),
 				is(ComparatorType.LONGTYPE.getClassName()));
-		assertThat(dataSet.getColumnFamilies().get(0).getDefaultColumnValueType().getClassName(),
+		assertThat(beautifulColumnFamily.getDefaultColumnValueType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
+        assertThat(beautifulColumnFamily.getComment(),is("amazing comment"));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));
