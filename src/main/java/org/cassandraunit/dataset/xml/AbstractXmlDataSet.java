@@ -32,9 +32,9 @@ import org.cassandraunit.utils.TypeExtractor;
 import org.xml.sax.SAXException;
 
 /**
- * 
+ *
  * @author Jeremy Sevellec
- * 
+ *
  */
 public abstract class AbstractXmlDataSet implements DataSet {
 
@@ -194,6 +194,8 @@ public abstract class AbstractXmlDataSet implements DataSet {
 			columnMetadata.setColumnIndexType(ColumnIndexType.valueOf(xmlColumnMetadata.getIndexType().value()));
 		}
 
+        columnMetadata.setIndexName(xmlColumnMetadata.getIndexName());
+
 		return columnMetadata;
 	}
 
@@ -226,7 +228,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 	/**
 	 * map an xml super columns to a super columns
-	 * 
+	 *
 	 * @param xmlSuperColumns
 	 *            xml super columns
 	 * @param subComparatorType
@@ -246,7 +248,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 	/**
 	 * map an xml super colmun to a super column
-	 * 
+	 *
 	 * @param xmlSuperColumn
 	 *            xml super column
 	 * @param subComparatorType
@@ -267,7 +269,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 	/**
 	 * map an xml column to a column
-	 * 
+	 *
 	 * @param xmlColumn
 	 *            xml column
 	 * @param typesBelongingCompositeTypeForComparatorType
@@ -308,7 +310,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
 	/**
 	 * map an xml columns to columns
-	 * 
+	 *
 	 * @param xmlColumns
 	 *            xml column
 	 * @param typesBelongingCompositeTypeForComparatorType

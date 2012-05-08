@@ -12,9 +12,15 @@
 				<indexType>KEYS</indexType>
 			</columnMetadata>
 			<columnMetadata>
-				<name>columnWithUTF8ValidationClass</name>
+				<name>columnWithIndexAndIndexNameAndUTF8ValidationClass</name>
 				<validationClass>UTF8Type</validationClass>
+                <indexType>KEYS</indexType>
+                <indexName>indexNameOfTheIndex</indexName>
 			</columnMetadata>
+            <columnMetadata>
+                <name>columnWithUTF8ValidationClass</name>
+                <validationClass>UTF8Type</validationClass>
+            </columnMetadata>
 		</columnFamily>
 	</columnFamilies>
 </keyspace>
