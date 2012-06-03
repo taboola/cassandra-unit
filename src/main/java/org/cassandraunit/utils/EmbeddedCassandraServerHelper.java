@@ -33,23 +33,23 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class EmbeddedCassandraServerHelper {
-
-	private static final String INTERNAL_CASSANDRA_KEYSPACE = "system";
-
+	
 	private static Logger log = LoggerFactory.getLogger(EmbeddedCassandraServerHelper.class);
 
-	private static final String TMP = "target/embeddedCassandra";
+	public static final String DEFAULT_TMP_DIR = "target/embeddedCassandra";
+	public static final String DEFAULT_CASSANDRA_YML_FILE = "cu-cassandra.yaml";
+	private static final String INTERNAL_CASSANDRA_KEYSPACE = "system";
 
 	private static CassandraDaemon cassandraDaemon = null;
 	static ExecutorService executor = Executors.newSingleThreadExecutor();
 
-	public EmbeddedCassandraServerHelper() {
-
-	}
-
 	public static void startEmbeddedCassandra() throws TTransportException, IOException, InterruptedException,
 			ConfigurationException {
-		startEmbeddedCassandra("cu-cassandra.yaml");
+		startEmbeddedCassandra(DEFAULT_CASSANDRA_YML_FILE);
+	}
+	
+	public static void startEmbeddedCassandra(String yamlFile) throws TTransportException, IOException, ConfigurationException {
+		startEmbeddedCassandra(yamlFile, DEFAULT_TMP_DIR);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class EmbeddedCassandraServerHelper {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void startEmbeddedCassandra(String yamlFile) throws TTransportException, IOException, ConfigurationException {
+	public static void startEmbeddedCassandra(String yamlFile, String tmpDir) throws TTransportException, IOException, ConfigurationException {
 
 		if (!StringUtils.startsWith(yamlFile, "/")) {
 			yamlFile = "/" + yamlFile;
@@ -68,12 +68,12 @@ public class EmbeddedCassandraServerHelper {
 		if (cassandraDaemon == null) {
 			log.debug("Starting cassandra...");
 			log.debug("Initialization needed");
-			rmdir(TMP);
-			copy("/log4j-embedded-cassandra.properties", TMP);
-			copy(yamlFile, TMP);
+			rmdir(tmpDir);
+			copy("/log4j-embedded-cassandra.properties", tmpDir);
+			copy(yamlFile, tmpDir);
 
-			System.setProperty("cassandra.config", "file:" + TMP + yamlFile);
-			System.setProperty("log4j.configuration", "file:" + TMP + "/log4j-embedded-cassandra.properties");
+			System.setProperty("cassandra.config", "file:" + tmpDir + yamlFile);
+			System.setProperty("log4j.configuration", "file:" + tmpDir + "/log4j-embedded-cassandra.properties");
 			System.setProperty("cassandra-foreground", "true");
 
 			cleanupAndLeaveDirs();
