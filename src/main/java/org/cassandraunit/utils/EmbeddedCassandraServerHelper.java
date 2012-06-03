@@ -1,14 +1,16 @@
 package org.cassandraunit.utils;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
@@ -57,8 +59,7 @@ public class EmbeddedCassandraServerHelper {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static void startEmbeddedCassandra(String yamlFile) throws TTransportException, IOException,
-			InterruptedException, ConfigurationException {
+	public static void startEmbeddedCassandra(String yamlFile) throws TTransportException, IOException, ConfigurationException {
 
 		if (!StringUtils.startsWith(yamlFile, "/")) {
 			yamlFile = "/" + yamlFile;
@@ -76,17 +77,19 @@ public class EmbeddedCassandraServerHelper {
 			System.setProperty("cassandra-foreground", "true");
 
 			cleanupAndLeaveDirs();
+			final CountDownLatch startupLatch = new CountDownLatch(1);
 			executor.execute(new Runnable() {
-
 				@Override
 				public void run() {
 					cassandraDaemon = new CassandraDaemon();
 					cassandraDaemon.activate();
+					startupLatch.countDown();
 				}
 			});
 			try {
-				TimeUnit.SECONDS.sleep(2);
+				startupLatch.await(10, SECONDS);
 			} catch (InterruptedException e) {
+				log.error("Interrupted waiting for Cassandra daemon to start:", e);
 				throw new AssertionError(e);
 			}
 		} else {
