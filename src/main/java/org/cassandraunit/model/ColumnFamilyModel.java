@@ -26,6 +26,7 @@ public class ColumnFamilyModel {
     private List<CompactionStrategyOptionModel> compactionStrategyOptions = null;
     private Integer gcGraceSeconds = null;
     private Integer keyCacheSavePeriodInSeconds = null;
+    private Double keyCacheSize = null;
 
 	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
@@ -157,5 +158,13 @@ public class ColumnFamilyModel {
 
     public void setKeyCacheSavePeriodInSeconds(Integer keyCacheSavePeriodInSeconds) {
         this.keyCacheSavePeriodInSeconds = keyCacheSavePeriodInSeconds;
+    }
+
+    public Double getKeyCacheSize() {
+        return keyCacheSize;
+    }
+
+    public void setKeyCacheSize(Double keyCacheSize) {
+        this.keyCacheSize = keyCacheSize;
     }
 }

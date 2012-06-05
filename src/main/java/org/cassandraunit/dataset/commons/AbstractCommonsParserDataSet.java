@@ -116,6 +116,10 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setKeyCacheSavePeriodInSeconds(parsedColumnFamily.getKeyCacheSavePeriodInSeconds());
         }
 
+        if (parsedColumnFamily.getKeyCacheSize() != null) {
+            columnFamily.setKeyCacheSize(parsedColumnFamily.getKeyCacheSize());
+        }
+
 		/* keyType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {

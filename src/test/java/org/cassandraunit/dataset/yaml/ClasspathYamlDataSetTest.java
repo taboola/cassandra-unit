@@ -167,6 +167,7 @@ public class ClasspathYamlDataSetTest {
         assertThat(columnFamily1.getCompactionStrategyOptions().get(0).getValue(),is("10"));
         assertThat(columnFamily1.getGcGraceSeconds(),is(9999));
         assertThat(columnFamily1.getKeyCacheSavePeriodInSeconds(),is(10000));
+        assertThat(columnFamily1.getKeyCacheSize(),is(199999d));
 
 		assertThat(columnFamily1.getRows(), notNullValue());
 		assertThat(columnFamily1.getRows().size(), is(1));
