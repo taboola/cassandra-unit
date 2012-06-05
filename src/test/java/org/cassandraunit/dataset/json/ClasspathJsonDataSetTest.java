@@ -163,6 +163,7 @@ public class ClasspathJsonDataSetTest {
         assertThat(columnFamily1.getCompactionStrategy(),is("LeveledCompactionStrategy"));
         assertThat(columnFamily1.getCompactionStrategyOptions().get(0).getName(),is("sstable_size_in_mb"));
         assertThat(columnFamily1.getCompactionStrategyOptions().get(0).getValue(),is("10"));
+        assertThat(columnFamily1.getGcGraceSeconds(),is(9999));
 
 		assertThat(columnFamily1.getRows(), notNullValue());
 		assertThat(columnFamily1.getRows().size(), is(1));

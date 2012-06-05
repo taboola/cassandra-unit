@@ -191,6 +191,7 @@ public class DataLoader {
 					createColumnsDefinition(columnFamily.getColumnsMetadata()));
 			cfDef.setColumnType(columnFamily.getType());
             cfDef.setComment(columnFamily.getComment());
+
             if (columnFamily.getCompactionStrategy() != null) {
                 cfDef.setCompactionStrategy(columnFamily.getCompactionStrategy());
             }
@@ -201,6 +202,10 @@ public class DataLoader {
                     compactionStrategyOptions.put(compactionStrategyOption.getName(),compactionStrategyOption.getValue());
                 }
                 cfDef.setCompactionStrategyOptions(compactionStrategyOptions);
+            }
+
+            if (columnFamily.getGcGraceSeconds() != null) {
+                cfDef.setGcGraceSeconds(columnFamily.getGcGraceSeconds());
             }
 
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());

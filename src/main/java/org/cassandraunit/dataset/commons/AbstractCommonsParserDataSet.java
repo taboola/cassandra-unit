@@ -108,6 +108,10 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setCompactionStrategyOptions(compactionStrategyOptionModels);
         }
 
+        if (parsedColumnFamily.getGcGraceSeconds() != null) {
+            columnFamily.setGcGraceSeconds(parsedColumnFamily.getGcGraceSeconds());
+        }
+
 		/* keyType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {

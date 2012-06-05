@@ -130,6 +130,10 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setCompactionStrategyOptions(compactionStrategyOptionModels);
         }
 
+        if (xmlColumnFamily.getGcGraceSeconds() != null) {
+            columnFamily.setGcGraceSeconds(xmlColumnFamily.getGcGraceSeconds());
+        }
+
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {
 			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getKeyType());

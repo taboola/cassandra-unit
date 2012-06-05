@@ -126,6 +126,7 @@ public class ClasspathXmlDataSetTest {
         assertThat(beautifulColumnFamily.getCompactionStrategy(),is("LeveledCompactionStrategy"));
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getName(),is("sstable_size_in_mb"));
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getValue(),is("10"));
+        assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));

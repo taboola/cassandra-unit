@@ -21,6 +21,7 @@ public class ParsedColumnFamily {
     private String comment = "";
     private String compactionStrategy = null;
     private List<ParsedCompactionStrategyOption> compactionStrategyOptions = null;
+    private Integer gcGraceSeconds = null;
 	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
@@ -110,5 +111,13 @@ public class ParsedColumnFamily {
 
     public void setCompactionStrategyOptions(List<ParsedCompactionStrategyOption> compactionStrategyOptions) {
         this.compactionStrategyOptions = compactionStrategyOptions;
+    }
+
+    public Integer getGcGraceSeconds() {
+        return gcGraceSeconds;
+    }
+
+    public void setGcGraceSeconds(Integer gcGraceSeconds) {
+        this.gcGraceSeconds = gcGraceSeconds;
     }
 }

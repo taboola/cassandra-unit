@@ -24,6 +24,7 @@ public class ColumnFamilyModel {
     private String comment = "";
     private String compactionStrategy = null;
     private List<CompactionStrategyOptionModel> compactionStrategyOptions = null;
+    private Integer gcGraceSeconds = null;
 
 	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
@@ -139,5 +140,13 @@ public class ColumnFamilyModel {
 
     public void setCompactionStrategyOptions(List<CompactionStrategyOptionModel> compactionStrategyOptions) {
         this.compactionStrategyOptions = compactionStrategyOptions;
+    }
+
+    public Integer getGcGraceSeconds() {
+        return gcGraceSeconds;
+    }
+
+    public void setGcGraceSeconds(Integer gcGraceSeconds) {
+        this.gcGraceSeconds = gcGraceSeconds;
     }
 }
