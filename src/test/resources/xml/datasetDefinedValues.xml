@@ -20,6 +20,7 @@
                 </compactionStrategyOption>
             </compactionStrategyOptions>
             <gcGraceSeconds>9999</gcGraceSeconds>
+            <keyCacheSavePeriodInSeconds>10000</keyCacheSavePeriodInSeconds>
 			<row>
 				<key>13816710-1dd2-11b2-879a-782bcb80ff6a</key>
 				<superColumn>

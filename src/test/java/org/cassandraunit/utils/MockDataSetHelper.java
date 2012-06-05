@@ -110,6 +110,7 @@ public class MockDataSetHelper {
         compactionStrategyOptions.add(new CompactionStrategyOptionModel("sstable_size_in_mb", "10"));
         beautifulColumnFamily.setCompactionStrategyOptions(compactionStrategyOptions);
         beautifulColumnFamily.setGcGraceSeconds(9999);
+        beautifulColumnFamily.setKeyCacheSavePeriodInSeconds(10000);
 
 		List<RowModel> rows = new ArrayList<RowModel>();
 

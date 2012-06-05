@@ -15,6 +15,7 @@
             "value": "10"
         }],
         "gcGraceSeconds" : "9999",
+        "keyCacheSavePeriodInSeconds" : "10000",
         "rows" : [{
             "key" : "key01",
             "columns" : [{

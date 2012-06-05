@@ -22,6 +22,7 @@ public class ParsedColumnFamily {
     private String compactionStrategy = null;
     private List<ParsedCompactionStrategyOption> compactionStrategyOptions = null;
     private Integer gcGraceSeconds = null;
+    private Integer keyCacheSavePeriodInSeconds = null;
 	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
@@ -119,5 +120,13 @@ public class ParsedColumnFamily {
 
     public void setGcGraceSeconds(Integer gcGraceSeconds) {
         this.gcGraceSeconds = gcGraceSeconds;
+    }
+
+    public Integer getKeyCacheSavePeriodInSeconds() {
+        return keyCacheSavePeriodInSeconds;
+    }
+
+    public void setKeyCacheSavePeriodInSeconds(Integer keyCacheSavePeriodInSeconds) {
+        this.keyCacheSavePeriodInSeconds = keyCacheSavePeriodInSeconds;
     }
 }

@@ -134,6 +134,10 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setGcGraceSeconds(xmlColumnFamily.getGcGraceSeconds());
         }
 
+        if (xmlColumnFamily.getKeyCacheSavePeriodInSeconds() != null) {
+            columnFamily.setKeyCacheSavePeriodInSeconds(xmlColumnFamily.getKeyCacheSavePeriodInSeconds());
+        }
+
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {
 			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getKeyType());

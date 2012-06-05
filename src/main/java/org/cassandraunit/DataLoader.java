@@ -208,6 +208,10 @@ public class DataLoader {
                 cfDef.setGcGraceSeconds(columnFamily.getGcGraceSeconds());
             }
 
+            if (columnFamily.getKeyCacheSavePeriodInSeconds() != null) {
+                cfDef.setKeyCacheSavePeriodInSeconds(columnFamily.getKeyCacheSavePeriodInSeconds());
+            }
+
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
 			if (columnFamily.getDefaultColumnValueType() != null) {
