@@ -124,6 +124,8 @@ public class ClasspathXmlDataSetTest {
 				is(ComparatorType.UTF8TYPE.getClassName()));
         assertThat(beautifulColumnFamily.getComment(),is("amazing comment"));
         assertThat(beautifulColumnFamily.getCompactionStrategy(),is("LeveledCompactionStrategy"));
+        assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getName(),is("sstable_size_in_mb"));
+        assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getValue(),is("10"));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));

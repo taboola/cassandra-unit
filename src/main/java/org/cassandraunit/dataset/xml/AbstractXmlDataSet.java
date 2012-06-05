@@ -1,35 +1,27 @@
 package org.cassandraunit.dataset.xml;
 
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
+import me.prettyprint.hector.api.ddl.ColumnType;
+import me.prettyprint.hector.api.ddl.ComparatorType;
+import org.apache.commons.lang.StringUtils;
+import org.cassandraunit.dataset.DataSet;
+import org.cassandraunit.dataset.ParseException;
+import org.cassandraunit.model.*;
+import org.cassandraunit.type.GenericType;
+import org.cassandraunit.type.GenericTypeEnum;
+import org.cassandraunit.utils.ComparatorTypeHelper;
+import org.cassandraunit.utils.TypeExtractor;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
-import me.prettyprint.hector.api.ddl.ColumnIndexType;
-import me.prettyprint.hector.api.ddl.ColumnType;
-import me.prettyprint.hector.api.ddl.ComparatorType;
-
-import org.apache.commons.lang.StringUtils;
-import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.model.ColumnFamilyModel;
-import org.cassandraunit.model.ColumnMetadata;
-import org.cassandraunit.model.ColumnModel;
-import org.cassandraunit.model.KeyspaceModel;
-import org.cassandraunit.model.RowModel;
-import org.cassandraunit.model.StrategyModel;
-import org.cassandraunit.model.SuperColumnModel;
-import org.cassandraunit.type.GenericType;
-import org.cassandraunit.type.GenericTypeEnum;
-import org.cassandraunit.utils.ComparatorTypeHelper;
-import org.cassandraunit.utils.TypeExtractor;
-import org.xml.sax.SAXException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -130,6 +122,14 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setCompactionStrategy(xmlColumnFamily.getCompactionStrategy());
         }
 
+        if (xmlColumnFamily.getCompactionStrategyOptions() != null) {
+            List<CompactionStrategyOptionModel> compactionStrategyOptionModels = new ArrayList<CompactionStrategyOptionModel>();
+            for (CompactionStrategyOption compactionStrategyOption : xmlColumnFamily.getCompactionStrategyOptions().getCompactionStrategyOption()) {
+                compactionStrategyOptionModels.add(new CompactionStrategyOptionModel(compactionStrategyOption.getName(),compactionStrategyOption.getValue()));
+            }
+            columnFamily.setCompactionStrategyOptions(compactionStrategyOptionModels);
+        }
+
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {
 			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getKeyType());
@@ -177,21 +177,21 @@ public abstract class AbstractXmlDataSet implements DataSet {
 		return columnFamily;
 	}
 
-	private List<ColumnMetadata> mapXmlColumsMetadataToColumnsMetadata(
+	private List<ColumnMetadataModel> mapXmlColumsMetadataToColumnsMetadata(
 			List<org.cassandraunit.dataset.xml.ColumnMetadata> xmlColumnsMetadata) {
 
-		ArrayList<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
+		ArrayList<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
 		for (org.cassandraunit.dataset.xml.ColumnMetadata xmlColumnMetadata : xmlColumnsMetadata) {
-			columnsMetadata.add(mapXmlColumnMetadataToColumMetadata(xmlColumnMetadata));
+			columnsMetadata.add(mapXmlColumnMetadataToColumMetadataModel(xmlColumnMetadata));
 		}
 
 		return columnsMetadata;
 	}
 
-	private ColumnMetadata mapXmlColumnMetadataToColumMetadata(
-			org.cassandraunit.dataset.xml.ColumnMetadata xmlColumnMetadata) {
-		ColumnMetadata columnMetadata = new ColumnMetadata();
+	private ColumnMetadataModel mapXmlColumnMetadataToColumMetadataModel(
+            ColumnMetadata xmlColumnMetadata) {
+		ColumnMetadataModel columnMetadata = new ColumnMetadataModel();
 		columnMetadata.setColumnName(xmlColumnMetadata.getName());
 		columnMetadata
 				.setValidationClass(ComparatorType.getByClassName(xmlColumnMetadata.getValidationClass().value()));

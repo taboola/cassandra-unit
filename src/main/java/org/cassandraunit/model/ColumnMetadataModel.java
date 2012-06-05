@@ -10,18 +10,18 @@ import org.apache.cassandra.thrift.IndexType;
  * @author Jeremy Sevellec
  * 
  */
-public class ColumnMetadata {
+public class ColumnMetadataModel {
 
 	private String columnName = null;
 	private ComparatorType validationClass = null;
 	private ColumnIndexType columnIndexType = null;
 	private String indexName = null;
 
-	public ColumnMetadata() {
+	public ColumnMetadataModel() {
 		super();
 	}
 
-	public ColumnMetadata(String columnName, ComparatorType validationClass, ColumnIndexType columnIndexType, String indexName) {
+	public ColumnMetadataModel(String columnName, ComparatorType validationClass, ColumnIndexType columnIndexType, String indexName) {
 		super();
 		this.columnName = columnName;
 		this.validationClass = validationClass;

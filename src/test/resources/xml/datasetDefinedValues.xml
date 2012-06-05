@@ -13,6 +13,12 @@
 			<defaultColumnValueType>UTF8Type</defaultColumnValueType>
             <comment>amazing comment</comment>
             <compactionStrategy>LeveledCompactionStrategy</compactionStrategy>
+            <compactionStrategyOptions>
+                <compactionStrategyOption>
+                    <name>sstable_size_in_mb</name>
+                    <value>10</value>
+                </compactionStrategyOption>
+            </compactionStrategyOptions>
 			<row>
 				<key>13816710-1dd2-11b2-879a-782bcb80ff6a</key>
 				<superColumn>

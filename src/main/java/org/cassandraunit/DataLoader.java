@@ -2,7 +2,9 @@ package org.cassandraunit;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.serializers.LongSerializer;
@@ -21,12 +23,7 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 
 import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.model.ColumnFamilyModel;
-import org.cassandraunit.model.ColumnMetadata;
-import org.cassandraunit.model.ColumnModel;
-import org.cassandraunit.model.KeyspaceModel;
-import org.cassandraunit.model.RowModel;
-import org.cassandraunit.model.SuperColumnModel;
+import org.cassandraunit.model.*;
 import org.cassandraunit.serializer.GenericTypeSerializer;
 import org.cassandraunit.type.GenericType;
 import org.slf4j.Logger;
@@ -198,6 +195,14 @@ public class DataLoader {
                 cfDef.setCompactionStrategy(columnFamily.getCompactionStrategy());
             }
 
+            if (columnFamily.getCompactionStrategyOptions() != null && !columnFamily.getCompactionStrategyOptions().isEmpty()) {
+                Map<String,String> compactionStrategyOptions = new HashMap<String,String>();
+                for (CompactionStrategyOptionModel compactionStrategyOption : columnFamily.getCompactionStrategyOptions()) {
+                    compactionStrategyOptions.put(compactionStrategyOption.getName(),compactionStrategyOption.getValue());
+                }
+                cfDef.setCompactionStrategyOptions(compactionStrategyOptions);
+            }
+
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
 			if (columnFamily.getDefaultColumnValueType() != null) {
@@ -217,9 +222,9 @@ public class DataLoader {
 		return columnFamilyDefinitions;
 	}
 
-	private List<ColumnDefinition> createColumnsDefinition(List<ColumnMetadata> columnsMetadata) {
+	private List<ColumnDefinition> createColumnsDefinition(List<ColumnMetadataModel> columnsMetadata) {
 		List<ColumnDefinition> columnsDefinition = new ArrayList<ColumnDefinition>();
-		for (ColumnMetadata columnMetadata : columnsMetadata) {
+		for (ColumnMetadataModel columnMetadata : columnsMetadata) {
 			BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
 
 			String columnName = columnMetadata.getColumnName();

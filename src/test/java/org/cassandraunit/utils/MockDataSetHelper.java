@@ -11,13 +11,7 @@ import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.model.ColumnFamilyModel;
-import org.cassandraunit.model.ColumnMetadata;
-import org.cassandraunit.model.ColumnModel;
-import org.cassandraunit.model.KeyspaceModel;
-import org.cassandraunit.model.RowModel;
-import org.cassandraunit.model.StrategyModel;
-import org.cassandraunit.model.SuperColumnModel;
+import org.cassandraunit.model.*;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 
@@ -112,6 +106,10 @@ public class MockDataSetHelper {
 
         beautifulColumnFamily.setComment("amazing comment");
         beautifulColumnFamily.setCompactionStrategy("LeveledCompactionStrategy");
+        List<CompactionStrategyOptionModel> compactionStrategyOptions = new ArrayList<CompactionStrategyOptionModel>();
+        compactionStrategyOptions.add(new CompactionStrategyOptionModel("sstable_size_in_mb", "10"));
+        beautifulColumnFamily.setCompactionStrategyOptions(compactionStrategyOptions);
+
 
 		List<RowModel> rows = new ArrayList<RowModel>();
 
@@ -156,12 +154,12 @@ public class MockDataSetHelper {
 		columnFamilyWithSecondaryIndex.setKeyType(ComparatorType.UTF8TYPE);
 		columnFamilyWithSecondaryIndex.setComparatorType(ComparatorType.UTF8TYPE);
 		columnFamilyWithSecondaryIndex.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadataModel(
 				"columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS, null));
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata(
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadataModel(
 				"columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS, 
 				"columnWithSecondaryIndexHaveIndexNameAndValidationClassAsUTF8Type"));
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadata("columnWithValidationClassAsUTF8Type",
+		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadataModel("columnWithValidationClassAsUTF8Type",
 				ComparatorType.UTF8TYPE, null, null));
 
 		columnFamilies.add(columnFamilyWithSecondaryIndex);

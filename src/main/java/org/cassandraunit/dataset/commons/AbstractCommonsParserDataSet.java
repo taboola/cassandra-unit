@@ -10,13 +10,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.model.ColumnFamilyModel;
-import org.cassandraunit.model.ColumnMetadata;
-import org.cassandraunit.model.ColumnModel;
-import org.cassandraunit.model.KeyspaceModel;
-import org.cassandraunit.model.RowModel;
-import org.cassandraunit.model.StrategyModel;
-import org.cassandraunit.model.SuperColumnModel;
+import org.cassandraunit.model.*;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.cassandraunit.utils.ComparatorTypeHelper;
@@ -106,6 +100,14 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setCompactionStrategy(parsedColumnFamily.getCompactionStrategy());
         }
 
+        if (parsedColumnFamily.getCompactionStrategyOptions() != null && !parsedColumnFamily.getCompactionStrategyOptions().isEmpty()) {
+            List<CompactionStrategyOptionModel> compactionStrategyOptionModels = new ArrayList<CompactionStrategyOptionModel>();
+            for (ParsedCompactionStrategyOption parsedCompactionStrategyOption : parsedColumnFamily.getCompactionStrategyOptions()) {
+                 compactionStrategyOptionModels.add(new CompactionStrategyOptionModel(parsedCompactionStrategyOption.getName(),parsedCompactionStrategyOption.getValue()));
+            }
+            columnFamily.setCompactionStrategyOptions(compactionStrategyOptionModels);
+        }
+
 		/* keyType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {
@@ -158,16 +160,16 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 		return columnFamily;
 	}
 
-	private List<ColumnMetadata> mapParsedColumsMetadataToColumnsMetadata(
+	private List<ColumnMetadataModel> mapParsedColumsMetadataToColumnsMetadata(
 			List<ParsedColumnMetadata> parsedColumnsMetadata) {
-		List<ColumnMetadata> columnMetadatas = new ArrayList<ColumnMetadata>();
+		List<ColumnMetadataModel> columnMetadatas = new ArrayList<ColumnMetadataModel>();
 		for (ParsedColumnMetadata parsedColumnMetadata : parsedColumnsMetadata) {
 			columnMetadatas.add(mapParsedColumMetadataToColumnMetadata(parsedColumnMetadata));
 		}
 		return columnMetadatas;
 	}
 
-	private ColumnMetadata mapParsedColumMetadataToColumnMetadata(ParsedColumnMetadata parsedColumnMetadata) {
+	private ColumnMetadataModel mapParsedColumMetadataToColumnMetadata(ParsedColumnMetadata parsedColumnMetadata) {
 		if (parsedColumnMetadata.getName() == null) {
 			throw new ParseException("column metadata name can't be empty");
 		}
@@ -176,7 +178,7 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 			throw new ParseException("column metadata validation class can't be empty");
 		}
 
-		ColumnMetadata columnMetadata = new ColumnMetadata();
+		ColumnMetadataModel columnMetadata = new ColumnMetadataModel();
 		columnMetadata.setColumnName(parsedColumnMetadata.getName());
 		columnMetadata.setValidationClass(ComparatorType.getByClassName(parsedColumnMetadata.getValidationClass()
 				.name()));

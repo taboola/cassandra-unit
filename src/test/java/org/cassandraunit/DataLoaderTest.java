@@ -166,6 +166,7 @@ public class DataLoaderTest {
 				is(ComparatorType.LONGTYPE.getClassName()));
         assertThat(beautifulColumnFamily.getComment(), is("amazing comment"));
         assertThat(beautifulColumnFamily.getCompactionStrategy(),is("org.apache.cassandra.db.compaction.LeveledCompactionStrategy"));
+        assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get("sstable_size_in_mb"),is("10"));
 
 		String secondColumnFamilyName = "amazingColumnFamilyName";
         ColumnFamilyDefinition amazingColumnFamily = cluster.describeKeyspace(keyspaceName).getCfDefs().get(2);

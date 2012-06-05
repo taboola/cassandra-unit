@@ -23,8 +23,9 @@ public class ColumnFamilyModel {
 	private ComparatorType defaultColumnValueType = null;
     private String comment = "";
     private String compactionStrategy = null;
+    private List<CompactionStrategyOptionModel> compactionStrategyOptions = null;
 
-	private List<ColumnMetadata> columnsMetadata = new ArrayList<ColumnMetadata>();
+	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
 	private List<RowModel> rows = new ArrayList<RowModel>();
 
@@ -88,15 +89,15 @@ public class ColumnFamilyModel {
 		return defaultColumnValueType != null && defaultColumnValueType.equals(ComparatorType.COUNTERTYPE);
 	}
 
-	public List<ColumnMetadata> getColumnsMetadata() {
+	public List<ColumnMetadataModel> getColumnsMetadata() {
 		return columnsMetadata;
 	}
 
-	public void setColumnsMetadata(List<ColumnMetadata> columnsMetadata) {
+	public void setColumnsMetadata(List<ColumnMetadataModel> columnsMetadata) {
 		this.columnsMetadata = columnsMetadata;
 	}
 
-	public void addColumnMetadata(ColumnMetadata columnMetadata) {
+	public void addColumnMetadata(ColumnMetadataModel columnMetadata) {
 		columnsMetadata.add(columnMetadata);
 	}
 
@@ -130,5 +131,13 @@ public class ColumnFamilyModel {
 
     public void setCompactionStrategy(String compactionStrategy) {
         this.compactionStrategy = compactionStrategy;
+    }
+
+    public List<CompactionStrategyOptionModel> getCompactionStrategyOptions() {
+        return compactionStrategyOptions;
+    }
+
+    public void setCompactionStrategyOptions(List<CompactionStrategyOptionModel> compactionStrategyOptions) {
+        this.compactionStrategyOptions = compactionStrategyOptions;
     }
 }
