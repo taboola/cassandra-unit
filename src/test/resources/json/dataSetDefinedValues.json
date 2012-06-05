@@ -17,6 +17,8 @@
         "gcGraceSeconds" : "9999",
         "keyCacheSavePeriodInSeconds" : "10000",
         "keyCacheSize" : "199999",
+        "maxCompactionThreshold" : "31",
+        "minCompactionThreshold" : "3",
         "rows" : [{
             "key" : "key01",
             "columns" : [{

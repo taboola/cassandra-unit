@@ -129,6 +129,8 @@ public class ClasspathXmlDataSetTest {
         assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
         assertThat(beautifulColumnFamily.getKeyCacheSavePeriodInSeconds(),is(10000));
         assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
+        assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
+        assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));

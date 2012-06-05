@@ -170,6 +170,9 @@ public class DataLoaderTest {
         assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
         assertThat(beautifulColumnFamily.getKeyCacheSavePeriodInSeconds(),is(10000));
         assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
+        assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
+        assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));
+
 
 		String secondColumnFamilyName = "amazingColumnFamilyName";
         ColumnFamilyDefinition amazingColumnFamily = cluster.describeKeyspace(keyspaceName).getCfDefs().get(2);

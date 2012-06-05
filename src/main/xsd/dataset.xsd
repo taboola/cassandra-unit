@@ -41,6 +41,8 @@
             <element name="gcGraceSeconds" type="int" minOccurs="0" maxOccurs="1" />
             <element name="keyCacheSavePeriodInSeconds" type="int" minOccurs="0" maxOccurs="1" />
             <element name="keyCacheSize" type="double" minOccurs="0" maxOccurs="1" />
+            <element name="maxCompactionThreshold" type="int" minOccurs="0" maxOccurs="1" />
+            <element name="minCompactionThreshold" type="int" minOccurs="0" maxOccurs="1" />
 			<element name="columnMetadata" type="tns:ColumnMetadata" minOccurs="0" maxOccurs="unbounded" />
 			<element name="row" type="tns:Row" minOccurs="0" maxOccurs="unbounded" />
 		</sequence>

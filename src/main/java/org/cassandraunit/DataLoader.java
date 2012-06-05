@@ -216,6 +216,14 @@ public class DataLoader {
                 cfDef.setKeyCacheSavePeriodInSeconds(columnFamily.getKeyCacheSavePeriodInSeconds());
             }
 
+            if (columnFamily.getMaxCompactionThreshold() != null) {
+                cfDef.setMaxCompactionThreshold(columnFamily.getMaxCompactionThreshold());
+            }
+
+            if (columnFamily.getMinCompactionThreshold() != null) {
+                cfDef.setMinCompactionThreshold(columnFamily.getMinCompactionThreshold());
+            }
+
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
 			if (columnFamily.getDefaultColumnValueType() != null) {

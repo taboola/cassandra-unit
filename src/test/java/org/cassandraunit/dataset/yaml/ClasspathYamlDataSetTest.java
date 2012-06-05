@@ -4,6 +4,7 @@ import static org.cassandraunit.SampleDataSetChecker.assertThatKeyspaceModelWith
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
@@ -168,6 +169,8 @@ public class ClasspathYamlDataSetTest {
         assertThat(columnFamily1.getGcGraceSeconds(),is(9999));
         assertThat(columnFamily1.getKeyCacheSavePeriodInSeconds(),is(10000));
         assertThat(columnFamily1.getKeyCacheSize(),is(199999d));
+        assertThat(columnFamily1.getMaxCompactionThreshold(),is(31));
+        assertThat(columnFamily1.getMinCompactionThreshold(),is(3));
 
 		assertThat(columnFamily1.getRows(), notNullValue());
 		assertThat(columnFamily1.getRows().size(), is(1));

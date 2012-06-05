@@ -27,6 +27,8 @@ public class ColumnFamilyModel {
     private Integer gcGraceSeconds = null;
     private Integer keyCacheSavePeriodInSeconds = null;
     private Double keyCacheSize = null;
+    private Integer maxCompactionThreshold = null;
+    private Integer minCompactionThreshold = null;
 
 	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
@@ -166,5 +168,21 @@ public class ColumnFamilyModel {
 
     public void setKeyCacheSize(Double keyCacheSize) {
         this.keyCacheSize = keyCacheSize;
+    }
+
+    public Integer getMaxCompactionThreshold() {
+        return maxCompactionThreshold;
+    }
+
+    public void setMaxCompactionThreshold(Integer maxCompactionThreshold) {
+        this.maxCompactionThreshold = maxCompactionThreshold;
+    }
+
+    public Integer getMinCompactionThreshold() {
+        return minCompactionThreshold;
+    }
+
+    public void setMinCompactionThreshold(Integer minCompactionThreshold) {
+        this.minCompactionThreshold = minCompactionThreshold;
     }
 }

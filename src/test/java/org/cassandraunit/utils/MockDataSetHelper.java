@@ -112,6 +112,8 @@ public class MockDataSetHelper {
         beautifulColumnFamily.setGcGraceSeconds(9999);
         beautifulColumnFamily.setKeyCacheSavePeriodInSeconds(10000);
         beautifulColumnFamily.setKeyCacheSize(199999d);
+        beautifulColumnFamily.setMaxCompactionThreshold(31);
+        beautifulColumnFamily.setMinCompactionThreshold(3);
 
 
 		List<RowModel> rows = new ArrayList<RowModel>();
