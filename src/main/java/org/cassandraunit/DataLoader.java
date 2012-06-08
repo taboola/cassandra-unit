@@ -212,10 +212,6 @@ public class DataLoader {
                 cfDef.setKeyCacheSize(columnFamily.getKeyCacheSize());
             }
 
-            if (columnFamily.getKeyCacheSavePeriodInSeconds() != null) {
-                cfDef.setKeyCacheSavePeriodInSeconds(columnFamily.getKeyCacheSavePeriodInSeconds());
-            }
-
             if (columnFamily.getMaxCompactionThreshold() != null) {
                 cfDef.setMaxCompactionThreshold(columnFamily.getMaxCompactionThreshold());
             }

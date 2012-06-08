@@ -6,17 +6,13 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
-
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.dataset.xml.ClassPathXmlDataSet;
 import org.cassandraunit.model.ColumnFamilyModel;
-import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
@@ -164,7 +160,6 @@ public class ClasspathJsonDataSetTest {
         assertThat(columnFamily1.getCompactionStrategyOptions().get(0).getName(),is("sstable_size_in_mb"));
         assertThat(columnFamily1.getCompactionStrategyOptions().get(0).getValue(),is("10"));
         assertThat(columnFamily1.getGcGraceSeconds(),is(9999));
-        assertThat(columnFamily1.getKeyCacheSavePeriodInSeconds(),is(10000));
         assertThat(columnFamily1.getKeyCacheSize(),is(199999d));
         assertThat(columnFamily1.getMaxCompactionThreshold(),is(31));
         assertThat(columnFamily1.getMinCompactionThreshold(),is(3));

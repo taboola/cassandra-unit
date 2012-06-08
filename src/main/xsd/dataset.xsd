@@ -39,7 +39,6 @@
             <element name="compactionStrategy" type="string" minOccurs="0" maxOccurs="1" />
             <element name="compactionStrategyOptions" type="tns:CompactionStrategyOptions" minOccurs="0" maxOccurs="1" />
             <element name="gcGraceSeconds" type="int" minOccurs="0" maxOccurs="1" />
-            <element name="keyCacheSavePeriodInSeconds" type="int" minOccurs="0" maxOccurs="1" />
             <element name="keyCacheSize" type="double" minOccurs="0" maxOccurs="1" />
             <element name="maxCompactionThreshold" type="int" minOccurs="0" maxOccurs="1" />
             <element name="minCompactionThreshold" type="int" minOccurs="0" maxOccurs="1" />

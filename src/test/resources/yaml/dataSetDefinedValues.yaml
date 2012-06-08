@@ -13,7 +13,6 @@ columnFamilies:
   - name: sstable_size_in_mb
     value: 10
   gcGraceSeconds: 9999
-  keyCacheSavePeriodInSeconds: 10000
   keyCacheSize : 199999
   maxCompactionThreshold : 31
   minCompactionThreshold : 3

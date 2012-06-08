@@ -25,7 +25,6 @@ public class ColumnFamilyModel {
     private String compactionStrategy = null;
     private List<CompactionStrategyOptionModel> compactionStrategyOptions = null;
     private Integer gcGraceSeconds = null;
-    private Integer keyCacheSavePeriodInSeconds = null;
     private Double keyCacheSize = null;
     private Integer maxCompactionThreshold = null;
     private Integer minCompactionThreshold = null;
@@ -155,14 +154,6 @@ public class ColumnFamilyModel {
 
     public void setGcGraceSeconds(Integer gcGraceSeconds) {
         this.gcGraceSeconds = gcGraceSeconds;
-    }
-
-    public Integer getKeyCacheSavePeriodInSeconds() {
-        return keyCacheSavePeriodInSeconds;
-    }
-
-    public void setKeyCacheSavePeriodInSeconds(Integer keyCacheSavePeriodInSeconds) {
-        this.keyCacheSavePeriodInSeconds = keyCacheSavePeriodInSeconds;
     }
 
     public Double getKeyCacheSize() {

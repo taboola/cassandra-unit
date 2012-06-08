@@ -127,7 +127,6 @@ public class ClasspathXmlDataSetTest {
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getName(),is("sstable_size_in_mb"));
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getValue(),is("10"));
         assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
-        assertThat(beautifulColumnFamily.getKeyCacheSavePeriodInSeconds(),is(10000));
         assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
         assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
         assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));

@@ -112,10 +112,6 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setGcGraceSeconds(parsedColumnFamily.getGcGraceSeconds());
         }
 
-        if (parsedColumnFamily.getKeyCacheSavePeriodInSeconds() != null) {
-            columnFamily.setKeyCacheSavePeriodInSeconds(parsedColumnFamily.getKeyCacheSavePeriodInSeconds());
-        }
-
         if (parsedColumnFamily.getKeyCacheSize() != null) {
             columnFamily.setKeyCacheSize(parsedColumnFamily.getKeyCacheSize());
         }

@@ -134,10 +134,6 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setGcGraceSeconds(xmlColumnFamily.getGcGraceSeconds());
         }
 
-        if (xmlColumnFamily.getKeyCacheSavePeriodInSeconds() != null) {
-            columnFamily.setKeyCacheSavePeriodInSeconds(xmlColumnFamily.getKeyCacheSavePeriodInSeconds());
-        }
-
         if (xmlColumnFamily.getKeyCacheSize() != null) {
             columnFamily.setKeyCacheSize(xmlColumnFamily.getKeyCacheSize());
         }

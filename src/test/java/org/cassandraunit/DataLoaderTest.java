@@ -168,7 +168,6 @@ public class DataLoaderTest {
         assertThat(beautifulColumnFamily.getCompactionStrategy(),is("org.apache.cassandra.db.compaction.LeveledCompactionStrategy"));
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get("sstable_size_in_mb"),is("10"));
         assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
-        assertThat(beautifulColumnFamily.getKeyCacheSavePeriodInSeconds(),is(10000));
         assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
         assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
         assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));

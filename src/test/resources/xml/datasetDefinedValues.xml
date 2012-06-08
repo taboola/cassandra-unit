@@ -20,7 +20,6 @@
                 </compactionStrategyOption>
             </compactionStrategyOptions>
             <gcGraceSeconds>9999</gcGraceSeconds>
-            <keyCacheSavePeriodInSeconds>10000</keyCacheSavePeriodInSeconds>
             <keyCacheSize>199999</keyCacheSize>
             <maxCompactionThreshold>31</maxCompactionThreshold>
             <minCompactionThreshold>3</minCompactionThreshold>
