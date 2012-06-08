@@ -112,10 +112,6 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setGcGraceSeconds(parsedColumnFamily.getGcGraceSeconds());
         }
 
-        if (parsedColumnFamily.getKeyCacheSize() != null) {
-            columnFamily.setKeyCacheSize(parsedColumnFamily.getKeyCacheSize());
-        }
-
         if (parsedColumnFamily.getMaxCompactionThreshold() != null) {
             columnFamily.setMaxCompactionThreshold(parsedColumnFamily.getMaxCompactionThreshold());
         }
@@ -130,10 +126,6 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 
         if (parsedColumnFamily.getReplicationOnWrite() != null) {
             columnFamily.setReplicationOnWrite(parsedColumnFamily.getReplicationOnWrite());
-        }
-
-        if (parsedColumnFamily.getReadRepairChance() != null) {
-            columnFamily.setRowCacheSize(parsedColumnFamily.getRowCacheSize());
         }
 
 		/* keyType */

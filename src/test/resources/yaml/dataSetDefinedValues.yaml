@@ -13,12 +13,10 @@ columnFamilies:
   - name: sstable_size_in_mb
     value: 10
   gcGraceSeconds: 9999
-  keyCacheSize : 199999
   maxCompactionThreshold : 31
   minCompactionThreshold : 3
   readRepairChance : 0.1
   replicationOnWrite : false
-  rowCacheSize : 111
   rows:
   - key: key01
     columns:

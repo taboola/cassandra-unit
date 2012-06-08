@@ -22,12 +22,10 @@ public class ParsedColumnFamily {
     private String compactionStrategy = null;
     private List<ParsedCompactionStrategyOption> compactionStrategyOptions = null;
     private Integer gcGraceSeconds = null;
-    private Double keyCacheSize = null;
     private Integer maxCompactionThreshold = null;
     private Integer minCompactionThreshold = null;
     private Double readRepairChance = null;
     private Boolean replicationOnWrite = null;
-    private Double rowCacheSize = null;
 	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
@@ -127,14 +125,6 @@ public class ParsedColumnFamily {
         this.gcGraceSeconds = gcGraceSeconds;
     }
 
-    public Double getKeyCacheSize() {
-        return keyCacheSize;
-    }
-
-    public void setKeyCacheSize(Double keyCacheSize) {
-        this.keyCacheSize = keyCacheSize;
-    }
-
     public Integer getMaxCompactionThreshold() {
         return maxCompactionThreshold;
     }
@@ -165,13 +155,5 @@ public class ParsedColumnFamily {
 
     public void setReplicationOnWrite(Boolean replicationOnWrite) {
         this.replicationOnWrite = replicationOnWrite;
-    }
-
-    public Double getRowCacheSize() {
-        return rowCacheSize;
-    }
-
-    public void setRowCacheSize(Double rowCacheSize) {
-        this.rowCacheSize = rowCacheSize;
     }
 }

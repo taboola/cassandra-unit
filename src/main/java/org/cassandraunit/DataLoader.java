@@ -208,10 +208,6 @@ public class DataLoader {
                 cfDef.setGcGraceSeconds(columnFamily.getGcGraceSeconds());
             }
 
-            if (columnFamily.getKeyCacheSize() != null) {
-                cfDef.setKeyCacheSize(columnFamily.getKeyCacheSize());
-            }
-
             if (columnFamily.getMaxCompactionThreshold() != null) {
                 cfDef.setMaxCompactionThreshold(columnFamily.getMaxCompactionThreshold());
             }
@@ -226,10 +222,6 @@ public class DataLoader {
 
             if (columnFamily.getReplicationOnWrite() != null) {
                 cfDef.setReplicateOnWrite(columnFamily.getReplicationOnWrite());
-            }
-
-            if (columnFamily.getRowCacheSize() != null) {
-                cfDef.setRowCacheSize(columnFamily.getRowCacheSize());
             }
 
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());

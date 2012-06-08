@@ -11,8 +11,11 @@ import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
@@ -31,10 +34,7 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.OrderedSuperRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.SuperRow;
-import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
-import me.prettyprint.hector.api.ddl.ColumnIndexType;
-import me.prettyprint.hector.api.ddl.ColumnType;
-import me.prettyprint.hector.api.ddl.ComparatorType;
+import me.prettyprint.hector.api.ddl.*;
 import me.prettyprint.hector.api.exceptions.HInvalidRequestException;
 import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
@@ -47,6 +47,7 @@ import me.prettyprint.hector.api.query.SuperSliceCounterQuery;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.http.annotation.Immutable;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.cassandraunit.utils.MockDataSetHelper;
@@ -151,14 +152,21 @@ public class DataLoaderTest {
 		Cluster cluster = HFactory.getOrCreateCluster(clusterName, host);
 		String keyspaceName = "otherKeyspaceName";
 		assertThat(cluster.describeKeyspace(keyspaceName), notNullValue());
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs(), notNullValue());
-		assertThat(cluster.describeKeyspace(keyspaceName).getCfDefs().size(), is(3));
+        List<ColumnFamilyDefinition> columnFamilyDefinitions = cluster.describeKeyspace(keyspaceName).getCfDefs();
+        assertThat(columnFamilyDefinitions, notNullValue());
+		assertThat(columnFamilyDefinitions.size(), is(5));
 
-		String firstColumnFamilyName = "beautifulColumnFamilyName";
-        ColumnFamilyDefinition beautifulColumnFamily = cluster.describeKeyspace(keyspaceName).getCfDefs().get(0);
-        assertThat(beautifulColumnFamily.getName(), is(firstColumnFamilyName));
+        Map<String,ColumnFamilyDefinition> columnFamilyDefinitionsMap = Maps.uniqueIndex(columnFamilyDefinitions, new Function<ColumnFamilyDefinition, String>() {
+            @Override
+            public String apply(ColumnFamilyDefinition columnFamilyDefinition) {
+                return columnFamilyDefinition.getName();
+            }
+        });
+
+        ColumnFamilyDefinition beautifulColumnFamily = columnFamilyDefinitionsMap.get("beautifulColumnFamilyName");
+        assertThat(beautifulColumnFamily.getName(), is("beautifulColumnFamilyName"));
 		assertThat(beautifulColumnFamily.getKeyValidationClass(),
-				is(ComparatorType.TIMEUUIDTYPE.getClassName()));
+                is(ComparatorType.TIMEUUIDTYPE.getClassName()));
 		assertThat(beautifulColumnFamily.getColumnType(), is(ColumnType.SUPER));
 		assertThat(beautifulColumnFamily.getComparatorType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
@@ -168,55 +176,58 @@ public class DataLoaderTest {
         assertThat(beautifulColumnFamily.getCompactionStrategy(),is("org.apache.cassandra.db.compaction.LeveledCompactionStrategy"));
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get("sstable_size_in_mb"),is("10"));
         assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
-        assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
         assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
         assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));
         assertThat(beautifulColumnFamily.getReadRepairChance(),is(0.1d));
         assertThat(beautifulColumnFamily.isReplicateOnWrite(),is(false));
-        assertThat(beautifulColumnFamily.getRowCacheSize(),is(111d));
 
 
-		String secondColumnFamilyName = "amazingColumnFamilyName";
-        ColumnFamilyDefinition amazingColumnFamily = cluster.describeKeyspace(keyspaceName).getCfDefs().get(2);
-        assertThat(amazingColumnFamily.getName(), is(secondColumnFamilyName));
+        ColumnFamilyDefinition amazingColumnFamily = columnFamilyDefinitionsMap.get("amazingColumnFamilyName");
+        assertThat(amazingColumnFamily.getName(), is("amazingColumnFamilyName"));
 		assertThat(amazingColumnFamily.getKeyValidationClass(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
 		assertThat(amazingColumnFamily.getColumnType(), is(ColumnType.STANDARD));
 		assertThat(amazingColumnFamily.getComparatorType().getClassName(),
 				is(ComparatorType.UTF8TYPE.getClassName()));
 
-		String thirdColumnFamilyName = "columnFamilyWithSecondaryIndex";
-        ColumnFamilyDefinition columnFamilyWithSecondaryIndex = cluster.describeKeyspace(keyspaceName).getCfDefs().get(1);
-        assertThat(columnFamilyWithSecondaryIndex.getName(), is(thirdColumnFamilyName));
+
+        ColumnFamilyDefinition columnFamilyWithSecondaryIndex = columnFamilyDefinitionsMap.get("columnFamilyWithSecondaryIndex");
+        assertThat(columnFamilyWithSecondaryIndex.getName(), is("columnFamilyWithSecondaryIndex"));
 		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata(), notNullValue());
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(0), notNullValue());
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(0).getName(),
+        ColumnDefinition columnDefinition = columnFamilyWithSecondaryIndex.getColumnMetadata().get(0);
+        assertThat(columnDefinition, notNullValue());
+		assertThat(columnDefinition.getName(),
 				is(ByteBuffer.wrap("columnWithSecondaryIndexAndValidationClassAsLongType".getBytes(Charsets.UTF_8))));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(0).getIndexName(),
+		assertThat(columnDefinition.getIndexName(),
 				is("columnWithSecondaryIndexAndValidationClassAsLongType"));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(0).getIndexType(),
+		assertThat(columnDefinition.getIndexType(),
 				is(ColumnIndexType.KEYS));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(0)
+		assertThat(columnDefinition
 				.getValidationClass(), is(ComparatorType.LONGTYPE.getClassName()));
 
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(1), notNullValue());
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(1).getIndexName(),
+
+        ColumnFamilyDefinition columnFamilyWithSecondaryIndexAndIndexName = columnFamilyDefinitionsMap.get("columnFamilyWithSecondaryIndexAndIndexName");
+        ColumnDefinition columnDefinition1 = columnFamilyWithSecondaryIndexAndIndexName.getColumnMetadata().get(0);
+        assertThat(columnDefinition1, notNullValue());
+		assertThat(columnDefinition1.getIndexName(),
 				is("columnWithSecondaryIndexHaveIndexNameAndValidationClassAsUTF8Type"));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(1).getName(),
+		assertThat(columnDefinition1.getName(),
 				is(ByteBuffer.wrap("columnWithSecondaryIndexAndValidationClassAsUTF8Type".getBytes(Charsets.UTF_8))));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(1).getIndexType(),
+		assertThat(columnDefinition1.getIndexType(),
 				is(ColumnIndexType.KEYS));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(1)
+		assertThat(columnDefinition1
 				.getValidationClass(), is(ComparatorType.UTF8TYPE.getClassName()));
 
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(2), notNullValue());
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(1).getName(),
-				is(ByteBuffer.wrap("columnWithSecondaryIndexAndValidationClassAsUTF8Type".getBytes(Charsets.UTF_8))));
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(2).getIndexName(),
+        ColumnFamilyDefinition columnFamilyWithColumnValidationClass = columnFamilyDefinitionsMap.get("columnFamilyWithColumnValidationClass");
+        ColumnDefinition columnDefinition2 = columnFamilyWithColumnValidationClass.getColumnMetadata().get(0);
+        assertThat(columnDefinition2, notNullValue());
+		assertThat(columnDefinition2.getName(),
+				is(ByteBuffer.wrap("columnWithValidationClassAsUTF8Type".getBytes(Charsets.UTF_8))));
+		assertThat(columnDefinition2.getIndexName(),
 				nullValue());
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(2).getIndexType(),
+		assertThat(columnDefinition2.getIndexType(),
 				nullValue());
-		assertThat(columnFamilyWithSecondaryIndex.getColumnMetadata().get(2)
+		assertThat(columnDefinition2
 				.getValidationClass(), is(ComparatorType.UTF8TYPE.getClassName()));
 
 	}

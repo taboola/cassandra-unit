@@ -134,10 +134,6 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setGcGraceSeconds(xmlColumnFamily.getGcGraceSeconds());
         }
 
-        if (xmlColumnFamily.getKeyCacheSize() != null) {
-            columnFamily.setKeyCacheSize(xmlColumnFamily.getKeyCacheSize());
-        }
-
         if (xmlColumnFamily.getMaxCompactionThreshold() != null) {
             columnFamily.setMaxCompactionThreshold(xmlColumnFamily.getMaxCompactionThreshold());
         }
@@ -154,9 +150,6 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setReplicationOnWrite(xmlColumnFamily.isReplicationOnWrite());
         }
 
-        if (xmlColumnFamily.getRowCacheSize() != null) {
-            columnFamily.setRowCacheSize(xmlColumnFamily.getRowCacheSize());
-        }
 
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {

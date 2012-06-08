@@ -25,14 +25,12 @@ public class ColumnFamilyModel {
     private String compactionStrategy = null;
     private List<CompactionStrategyOptionModel> compactionStrategyOptions = null;
     private Integer gcGraceSeconds = null;
-    private Double keyCacheSize = null;
     private Integer maxCompactionThreshold = null;
     private Integer minCompactionThreshold = null;
     private Double readRepairChance = null;
     private Boolean replicationOnWrite = null;
-    private Double rowCacheSize = null;
 
-	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
+    private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
 	private List<RowModel> rows = new ArrayList<RowModel>();
 
@@ -156,14 +154,6 @@ public class ColumnFamilyModel {
         this.gcGraceSeconds = gcGraceSeconds;
     }
 
-    public Double getKeyCacheSize() {
-        return keyCacheSize;
-    }
-
-    public void setKeyCacheSize(Double keyCacheSize) {
-        this.keyCacheSize = keyCacheSize;
-    }
-
     public Integer getMaxCompactionThreshold() {
         return maxCompactionThreshold;
     }
@@ -196,11 +186,4 @@ public class ColumnFamilyModel {
         this.replicationOnWrite = replicationOnWrite;
     }
 
-    public Double getRowCacheSize() {
-        return rowCacheSize;
-    }
-
-    public void setRowCacheSize(Double rowCacheSize) {
-        this.rowCacheSize = rowCacheSize;
-    }
 }

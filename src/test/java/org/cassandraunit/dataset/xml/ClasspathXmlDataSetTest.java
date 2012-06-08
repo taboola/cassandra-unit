@@ -127,12 +127,10 @@ public class ClasspathXmlDataSetTest {
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getName(),is("sstable_size_in_mb"));
         assertThat(beautifulColumnFamily.getCompactionStrategyOptions().get(0).getValue(),is("10"));
         assertThat(beautifulColumnFamily.getGcGraceSeconds(),is(9999));
-        assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
         assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
         assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));
         assertThat(beautifulColumnFamily.getReadRepairChance(),is(0.1d));
         assertThat(beautifulColumnFamily.getReplicationOnWrite(),is(Boolean.FALSE));
-        assertThat(beautifulColumnFamily.getRowCacheSize(),is(111d));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));

@@ -110,12 +110,10 @@ public class MockDataSetHelper {
         compactionStrategyOptions.add(new CompactionStrategyOptionModel("sstable_size_in_mb", "10"));
         beautifulColumnFamily.setCompactionStrategyOptions(compactionStrategyOptions);
         beautifulColumnFamily.setGcGraceSeconds(9999);
-        beautifulColumnFamily.setKeyCacheSize(199999d);
         beautifulColumnFamily.setMaxCompactionThreshold(31);
         beautifulColumnFamily.setMinCompactionThreshold(3);
         beautifulColumnFamily.setReadRepairChance(0.1d);
         beautifulColumnFamily.setReplicationOnWrite(Boolean.FALSE);
-        beautifulColumnFamily.setRowCacheSize(111d);
 
 
 		List<RowModel> rows = new ArrayList<RowModel>();
@@ -155,21 +153,40 @@ public class MockDataSetHelper {
 		columnFamilies.add(columnFamily2);
 
 		/* column family 3 with index */
-		ColumnFamilyModel columnFamilyWithSecondaryIndex = new ColumnFamilyModel();
-		columnFamilyWithSecondaryIndex.setName("columnFamilyWithSecondaryIndex");
-		columnFamilyWithSecondaryIndex.setType(ColumnType.STANDARD);
-		columnFamilyWithSecondaryIndex.setKeyType(ComparatorType.UTF8TYPE);
-		columnFamilyWithSecondaryIndex.setComparatorType(ComparatorType.UTF8TYPE);
-		columnFamilyWithSecondaryIndex.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadataModel(
-				"columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS, null));
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadataModel(
-				"columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS, 
-				"columnWithSecondaryIndexHaveIndexNameAndValidationClassAsUTF8Type"));
-		columnFamilyWithSecondaryIndex.addColumnMetadata(new ColumnMetadataModel("columnWithValidationClassAsUTF8Type",
-				ComparatorType.UTF8TYPE, null, null));
+		ColumnFamilyModel columnFamily3 = new ColumnFamilyModel();
+		columnFamily3.setName("columnFamilyWithSecondaryIndex");
+		columnFamily3.setType(ColumnType.STANDARD);
+		columnFamily3.setKeyType(ComparatorType.UTF8TYPE);
+		columnFamily3.setComparatorType(ComparatorType.UTF8TYPE);
+		columnFamily3.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+		columnFamily3.addColumnMetadata(new ColumnMetadataModel(
+                "columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS, null));
+		columnFamilies.add(columnFamily3);
 
-		columnFamilies.add(columnFamilyWithSecondaryIndex);
+        /* column family 4 with index */
+        ColumnFamilyModel columnFamily4 = new ColumnFamilyModel();
+        columnFamily4.setName("columnFamilyWithSecondaryIndexAndIndexName");
+        columnFamily4.setType(ColumnType.STANDARD);
+        columnFamily4.setKeyType(ComparatorType.UTF8TYPE);
+        columnFamily4.setComparatorType(ComparatorType.UTF8TYPE);
+        columnFamily4.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+        columnFamily4.addColumnMetadata(new ColumnMetadataModel(
+                "columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS,
+                "columnWithSecondaryIndexHaveIndexNameAndValidationClassAsUTF8Type"));
+
+        columnFamilies.add(columnFamily4);
+
+        /* column family 5 with column validation class */
+        ColumnFamilyModel columnFamily5 = new ColumnFamilyModel();
+        columnFamily5.setName("columnFamilyWithColumnValidationClass");
+        columnFamily5.setType(ColumnType.STANDARD);
+        columnFamily5.setKeyType(ComparatorType.UTF8TYPE);
+        columnFamily5.setComparatorType(ComparatorType.UTF8TYPE);
+        columnFamily5.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
+        columnFamily5.addColumnMetadata(new ColumnMetadataModel("columnWithValidationClassAsUTF8Type",
+                ComparatorType.UTF8TYPE, null, null));
+
+        columnFamilies.add(columnFamily5);
 
 		keyspace.setColumnFamilies(columnFamilies);
 
