@@ -172,6 +172,8 @@ public class DataLoaderTest {
         assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
         assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
         assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));
+        assertThat(beautifulColumnFamily.getReadRepairChance(),is(0.1d));
+        assertThat(beautifulColumnFamily.isReplicateOnWrite(),is(false));
 
 
 		String secondColumnFamilyName = "amazingColumnFamilyName";

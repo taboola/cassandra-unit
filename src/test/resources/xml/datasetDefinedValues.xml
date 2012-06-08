@@ -24,6 +24,8 @@
             <keyCacheSize>199999</keyCacheSize>
             <maxCompactionThreshold>31</maxCompactionThreshold>
             <minCompactionThreshold>3</minCompactionThreshold>
+            <readRepairChance>0.1</readRepairChance>
+            <replicationOnWrite>false</replicationOnWrite>
 			<row>
 				<key>13816710-1dd2-11b2-879a-782bcb80ff6a</key>
 				<superColumn>

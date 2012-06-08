@@ -29,6 +29,8 @@ public class ColumnFamilyModel {
     private Double keyCacheSize = null;
     private Integer maxCompactionThreshold = null;
     private Integer minCompactionThreshold = null;
+    private Double readRepairChance = null;
+    private Boolean replicationOnWrite = null;
 
 	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
@@ -184,5 +186,21 @@ public class ColumnFamilyModel {
 
     public void setMinCompactionThreshold(Integer minCompactionThreshold) {
         this.minCompactionThreshold = minCompactionThreshold;
+    }
+
+    public Double getReadRepairChance() {
+        return readRepairChance;
+    }
+
+    public void setReadRepairChance(Double readRepairChance) {
+        this.readRepairChance = readRepairChance;
+    }
+
+    public Boolean getReplicationOnWrite() {
+        return replicationOnWrite;
+    }
+
+    public void setReplicationOnWrite(Boolean replicationOnWrite) {
+        this.replicationOnWrite = replicationOnWrite;
     }
 }

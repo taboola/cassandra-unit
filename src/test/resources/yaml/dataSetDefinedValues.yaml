@@ -17,6 +17,8 @@ columnFamilies:
   keyCacheSize : 199999
   maxCompactionThreshold : 31
   minCompactionThreshold : 3
+  readRepairChance : 0.1
+  replicationOnWrite : false
   rows:
   - key: key01
     columns:

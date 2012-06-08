@@ -131,6 +131,8 @@ public class ClasspathXmlDataSetTest {
         assertThat(beautifulColumnFamily.getKeyCacheSize(),is(199999d));
         assertThat(beautifulColumnFamily.getMaxCompactionThreshold(),is(31));
         assertThat(beautifulColumnFamily.getMinCompactionThreshold(),is(3));
+        assertThat(beautifulColumnFamily.getReadRepairChance(),is(0.1d));
+        assertThat(beautifulColumnFamily.getReplicationOnWrite(),is(Boolean.FALSE));
 
 		assertThat(dataSet.getColumnFamilies().get(1).getName(), is("amazingColumnFamilyName"));
 		assertThat(dataSet.getColumnFamilies().get(1).getType(), is(ColumnType.STANDARD));

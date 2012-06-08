@@ -150,6 +150,14 @@ public abstract class AbstractXmlDataSet implements DataSet {
             columnFamily.setMinCompactionThreshold(xmlColumnFamily.getMinCompactionThreshold());
         }
 
+        if (xmlColumnFamily.getReadRepairChance() != null) {
+            columnFamily.setReadRepairChance(xmlColumnFamily.getReadRepairChance());
+        }
+
+        if (xmlColumnFamily.isReplicationOnWrite() != null) {
+            columnFamily.setReplicationOnWrite(xmlColumnFamily.isReplicationOnWrite());
+        }
+
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (xmlColumnFamily.getKeyType() != null) {
 			ComparatorType keyType = ComparatorTypeHelper.verifyAndExtract(xmlColumnFamily.getKeyType());

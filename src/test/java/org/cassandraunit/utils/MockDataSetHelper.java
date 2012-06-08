@@ -114,6 +114,8 @@ public class MockDataSetHelper {
         beautifulColumnFamily.setKeyCacheSize(199999d);
         beautifulColumnFamily.setMaxCompactionThreshold(31);
         beautifulColumnFamily.setMinCompactionThreshold(3);
+        beautifulColumnFamily.setReadRepairChance(0.1d);
+        beautifulColumnFamily.setReplicationOnWrite(Boolean.FALSE);
 
 
 		List<RowModel> rows = new ArrayList<RowModel>();

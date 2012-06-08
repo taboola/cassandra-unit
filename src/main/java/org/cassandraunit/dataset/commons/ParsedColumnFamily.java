@@ -26,6 +26,8 @@ public class ParsedColumnFamily {
     private Double keyCacheSize = null;
     private Integer maxCompactionThreshold = null;
     private Integer minCompactionThreshold = null;
+    private Double readRepairChance = null;
+    private Boolean replicationOnWrite = null;
 	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
@@ -155,5 +157,21 @@ public class ParsedColumnFamily {
 
     public void setMinCompactionThreshold(Integer minCompactionThreshold) {
         this.minCompactionThreshold = minCompactionThreshold;
+    }
+
+    public Double getReadRepairChance() {
+        return readRepairChance;
+    }
+
+    public void setReadRepairChance(Double readRepairChance) {
+        this.readRepairChance = readRepairChance;
+    }
+
+    public Boolean getReplicationOnWrite() {
+        return replicationOnWrite;
+    }
+
+    public void setReplicationOnWrite(Boolean replicationOnWrite) {
+        this.replicationOnWrite = replicationOnWrite;
     }
 }

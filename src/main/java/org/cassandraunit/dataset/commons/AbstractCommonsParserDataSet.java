@@ -128,6 +128,14 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setMinCompactionThreshold(parsedColumnFamily.getMinCompactionThreshold());
         }
 
+        if (parsedColumnFamily.getReadRepairChance() != null) {
+            columnFamily.setReadRepairChance(parsedColumnFamily.getReadRepairChance());
+        }
+
+        if (parsedColumnFamily.getReplicationOnWrite() != null) {
+            columnFamily.setReplicationOnWrite(parsedColumnFamily.getReplicationOnWrite());
+        }
+
 		/* keyType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {

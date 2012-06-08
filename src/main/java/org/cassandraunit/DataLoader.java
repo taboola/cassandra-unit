@@ -224,6 +224,14 @@ public class DataLoader {
                 cfDef.setMinCompactionThreshold(columnFamily.getMinCompactionThreshold());
             }
 
+            if (columnFamily.getReadRepairChance() != null) {
+                cfDef.setReadRepairChance(columnFamily.getReadRepairChance());
+            }
+
+            if (columnFamily.getReplicationOnWrite() != null) {
+                cfDef.setReplicateOnWrite(columnFamily.getReplicationOnWrite());
+            }
+
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
 			if (columnFamily.getDefaultColumnValueType() != null) {
