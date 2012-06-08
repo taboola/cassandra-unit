@@ -232,6 +232,10 @@ public class DataLoader {
                 cfDef.setReplicateOnWrite(columnFamily.getReplicationOnWrite());
             }
 
+            if (columnFamily.getRowCacheSize() != null) {
+                cfDef.setRowCacheSize(columnFamily.getRowCacheSize());
+            }
+
 			cfDef.setKeyValidationClass(columnFamily.getKeyType().getTypeName() + columnFamily.getKeyTypeAlias());
 
 			if (columnFamily.getDefaultColumnValueType() != null) {

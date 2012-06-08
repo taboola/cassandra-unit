@@ -28,6 +28,7 @@ public class ParsedColumnFamily {
     private Integer minCompactionThreshold = null;
     private Double readRepairChance = null;
     private Boolean replicationOnWrite = null;
+    private Double rowCacheSize = null;
 	private List<ParsedColumnMetadata> columnsMetadata = new ArrayList<ParsedColumnMetadata>();
 	private List<ParsedRow> rows = new ArrayList<ParsedRow>();
 
@@ -173,5 +174,13 @@ public class ParsedColumnFamily {
 
     public void setReplicationOnWrite(Boolean replicationOnWrite) {
         this.replicationOnWrite = replicationOnWrite;
+    }
+
+    public Double getRowCacheSize() {
+        return rowCacheSize;
+    }
+
+    public void setRowCacheSize(Double rowCacheSize) {
+        this.rowCacheSize = rowCacheSize;
     }
 }

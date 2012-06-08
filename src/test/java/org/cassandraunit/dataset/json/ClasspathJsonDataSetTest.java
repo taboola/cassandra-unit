@@ -170,6 +170,7 @@ public class ClasspathJsonDataSetTest {
         assertThat(columnFamily1.getMinCompactionThreshold(),is(3));
         assertThat(columnFamily1.getReadRepairChance(),is(0.1d));
         assertThat(columnFamily1.getReplicationOnWrite(),is(Boolean.FALSE));
+        assertThat(columnFamily1.getRowCacheSize(),is(111d));
 
 		assertThat(columnFamily1.getRows(), notNullValue());
 		assertThat(columnFamily1.getRows().size(), is(1));

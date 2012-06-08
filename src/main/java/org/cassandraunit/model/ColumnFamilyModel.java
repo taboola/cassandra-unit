@@ -31,6 +31,7 @@ public class ColumnFamilyModel {
     private Integer minCompactionThreshold = null;
     private Double readRepairChance = null;
     private Boolean replicationOnWrite = null;
+    private Double rowCacheSize = null;
 
 	private List<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
@@ -202,5 +203,13 @@ public class ColumnFamilyModel {
 
     public void setReplicationOnWrite(Boolean replicationOnWrite) {
         this.replicationOnWrite = replicationOnWrite;
+    }
+
+    public Double getRowCacheSize() {
+        return rowCacheSize;
+    }
+
+    public void setRowCacheSize(Double rowCacheSize) {
+        this.rowCacheSize = rowCacheSize;
     }
 }

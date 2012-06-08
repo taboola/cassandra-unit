@@ -136,6 +136,10 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
             columnFamily.setReplicationOnWrite(parsedColumnFamily.getReplicationOnWrite());
         }
 
+        if (parsedColumnFamily.getReadRepairChance() != null) {
+            columnFamily.setRowCacheSize(parsedColumnFamily.getRowCacheSize());
+        }
+
 		/* keyType */
 		GenericTypeEnum[] typesBelongingCompositeTypeForKeyType = null;
 		if (parsedColumnFamily.getKeyType() != null) {

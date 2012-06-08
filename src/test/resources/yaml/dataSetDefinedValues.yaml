@@ -19,6 +19,7 @@ columnFamilies:
   minCompactionThreshold : 3
   readRepairChance : 0.1
   replicationOnWrite : false
+  rowCacheSize : 111
   rows:
   - key: key01
     columns:
