@@ -3,7 +3,6 @@ package org.cassandraunit;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
-
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.rules.ExternalResource;
@@ -16,15 +15,26 @@ public class CassandraUnit extends ExternalResource {
 
 	public static String clusterName = "TestCluster";
 	public static String host = "localhost:9171";
+    private String configurationFileName;
 
-	public CassandraUnit(DataSet dataSet) {
+    public CassandraUnit(DataSet dataSet) {
 		this.dataSet = dataSet;
 	}
 
-	@Override
+    public CassandraUnit(DataSet dataSet, String configurationFileName, String host) {
+        this(dataSet);
+        this.configurationFileName = configurationFileName;
+        this.host = host;
+    }
+
+    @Override
 	protected void before() throws Exception {
 		/* start an embedded Cassandra */
-		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+        if (configurationFileName != null) {
+		    EmbeddedCassandraServerHelper.startEmbeddedCassandra(configurationFileName);
+        } else {
+            EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+        }
 
 		/* create structure and load data */
 		DataLoader dataLoader = new DataLoader(clusterName, host);
