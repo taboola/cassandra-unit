@@ -1,15 +1,16 @@
 package org.cassandraunit.utils;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
-
-import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * 
@@ -29,17 +30,15 @@ public class EmbeddedCassandraServerHelperTest {
 		EmbeddedCassandraServerHelper.stopEmbeddedCassandra();
 	}
 
-	@Test
-	public void shouldStartTheEmbeddedCassandraServerWithAnotherCassandraYamlConf() throws Exception {
+	@Test(expected = UnsupportedOperationException.class)
+	public void shouldNotStartTheEmbeddedCassandraServerWithAnotherCassandraYamlConf() throws Exception {
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra("another-cassandra.yaml");
-		testIfTheEmbeddedCassandraServerIsUpOnHost("127.0.0.1:9175");
-		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
-		EmbeddedCassandraServerHelper.stopEmbeddedCassandra();
 
 	}
 
 	private void testIfTheEmbeddedCassandraServerIsUpOnHost(String hostAndPort) {
-		Cluster cluster = HFactory.getOrCreateCluster("TestCluster", new CassandraHostConfigurator(hostAndPort));
+        Random random = new Random();
+		Cluster cluster = HFactory.getOrCreateCluster("TestCluster" + random.nextInt(), new CassandraHostConfigurator(hostAndPort));
 		assertThat(cluster.getConnectionManager().getActivePools().size(), is(1));
 		KeyspaceDefinition keyspaceDefinition = cluster.describeKeyspace("system");
 		assertThat(keyspaceDefinition, notNullValue());

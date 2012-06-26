@@ -1,22 +1,9 @@
 package org.cassandraunit.utils;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
-
 import org.apache.cassandra.config.ConfigurationException;
 import org.apache.cassandra.config.DatabaseDescriptor;
 import org.apache.cassandra.db.commitlog.CommitLog;
@@ -26,6 +13,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * 
@@ -42,9 +37,10 @@ public class EmbeddedCassandraServerHelper {
 	private static final String INTERNAL_CASSANDRA_KEYSPACE = "system";
 
 	private static CassandraDaemon cassandraDaemon = null;
-	static ExecutorService executor = Executors.newSingleThreadExecutor();
+	static ExecutorService executor;
+    private static String launchedYamlFile;
 
-	public static void startEmbeddedCassandra() throws TTransportException, IOException, InterruptedException,
+    public static void startEmbeddedCassandra() throws TTransportException, IOException, InterruptedException,
 			ConfigurationException {
 		startEmbeddedCassandra(DEFAULT_CASSANDRA_YML_FILE);
 	}
@@ -66,7 +62,10 @@ public class EmbeddedCassandraServerHelper {
             yamlFile = "/" + yamlFile;
         }
 
-        if (cassandraDaemon == null) {
+
+		if (cassandraDaemon == null) {
+            checkConfigNameForRestart(yamlFile);
+
 			log.debug("Starting cassandra...");
 			log.debug("Initialization needed");
 			rmdir(tmpDir);
@@ -83,6 +82,7 @@ public class EmbeddedCassandraServerHelper {
 
 			cleanupAndLeaveDirs();
 			final CountDownLatch startupLatch = new CountDownLatch(1);
+            executor = Executors.newSingleThreadExecutor();
 			executor.execute(new Runnable() {
 				@Override
 				public void run() {
@@ -102,12 +102,21 @@ public class EmbeddedCassandraServerHelper {
 		}
 	}
 
-	/**
+    private static void checkConfigNameForRestart(String yamlFile) {
+        boolean wasPreviouslyLaunched = launchedYamlFile != null;
+        if (wasPreviouslyLaunched && ! launchedYamlFile.equals(yamlFile)) {
+            throw new UnsupportedOperationException("We can't launch two Cassandra configurations in the same JVM instance");
+        }
+        launchedYamlFile = yamlFile;
+    }
+
+    /**
 	 * stop the embedded cassandra
 	 */
 	public static void stopEmbeddedCassandra() {
 		executor.shutdown();
 		executor.shutdownNow();
+        cassandraDaemon = null;
 		log.debug("Cassandra is stopped");
 	}
 
