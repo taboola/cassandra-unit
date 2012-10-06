@@ -125,7 +125,7 @@ public class CassandraUnitCommandLineLoaderTest {
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
 
 		String targetFileDataSet = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
-				"/xml/datasetDefaultValues.xml");
+				"/xml/dataSetDefaultValues.xml");
 		String clusterName = "TestCluster";
 		String host = "localhost";
 		String port = "9171";
@@ -143,7 +143,7 @@ public class CassandraUnitCommandLineLoaderTest {
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
 
 		String targetFileDataSet = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
-				"/xml/datasetDefaultValues.xml");
+				"/xml/dataSetDefaultValues.xml");
 		String clusterName = "TestCluster";
 		String host = "localhost";
 		String port = "9171";
@@ -161,7 +161,7 @@ public class CassandraUnitCommandLineLoaderTest {
 	public void shouldLoadDataSetButOverrideReplicationFactorAndStrategy() throws Exception {
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
 		String targetFileDataSet = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
-				"/xml/datasetForCommandLineLoader.xml");
+				"/xml/dataSetForCommandLineLoader.xml");
 		String clusterName = "TestCluster";
 		String host = "localhost";
 		String port = "9171";

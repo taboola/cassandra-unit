@@ -11,7 +11,7 @@ import org.junit.Test;
 public class CassandraStartAndLoadRuleTest {
 
 	@Rule
-	public CassandraUnit cassandra = new CassandraUnit(new ClassPathXmlDataSet("xml/datasetDefaultValues.xml"));
+	public CassandraUnit cassandra = new CassandraUnit(new ClassPathXmlDataSet("xml/dataSetDefaultValues.xml"));
 	
 	@Test
 	public void shouldStartCassandraServer ()  {

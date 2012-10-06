@@ -22,7 +22,7 @@ import org.junit.Test;
 public class CassandraStartAndLoadWithBytesKeyTest {
 
 	@Rule
-	public CassandraUnit cassandraUnit = new CassandraUnit(new ClassPathXmlDataSet("xml/datasetWithBytesKey.xml"));
+	public CassandraUnit cassandraUnit = new CassandraUnit(new ClassPathXmlDataSet("xml/dataSetWithBytesKey.xml"));
 
 	@Test
 	public void shouldGetBytesKey() {

@@ -25,7 +25,7 @@ public class ClasspathXmlDataSetTest {
     @Test
     public void shouldGetAXmlDataSet() {
 
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefaultValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefaultValues.xml");
         assertThat(dataSet, notNullValue());
     }
 
@@ -52,7 +52,7 @@ public class ClasspathXmlDataSetTest {
     @Test
     public void shouldNotGetAXmlDataSetBecauseItIsInvalid() {
         try {
-            DataSet dataSet = new ClassPathXmlDataSet("xml/invalidDataSet.xml");
+            DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetInvalidDataSet.xml");
             dataSet.getKeyspace();
             fail();
         } catch (ParseException e) {
@@ -65,7 +65,7 @@ public class ClasspathXmlDataSetTest {
     @Test
     public void shouldGetKeyspaceWithDefaultValues() {
 
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefaultValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefaultValues.xml");
         assertThat(dataSet.getKeyspace(), notNullValue());
         assertThat(dataSet.getKeyspace().getName(), notNullValue());
         assertThat(dataSet.getKeyspace().getName(), is("beautifulKeyspaceName"));
@@ -76,7 +76,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetKeyspaceWithDefinedValues() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefinedValues.xml");
         assertThat(dataSet.getKeyspace(), notNullValue());
         assertThat(dataSet.getKeyspace().getName(), notNullValue());
         assertThat(dataSet.getKeyspace().getName(), is("otherKeyspaceName"));
@@ -86,7 +86,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetOneColumnFamilyWithDefaultValues() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefaultValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefaultValues.xml");
         assertThat(dataSet.getColumnFamilies(), notNullValue());
         assertThat(dataSet.getColumnFamilies().isEmpty(), is(false));
 
@@ -103,7 +103,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetColumnFamiliesWithDefinedValues() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefinedValues.xml");
         assertThat(dataSet.getColumnFamilies(), notNullValue());
         assertThat(dataSet.getColumnFamilies().isEmpty(), is(false));
 
@@ -136,7 +136,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetOneStandardColumnFamilyDataWithDefaultValues() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefaultValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefaultValues.xml");
         List<RowModel> rows = dataSet.getColumnFamilies().get(0).getRows();
         assertThat(rows, notNullValue());
         assertThat(rows.size(), is(3));
@@ -164,7 +164,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetOneSuperColumnFamilyData() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefinedValues.xml");
         assertThat(dataSet.getColumnFamilies().get(0).getRows(), notNullValue());
         assertThat(dataSet.getColumnFamilies().get(0).getRows().size(), is(2));
         RowModel actualrow0 = dataSet.getColumnFamilies().get(0).getRows().get(0);
@@ -258,7 +258,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetDefaultBytesTypeForColumnValue() throws Exception {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetColumnValueTest.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetColumnValueTest.xml");
 
         ColumnFamilyModel actualColumnFamily = dataSet.getColumnFamilies().get(0);
         assertThat(actualColumnFamily, notNullValue());
@@ -277,7 +277,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetDefaultUTF8TypeForColumnValue() throws Exception {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetColumnValueTest.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetColumnValueTest.xml");
         ColumnFamilyModel actualColumnFamily = dataSet.getColumnFamilies().get(1);
         assertThat(actualColumnFamily, notNullValue());
         assertThat(actualColumnFamily.getName(), is("beautifulColumnFamilyName2"));
@@ -294,7 +294,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetDefaultUTF8TypeAndDefinedLongTypeForColumnValue() throws Exception {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetColumnValueTest.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetColumnValueTest.xml");
         ColumnFamilyModel actualColumnFamily = dataSet.getColumnFamilies().get(2);
         assertThat(actualColumnFamily, notNullValue());
         assertThat(actualColumnFamily.getName(), is("beautifulColumnFamilyName3"));
@@ -316,7 +316,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetCounterStandardColumnFamily() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefinedValues.xml");
 
         ColumnFamilyModel actualColumnFamilyModel2 = dataSet.getColumnFamilies().get(2);
         assertThat(actualColumnFamilyModel2.getName(), is("counterStandardColumnFamilyName"));
@@ -348,7 +348,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetCounterSuperColumnFamily() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetDefinedValues.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetDefinedValues.xml");
         ColumnFamilyModel actualCounterSupercolumnFamilyModel = dataSet.getColumnFamilies().get(3);
         assertThat(actualCounterSupercolumnFamilyModel.getName(), is("counterSuperColumnFamilyName"));
         assertThat(actualCounterSupercolumnFamilyModel.getType(), is(ColumnType.SUPER));
@@ -390,7 +390,7 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetAColumnFamilyWithSecondaryIndex() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithSecondaryIndex.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetWithSecondaryIndex.xml");
         ColumnMetadataModel acutalColumnMetadataModel = dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0);
         assertThat(acutalColumnMetadataModel.getColumnName(), is("columnWithIndexAndUTF8ValidationClass"));
         assertThat(acutalColumnMetadataModel.getColumnIndexType(), is(ColumnIndexType.KEYS));
@@ -410,19 +410,22 @@ public class ClasspathXmlDataSetTest {
 
     @Test
     public void shouldGetAColumnFamilyWithCompositeType() throws Exception {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithCompositeType.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetWithCompositeType.xml");
         assertThatKeyspaceModelWithCompositeTypeIsOk(dataSet);
     }
 
+
+
+
     @Test(expected = ParseException.class)
     public void shouldNotGetAColumnFamilyWithCompositeType() throws Exception {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithBadCompositeType.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetWithBadCompositeType.xml");
         dataSet.getKeyspace();
     }
 
     @Test
     public void shouldGetAColumnFamilyWithNullColumnValue() {
-        DataSet dataSet = new ClassPathXmlDataSet("xml/datasetWithNullColumnValue.xml");
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetWithNullColumnValue.xml");
         ColumnFamilyModel columnFamilyModel = dataSet.getColumnFamilies().get(0);
         assertThat(columnFamilyModel.getName(), is("columnFamilyWithNullColumnValue"));
         ColumnModel columnModel = columnFamilyModel.getRows().get(0).getColumns().get(0);

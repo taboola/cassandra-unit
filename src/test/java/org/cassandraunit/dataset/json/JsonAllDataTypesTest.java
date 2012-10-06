@@ -7,6 +7,6 @@ public class JsonAllDataTypesTest extends AllDataTypesTest {
 
 	@Override
 	public DataSet getDataSet() {
-		return new ClassPathJsonDataSet("json/allDataTypes.json");
+		return new ClassPathJsonDataSet("json/dataSetAllDataTypes.json");
 	}
 }

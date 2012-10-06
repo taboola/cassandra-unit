@@ -40,7 +40,7 @@ public class ClasspathDataSetTest {
 
 	@Test
 	public void shouldGetAXmlDataSetStructure() {
-		DataSet dataSet = new ClassPathDataSet("xml/datasetDefaultValues.xml");
+		DataSet dataSet = new ClassPathDataSet("xml/dataSetDefaultValues.xml");
 		assertDataSetDefaultValues(dataSet);
 	}
 

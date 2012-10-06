@@ -7,6 +7,6 @@ public class YamlAllDataTypesTest extends AllDataTypesTest {
 
 	@Override
 	public DataSet getDataSet() {
-		return new ClassPathYamlDataSet("yaml/allDataTypes.yaml");
+		return new ClassPathYamlDataSet("yaml/dataSetAllDataTypes.yaml");
 	}
 }

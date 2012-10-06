@@ -323,7 +323,7 @@ public class ClasspathJsonDataSetTest {
 
     @Test
     public void shouldGetAColumnFamilyWithNullColumnValue() {
-        DataSet dataSet = new ClassPathJsonDataSet("json/datasetWithNullColumnValue.json");
+        DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithNullColumnValue.json");
         ColumnFamilyModel columnFamilyModel = dataSet.getColumnFamilies().get(0);
         assertThat(columnFamilyModel.getName(), is("columnFamilyWithNullColumnValue"));
         ColumnModel columnModel = columnFamilyModel.getRows().get(0).getColumns().get(0);

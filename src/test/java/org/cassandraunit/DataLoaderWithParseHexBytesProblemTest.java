@@ -21,6 +21,6 @@ public class DataLoaderWithParseHexBytesProblemTest {
 			ConfigurationException {
 		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
 		DataLoader dataLoader = new DataLoader(CassandraUnit.clusterName, CassandraUnit.host);
-		dataLoader.load(new ClassPathXmlDataSet("xml/datasetWithBadBytesKey.xml"));
+		dataLoader.load(new ClassPathXmlDataSet("xml/dataSetWithBadBytesKey.xml"));
 	}
 }

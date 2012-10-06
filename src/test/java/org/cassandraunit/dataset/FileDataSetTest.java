@@ -20,7 +20,7 @@ public class FileDataSetTest {
 	@Before
 	public void before() throws Exception {
 		targetXmlDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
-				"/xml/datasetDefaultValues.xml");
+				"/xml/dataSetDefaultValues.xml");
 		targetJsonDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),
 				"/json/dataSetDefaultValues.json");
 		targetYamlDataSetPathFileName = FileTmpHelper.copyClassPathDataSetToTmpDirectory(this.getClass(),

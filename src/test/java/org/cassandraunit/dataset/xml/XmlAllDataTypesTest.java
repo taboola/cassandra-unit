@@ -7,6 +7,6 @@ public class XmlAllDataTypesTest extends AllDataTypesTest {
 
 	@Override
 	public DataSet getDataSet() {
-		return new ClassPathXmlDataSet("xml/allDataTypes.xml");
+		return new ClassPathXmlDataSet("xml/dataSetAllDataTypes.xml");
 	}
 }
