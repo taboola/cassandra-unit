@@ -329,20 +329,23 @@ public abstract class AbstractXmlDataSet implements DataSet {
         }
 
         GenericType columnValue = null;
-        if (metaData != null) {
-            GenericTypeEnum genTypeEnum = GenericTypeEnum.valueOf(metaData.getValidationClass().name());
-            columnValue = new GenericType(xmlColumn.getValue(), genTypeEnum);
-        } else {
-            columnValue = TypeExtractor.extract(xmlColumn.getValue(), defaultColumnValueType);
+        if (xmlColumn.getValue() != null) {
+            if (metaData != null) {
+                GenericTypeEnum genTypeEnum = GenericTypeEnum.valueOf(metaData.getValidationClass().name());
+                columnValue = new GenericType(xmlColumn.getValue(), genTypeEnum);
+            } else {
+                columnValue = TypeExtractor.extract(xmlColumn.getValue(), defaultColumnValueType);
+            }
         }
         columnModel.setValue(columnValue);
 
         String timestamp = xmlColumn.getTimestamp();
-        if(timestamp != null) {
+        if (timestamp != null) {
             columnModel.setTimestamp(Long.valueOf(timestamp));
         } else {
             columnModel.setTimestamp(null);
         }
+
 
         return columnModel;
     }

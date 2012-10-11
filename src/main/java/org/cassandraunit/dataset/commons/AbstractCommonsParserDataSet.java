@@ -293,11 +293,13 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
         }
 
         GenericType columnValue = null;
-        if (metaData != null) {
-            GenericTypeEnum genTypeEnum = GenericTypeEnum.fromValue(metaData.getValidationClass().name());
-            columnValue = new GenericType(parsedColumn.getValue(), genTypeEnum);
-        } else {
-            columnValue = TypeExtractor.extract(parsedColumn.getValue(), defaultColumnValueType);
+        if (parsedColumn.getValue() != null) {
+            if (metaData != null) {
+                GenericTypeEnum genTypeEnum = GenericTypeEnum.fromValue(metaData.getValidationClass().name());
+                columnValue = new GenericType(parsedColumn.getValue(), genTypeEnum);
+            } else {
+                columnValue = TypeExtractor.extract(parsedColumn.getValue(), defaultColumnValueType);
+            }
         }
         columnModel.setValue(columnValue);
         String timestamp = parsedColumn.getTimestamp();

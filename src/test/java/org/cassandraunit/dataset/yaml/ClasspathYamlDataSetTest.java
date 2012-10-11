@@ -333,7 +333,7 @@ public class ClasspathYamlDataSetTest {
         assertThat(columnFamilyModel.getName(), is("columnFamilyWithNullColumnValue"));
         ColumnModel columnModel = columnFamilyModel.getRows().get(0).getColumns().get(0);
         assertThat(columnModel.getName().getValue(), is("columnWithNullColumnValue"));
-        assertThat(columnModel.getValue().getValue(), nullValue());
+        assertThat(columnModel.getValue(), nullValue());
     }
    @Test
    public void shouldGetAColumnFamilyWithTimestampedColumn() {
