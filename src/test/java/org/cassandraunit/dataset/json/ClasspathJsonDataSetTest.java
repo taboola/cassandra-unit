@@ -12,12 +12,13 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.dataset.yaml.ClassPathYamlDataSet;
 import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * 
@@ -331,13 +332,25 @@ public class ClasspathJsonDataSetTest {
         assertThat(columnModel.getValue(), nullValue());
     }
     @Test
-    public void shouldGetAColumnFamilyWithTimestampedColumn() {
-        DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithTimestamp.json");
+    public void shouldGetAColumnFamilyWithMetadataAndFunction() {
+        DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithMetadataAndFunctions.json");
         ColumnFamilyModel columnFamilyModel = dataSet.getColumnFamilies().get(0);
-        assertThat(columnFamilyModel.getName(), is("columnFamilyWithTimestampedColumn"));
-        ColumnModel columnModel = columnFamilyModel.getRows().get(0).getColumns().get(0);
-        assertThat(columnModel.getName().getValue(), is("columnWithTimestamp"));
-        assertThat(columnModel.getTimestamp(), is(2020L));
+        assertThat(columnFamilyModel.getName(), is("columnFamilyWithMetadata"));
+        List<ColumnModel> columns = columnFamilyModel.getRows().get(0).getColumns();
+        ColumnModel column1 = columns.get(0);
+        assertThat(column1.getName().getValue(),is("column1"));
+        assertThat(column1.getValue().getValue(),is("1"));
+        assertThat(column1.getValue().getType(),is(GenericTypeEnum.LONG_TYPE));
+
+        ColumnModel column2 = columns.get(1);
+        assertThat(column2.getName().getValue(),is("column2"));
+        assertThat(column2.getValue().getValue(),is("2"));
+        assertThat(column2.getValue().getType(),is(GenericTypeEnum.LONG_TYPE));
+
+        ColumnModel column3 = columns.get(2);
+        assertThat(column3.getName().getValue(),is("column3"));
+        assertThat(column3.getValue().getValue(),is("value3"));
+        assertThat(column3.getValue().getType(),is(GenericTypeEnum.UTF_8_TYPE));
     }
 
 }

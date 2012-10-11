@@ -330,7 +330,7 @@ public abstract class AbstractXmlDataSet implements DataSet {
 
         GenericType columnValue = null;
         if (xmlColumn.getValue() != null) {
-            if (metaData != null) {
+            if (metaData != null && !TypeExtractor.containFunctions(xmlColumn.getValue())) {
                 GenericTypeEnum genTypeEnum = GenericTypeEnum.valueOf(metaData.getValidationClass().name());
                 columnValue = new GenericType(xmlColumn.getValue(), genTypeEnum);
             } else {

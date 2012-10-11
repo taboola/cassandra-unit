@@ -294,7 +294,7 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
 
         GenericType columnValue = null;
         if (parsedColumn.getValue() != null) {
-            if (metaData != null) {
+            if (metaData != null && !TypeExtractor.containFunctions(parsedColumn.getValue())) {
                 GenericTypeEnum genTypeEnum = GenericTypeEnum.fromValue(metaData.getValidationClass().name());
                 columnValue = new GenericType(parsedColumn.getValue(), genTypeEnum);
             } else {
