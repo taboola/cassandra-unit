@@ -1,6 +1,5 @@
 package org.cassandraunit;
 
-import com.google.common.base.Charsets;
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.hector.api.Cluster;
@@ -9,18 +8,27 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.beans.HCounterSuperColumn;
 import me.prettyprint.hector.api.beans.HSuperColumn;
-import me.prettyprint.hector.api.ddl.*;
+import me.prettyprint.hector.api.ddl.ColumnDefinition;
+import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
+import me.prettyprint.hector.api.ddl.ColumnType;
+import me.prettyprint.hector.api.ddl.ComparatorType;
+import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.model.*;
+import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadataModel;
+import org.cassandraunit.model.ColumnModel;
+import org.cassandraunit.model.CompactionStrategyOptionModel;
+import org.cassandraunit.model.KeyspaceModel;
+import org.cassandraunit.model.RowModel;
+import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.serializer.GenericTypeSerializer;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -249,12 +257,12 @@ public class DataLoader {
         for (ColumnMetadataModel columnMetadata : columnsMetadata) {
             BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
 
-            String columnName = columnMetadata.getColumnName();
-            columnDefinition.setName(ByteBuffer.wrap(columnName.getBytes(Charsets.UTF_8)));
+            GenericType columnName = columnMetadata.getColumnName();
+            columnDefinition.setName(GenericTypeSerializer.get().toByteBuffer(columnName));
 
             if (columnMetadata.getColumnIndexType() != null) {
                 String indexName = columnMetadata.getIndexName();
-                columnDefinition.setIndexName((indexName == null) ? columnName : indexName);
+                columnDefinition.setIndexName((indexName == null) ? columnName.getValue() : indexName);
                 columnDefinition.setIndexType(columnMetadata.getColumnIndexType());
             }
 

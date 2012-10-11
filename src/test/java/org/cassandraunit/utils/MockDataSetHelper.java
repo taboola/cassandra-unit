@@ -1,19 +1,25 @@
 package org.cassandraunit.utils;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import me.prettyprint.hector.api.ddl.ColumnIndexType;
+import me.prettyprint.hector.api.ddl.ColumnType;
+import me.prettyprint.hector.api.ddl.ComparatorType;
+import org.cassandraunit.dataset.DataSet;
+import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadataModel;
+import org.cassandraunit.model.ColumnModel;
+import org.cassandraunit.model.CompactionStrategyOptionModel;
+import org.cassandraunit.model.KeyspaceModel;
+import org.cassandraunit.model.RowModel;
+import org.cassandraunit.model.StrategyModel;
+import org.cassandraunit.model.SuperColumnModel;
+import org.cassandraunit.type.GenericType;
+import org.cassandraunit.type.GenericTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.prettyprint.hector.api.ddl.ColumnIndexType;
-import me.prettyprint.hector.api.ddl.ColumnType;
-import me.prettyprint.hector.api.ddl.ComparatorType;
-
-import org.cassandraunit.dataset.DataSet;
-import org.cassandraunit.model.*;
-import org.cassandraunit.type.GenericType;
-import org.cassandraunit.type.GenericTypeEnum;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -160,7 +166,7 @@ public class MockDataSetHelper {
 		columnFamily3.setComparatorType(ComparatorType.UTF8TYPE);
 		columnFamily3.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
 		columnFamily3.addColumnMetadata(new ColumnMetadataModel(
-                "columnWithSecondaryIndexAndValidationClassAsLongType", ComparatorType.LONGTYPE, ColumnIndexType.KEYS, null));
+                newUtf8GenericType("columnWithSecondaryIndexAndValidationClassAsLongType"), ComparatorType.LONGTYPE, ColumnIndexType.KEYS, null));
 		columnFamilies.add(columnFamily3);
 
         /* column family 4 with index */
@@ -171,7 +177,7 @@ public class MockDataSetHelper {
         columnFamily4.setComparatorType(ComparatorType.UTF8TYPE);
         columnFamily4.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
         columnFamily4.addColumnMetadata(new ColumnMetadataModel(
-                "columnWithSecondaryIndexAndValidationClassAsUTF8Type", ComparatorType.UTF8TYPE, ColumnIndexType.KEYS,
+                newUtf8GenericType("columnWithSecondaryIndexAndValidationClassAsUTF8Type"), ComparatorType.UTF8TYPE, ColumnIndexType.KEYS,
                 "columnWithSecondaryIndexHaveIndexNameAndValidationClassAsUTF8Type"));
 
         columnFamilies.add(columnFamily4);
@@ -183,7 +189,8 @@ public class MockDataSetHelper {
         columnFamily5.setKeyType(ComparatorType.UTF8TYPE);
         columnFamily5.setComparatorType(ComparatorType.UTF8TYPE);
         columnFamily5.setDefaultColumnValueType(ComparatorType.UTF8TYPE);
-        columnFamily5.addColumnMetadata(new ColumnMetadataModel("columnWithValidationClassAsUTF8Type",
+        columnFamily5.addColumnMetadata(new ColumnMetadataModel(
+                newUtf8GenericType("columnWithValidationClassAsUTF8Type"),
                 ComparatorType.UTF8TYPE, null, null));
 
         columnFamilies.add(columnFamily5);
@@ -195,7 +202,11 @@ public class MockDataSetHelper {
 		return mockDataSet;
 	}
 
-	private static SuperColumnModel constructDefinedSuperColumnForMock(int columnNumber) {
+    private static GenericType newUtf8GenericType(String value) {
+        return new GenericType(value, GenericTypeEnum.UTF_8_TYPE);
+    }
+
+    private static SuperColumnModel constructDefinedSuperColumnForMock(int columnNumber) {
 		SuperColumnModel superColumnModel = new SuperColumnModel();
 		superColumnModel.setName(new GenericType("name" + columnNumber, GenericTypeEnum.UTF_8_TYPE));
 		List<ColumnModel> columns = new ArrayList<ColumnModel>();

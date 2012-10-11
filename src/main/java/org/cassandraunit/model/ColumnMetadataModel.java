@@ -2,13 +2,14 @@ package org.cassandraunit.model;
 
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
+import org.cassandraunit.type.GenericType;
 
 /**
  * @author Jeremy Sevellec
  */
 public class ColumnMetadataModel {
 
-    private String columnName = null;
+    private GenericType columnName = null;
     private ComparatorType validationClass = null;
     private ColumnIndexType columnIndexType = null;
     private String indexName = null;
@@ -17,7 +18,7 @@ public class ColumnMetadataModel {
         super();
     }
 
-    public ColumnMetadataModel(String columnName, ComparatorType validationClass, ColumnIndexType columnIndexType, String indexName) {
+    public ColumnMetadataModel(GenericType columnName, ComparatorType validationClass, ColumnIndexType columnIndexType, String indexName) {
         super();
         this.columnName = columnName;
         this.validationClass = validationClass;
@@ -25,11 +26,11 @@ public class ColumnMetadataModel {
         this.indexName = indexName;
     }
 
-    public String getColumnName() {
+    public GenericType getColumnName() {
         return columnName;
     }
 
-    public void setColumnName(String columnName) {
+    public void setColumnName(GenericType columnName) {
         this.columnName = columnName;
     }
 

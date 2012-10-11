@@ -1,12 +1,25 @@
 package org.cassandraunit.serializer;
 
-import me.prettyprint.cassandra.serializers.*;
+import me.prettyprint.cassandra.serializers.AbstractSerializer;
+import me.prettyprint.cassandra.serializers.BooleanSerializer;
+import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
+import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.CompositeSerializer;
+import me.prettyprint.cassandra.serializers.DateSerializer;
+import me.prettyprint.cassandra.serializers.DoubleSerializer;
+import me.prettyprint.cassandra.serializers.FloatSerializer;
+import me.prettyprint.cassandra.serializers.IntegerSerializer;
+import me.prettyprint.cassandra.serializers.LongSerializer;
+import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.beans.Composite;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.cassandraunit.exception.CassandraUnitException;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.text.DateFormat;
@@ -22,6 +35,9 @@ public class GenericTypeSerializer extends AbstractSerializer<GenericType> {
     private static final GenericTypeSerializer instance = new GenericTypeSerializer();
 
     public static final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HHmmss");
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     public static GenericTypeSerializer get() {
         return instance;

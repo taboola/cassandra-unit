@@ -185,7 +185,9 @@ public abstract class AbstractXmlDataSet implements DataSet {
                     .getDefaultColumnValueType().value()));
         }
 
-        columnFamily.setColumnsMetadata(mapXmlColumsMetadataToColumnsMetadata(xmlColumnFamily.getColumnMetadata()));
+        columnFamily.setColumnsMetadata(mapXmlColumsMetadataToColumnsMetadata(xmlColumnFamily.getColumnMetadata(),
+                columnFamily.getComparatorType(),
+                typesBelongingCompositeTypeForComparatorType));
 
         /* data information */
         columnFamily.setRows(mapXmlRowsToRowsModel(xmlColumnFamily, columnFamily.getKeyType(),
@@ -197,21 +199,21 @@ public abstract class AbstractXmlDataSet implements DataSet {
     }
 
     private List<ColumnMetadataModel> mapXmlColumsMetadataToColumnsMetadata(
-            List<org.cassandraunit.dataset.xml.ColumnMetadata> xmlColumnsMetadata) {
+            List<ColumnMetadata> xmlColumnsMetadata, ComparatorType comparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType) {
 
         ArrayList<ColumnMetadataModel> columnsMetadata = new ArrayList<ColumnMetadataModel>();
 
         for (org.cassandraunit.dataset.xml.ColumnMetadata xmlColumnMetadata : xmlColumnsMetadata) {
-            columnsMetadata.add(mapXmlColumnMetadataToColumMetadataModel(xmlColumnMetadata));
+            columnsMetadata.add(mapXmlColumnMetadataToColumMetadataModel(xmlColumnMetadata, comparatorType, typesBelongingCompositeTypeForComparatorType));
         }
 
         return columnsMetadata;
     }
 
     private ColumnMetadataModel mapXmlColumnMetadataToColumMetadataModel(
-            ColumnMetadata xmlColumnMetadata) {
+            ColumnMetadata xmlColumnMetadata, ComparatorType comparatorType, GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType) {
         ColumnMetadataModel columnMetadata = new ColumnMetadataModel();
-        columnMetadata.setColumnName(xmlColumnMetadata.getName());
+        columnMetadata.setColumnName(TypeExtractor.constructGenericType(xmlColumnMetadata.getName(), comparatorType, typesBelongingCompositeTypeForComparatorType));
         columnMetadata
                 .setValidationClass(ComparatorType.getByClassName(xmlColumnMetadata.getValidationClass().value()));
         if (xmlColumnMetadata.getIndexType() != null) {

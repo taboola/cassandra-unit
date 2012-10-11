@@ -15,39 +15,39 @@
         {
             "name" : "boolean",
             "validationClass" : "BooleanType"
-        },            
+        },
         {
             "name" : "date",
             "validationClass" : "DateType"
-        },            
+        },
         {
             "name" : "double",
             "validationClass" : "DoubleType"
-        },            
+        },
         {
             "name" : "float",
             "validationClass" : "FloatType"
-        },            
+        },
         {
             "name" : "integer",
             "validationClass" : "IntegerType"
-        },            
+        },
         {
             "name" : "lexicalUUID",
             "validationClass" : "LexicalUUIDType"
-        },            
+        },
         {
             "name" : "long",
             "validationClass" : "LongType"
-        },            
+        },
         {
             "name" : "timeUUID",
             "validationClass" : "TimeUUIDType"
-        },            
+        },
         {
             "name" : "utf8",
             "validationClass" : "UTF8Type"
-        },            
+        },
         {
             "name" : "uuid",
             "validationClass" : "UUIDType"

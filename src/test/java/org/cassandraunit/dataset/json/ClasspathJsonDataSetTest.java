@@ -1,24 +1,21 @@
 package org.cassandraunit.dataset.json;
 
-import static org.cassandraunit.SampleDataSetChecker.assertThatKeyspaceModelWithCompositeTypeIsOk;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
 import me.prettyprint.hector.api.ddl.ColumnType;
 import me.prettyprint.hector.api.ddl.ComparatorType;
-
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
 import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadataModel;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
 
 import java.util.List;
+import static org.cassandraunit.SampleDataSetChecker.assertThatKeyspaceModelWithCompositeTypeIsOk;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * 
@@ -288,14 +285,14 @@ public class ClasspathJsonDataSetTest {
 	public void shouldGetAColumnFamilyWithSecondaryIndex() {
 		DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithSecondaryIndex.json");
 
-		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getColumnName(),
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getColumnName().getValue(),
 				is("columnWithIndexAndUTF8ValidationClass"));
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getColumnIndexType(),
 				is(ColumnIndexType.KEYS));
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0).getValidationClass(),
 				is(ComparatorType.UTF8TYPE));
 
-        assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnName(),
+        assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnName().getValue(),
                 is("columnWithIndexAndIndexNameAndUTF8ValidationClass"));
         assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getColumnIndexType(),
                 is(ColumnIndexType.KEYS));
@@ -303,7 +300,7 @@ public class ClasspathJsonDataSetTest {
                 is(ComparatorType.UTF8TYPE));
         assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1).getIndexName(),is("indexNameOfTheIndex"));
 
-		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getColumnName(),
+		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getColumnName().getValue(),
 				is("columnWithUTF8ValidationClass"));
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getColumnIndexType(), nullValue());
 		assertThat(dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2).getValidationClass(),
@@ -353,4 +350,10 @@ public class ClasspathJsonDataSetTest {
         assertThat(column3.getValue().getType(),is(GenericTypeEnum.UTF_8_TYPE));
     }
 
+    @Test
+    public void shouldUseComparatorTypeForMetadataColumnName() {
+        DataSet dataSet = new ClassPathJsonDataSet("json/dataSetWithComparatorType.json");
+        ColumnMetadataModel columnMetadata = dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0);
+        assertThat(columnMetadata.getColumnName().getType(), is(GenericTypeEnum.TIME_UUID_TYPE));
+    }
 }

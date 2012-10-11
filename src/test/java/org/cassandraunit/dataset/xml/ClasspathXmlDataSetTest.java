@@ -6,8 +6,12 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import org.apache.commons.lang.StringUtils;
 import org.cassandraunit.dataset.DataSet;
 import org.cassandraunit.dataset.ParseException;
-import org.cassandraunit.dataset.yaml.ClassPathYamlDataSet;
-import org.cassandraunit.model.*;
+import org.cassandraunit.model.ColumnFamilyModel;
+import org.cassandraunit.model.ColumnMetadataModel;
+import org.cassandraunit.model.ColumnModel;
+import org.cassandraunit.model.RowModel;
+import org.cassandraunit.model.StrategyModel;
+import org.cassandraunit.model.SuperColumnModel;
 import org.cassandraunit.type.GenericTypeEnum;
 import org.junit.Test;
 
@@ -393,18 +397,18 @@ public class ClasspathXmlDataSetTest {
     public void shouldGetAColumnFamilyWithSecondaryIndex() {
         DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetWithSecondaryIndex.xml");
         ColumnMetadataModel acutalColumnMetadataModel = dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0);
-        assertThat(acutalColumnMetadataModel.getColumnName(), is("columnWithIndexAndUTF8ValidationClass"));
+        assertThat(acutalColumnMetadataModel.getColumnName().getValue(), is("columnWithIndexAndUTF8ValidationClass"));
         assertThat(acutalColumnMetadataModel.getColumnIndexType(), is(ColumnIndexType.KEYS));
         assertThat(acutalColumnMetadataModel.getValidationClass(), is(ComparatorType.UTF8TYPE));
 
         ColumnMetadataModel actualColumnMetadataModel1 = dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(1);
-        assertThat(actualColumnMetadataModel1.getColumnName(), is("columnWithIndexAndIndexNameAndUTF8ValidationClass"));
+        assertThat(actualColumnMetadataModel1.getColumnName().getValue(), is("columnWithIndexAndIndexNameAndUTF8ValidationClass"));
         assertThat(actualColumnMetadataModel1.getColumnIndexType(), is(ColumnIndexType.KEYS));
         assertThat(actualColumnMetadataModel1.getValidationClass(), is(ComparatorType.UTF8TYPE));
         assertThat(actualColumnMetadataModel1.getIndexName(), is("indexNameOfTheIndex"));
 
         ColumnMetadataModel actualColumnMetadataModel2 = dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(2);
-        assertThat(actualColumnMetadataModel2.getColumnName(), is("columnWithUTF8ValidationClass"));
+        assertThat(actualColumnMetadataModel2.getColumnName().getValue(), is("columnWithUTF8ValidationClass"));
         assertThat(actualColumnMetadataModel2.getColumnIndexType(), nullValue());
         assertThat(actualColumnMetadataModel2.getValidationClass(), is(ComparatorType.UTF8TYPE));
     }
@@ -464,5 +468,13 @@ public class ClasspathXmlDataSetTest {
         assertThat(column3.getValue().getValue(),is("value3"));
         assertThat(column3.getValue().getType(),is(GenericTypeEnum.UTF_8_TYPE));
     }
+
+	@Test
+    public void shouldUseComparatorTypeForMetadataColumnName() {
+        DataSet dataSet = new ClassPathXmlDataSet("xml/dataSetWithComparatorType.xml");
+        ColumnMetadataModel columnMetadata = dataSet.getColumnFamilies().get(0).getColumnsMetadata().get(0);
+        assertThat(columnMetadata.getColumnName().getType(), is(GenericTypeEnum.TIME_UUID_TYPE));
+    }
+
 
 }

@@ -166,7 +166,9 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
         }
 
         columnFamily.setColumnsMetadata(mapParsedColumsMetadataToColumnsMetadata(parsedColumnFamily
-                .getColumnsMetadata()));
+                .getColumnsMetadata(),
+                columnFamily.getComparatorType(),
+                typesBelongingCompositeTypeForComparatorType));
 
         /* data information */
         columnFamily.setRows(mapParsedRowsToRowsModel(parsedColumnFamily, columnFamily.getKeyType(),
@@ -178,15 +180,19 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
     }
 
     private List<ColumnMetadataModel> mapParsedColumsMetadataToColumnsMetadata(
-            List<ParsedColumnMetadata> parsedColumnsMetadata) {
+            List<ParsedColumnMetadata> parsedColumnsMetadata,
+            ComparatorType comparatorType,
+            GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType) {
         List<ColumnMetadataModel> columnMetadatas = new ArrayList<ColumnMetadataModel>();
         for (ParsedColumnMetadata parsedColumnMetadata : parsedColumnsMetadata) {
-            columnMetadatas.add(mapParsedColumMetadataToColumnMetadata(parsedColumnMetadata));
+            columnMetadatas.add(mapParsedColumMetadataToColumnMetadata(parsedColumnMetadata, comparatorType, typesBelongingCompositeTypeForComparatorType));
         }
         return columnMetadatas;
     }
 
-    private ColumnMetadataModel mapParsedColumMetadataToColumnMetadata(ParsedColumnMetadata parsedColumnMetadata) {
+    private ColumnMetadataModel mapParsedColumMetadataToColumnMetadata(ParsedColumnMetadata parsedColumnMetadata,
+                                                                       ComparatorType comparatorType,
+                                                                       GenericTypeEnum[] typesBelongingCompositeTypeForComparatorType) {
         if (parsedColumnMetadata.getName() == null) {
             throw new ParseException("column metadata name can't be empty");
         }
@@ -196,7 +202,8 @@ public abstract class AbstractCommonsParserDataSet implements DataSet {
         }
 
         ColumnMetadataModel columnMetadata = new ColumnMetadataModel();
-        columnMetadata.setColumnName(parsedColumnMetadata.getName());
+        columnMetadata.setColumnName(TypeExtractor.constructGenericType(parsedColumnMetadata.getName(), comparatorType,
+                typesBelongingCompositeTypeForComparatorType));
         columnMetadata.setValidationClass(ComparatorType.getByClassName(parsedColumnMetadata.getValidationClass()
                 .name()));
         if (parsedColumnMetadata.getIndexType() != null) {
