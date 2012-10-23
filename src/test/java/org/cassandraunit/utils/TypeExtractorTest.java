@@ -90,4 +90,16 @@ public class TypeExtractorTest {
 	public void shouldExtractWithInvalidFunctionDefined() {
 		verifyExtration("aaa(data", "aaa(data", GenericTypeEnum.BYTES_TYPE);
 	}
+
+    @Test
+    public void shouldExtractWithParenthesisInside() {
+        verifyExtration("utf8(rgb(0,0,0))", "rgb(0,0,0)",
+                GenericTypeEnum.UTF_8_TYPE);
+    }
+
+    @Test
+    public void shouldExtractWithALotOfParenthesisInside() {
+        verifyExtration("utf8((()))))", "(())))",
+                GenericTypeEnum.UTF_8_TYPE);
+    }
 }

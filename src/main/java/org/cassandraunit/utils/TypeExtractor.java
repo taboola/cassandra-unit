@@ -22,8 +22,8 @@ public class TypeExtractor {
         if (containFunctions(valueToExtract)) {
             /* there is a type function defined */
             String typeFunction = StringUtils.substringBefore(valueToExtract, startTypeFunction);
-            String tmp = StringUtils.substringAfter(valueToExtract, typeFunction + startTypeFunction);
-            extractedValue = StringUtils.substringBefore(tmp, endTypeFunction);
+            String rightSideWithLastParenthesis = StringUtils.substringAfter(valueToExtract, typeFunction + startTypeFunction);
+            extractedValue = StringUtils.removeEnd(rightSideWithLastParenthesis,endTypeFunction);
             genericType = new GenericType(extractedValue, GenericTypeEnum.fromValue(typeFunction + "type"));
         } else {
             /* there is no type function defined */
