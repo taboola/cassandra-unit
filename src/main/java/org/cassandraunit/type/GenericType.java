@@ -1,5 +1,7 @@
 package org.cassandraunit.type;
 
+import java.util.Arrays;
+
 /**
  * @author Jeremy Sevellec
  */
@@ -40,8 +42,35 @@ public class GenericType {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GenericType that = (GenericType) o;
+
+        if (!Arrays.equals(compositeValues, that.compositeValues)) return false;
+        if (type != that.type) return false;
+        if (!Arrays.equals(typesBelongingCompositeType, that.typesBelongingCompositeType)) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + type.hashCode();
+        result = 31 * result + (compositeValues != null ? Arrays.hashCode(compositeValues) : 0);
+        result = 31 * result + (typesBelongingCompositeType != null ? Arrays.hashCode(typesBelongingCompositeType) : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return value;
+        return "GenericType{" +
+                "type=" + type +
+                ", value='" + value + '\'' +
+                '}';
     }
 
     public GenericTypeEnum getType() {

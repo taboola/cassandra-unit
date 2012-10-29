@@ -1,146 +1,74 @@
 package org.cassandraunit.serializer;
 
 import me.prettyprint.cassandra.serializers.AbstractSerializer;
-import me.prettyprint.cassandra.serializers.BooleanSerializer;
-import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
-import me.prettyprint.cassandra.serializers.BytesArraySerializer;
-import me.prettyprint.cassandra.serializers.CompositeSerializer;
-import me.prettyprint.cassandra.serializers.DateSerializer;
-import me.prettyprint.cassandra.serializers.DoubleSerializer;
-import me.prettyprint.cassandra.serializers.FloatSerializer;
-import me.prettyprint.cassandra.serializers.IntegerSerializer;
-import me.prettyprint.cassandra.serializers.LongSerializer;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.hector.api.beans.Composite;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-import org.cassandraunit.exception.CassandraUnitException;
+import me.prettyprint.hector.api.Serializer;
 import org.cassandraunit.type.GenericType;
 import org.cassandraunit.type.GenericTypeEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.UUID;
+import java.util.HashMap;
+
+import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Arrays.asList;
+import static org.cassandraunit.type.GenericTypeEnum.*;
 
 /**
  * @author Jeremy Sevellec
  */
 public class GenericTypeSerializer extends AbstractSerializer<GenericType> {
 
+    public static final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HHmmss");
+    private static final HashMap<GenericTypeEnum,Serializer<GenericType>> serializersByType;
+
     private static final GenericTypeSerializer instance = new GenericTypeSerializer();
 
-    public static final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HHmmss");
+    static {
+        serializersByType = newHashMap();
+        serializersByType.put(ASCII_TYPE, new GenericTypeAsciiSerializer());
+        serializersByType.put(BOOLEAN_TYPE, new GenericTypeBooleanSerializer());
+        serializersByType.put(BYTES_TYPE, new GenericTypeBytesSerializer());
+        serializersByType.put(COUNTER_TYPE, new GenericTypeCounterSerializer());
+        serializersByType.put(DATE_TYPE, new GenericTypeDateSerializer());
+        serializersByType.put(DOUBLE_TYPE, new GenericTypeDoubleSerializer());
+        serializersByType.put(FLOAT_TYPE, new GenericTypeFloatSerializer());
+        serializersByType.put(INTEGER_TYPE, new GenericTypeIntegerSerializer());
+        serializersByType.put(LEXICAL_UUID_TYPE, new GenericTypeLexicalUuidSerializer());
+        serializersByType.put(LONG_TYPE, new GenericTypeLongSerializer());
+        serializersByType.put(TIME_UUID_TYPE, new GenericTypeTimeUuidSerializer());
+        serializersByType.put(UTF_8_TYPE, new GenericTypeUtf8Serializer());
+        serializersByType.put(UUID_TYPE, new GenericTypeUuidSerializer());
+    }
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    public static Serializer<GenericType> get(GenericTypeEnum type) {
+        return serializersByType.get(type);
+    }
 
+    public static Serializer<GenericType> getComposite(GenericTypeEnum ... types) {
+        return new GenericTypeCompositeTypeSerializer(asList(types));
+    }
 
-    public static GenericTypeSerializer get() {
+    public static Serializer<GenericType> get(GenericType genericType) {
+        if (genericType.getType() == COMPOSITE_TYPE) {
+            return new GenericTypeCompositeTypeSerializer(asList(genericType.getTypesBelongingCompositeType()));
+        } else {
+            GenericTypeEnum type = genericType.getType() != null ? genericType.getType() : BYTES_TYPE;
+            return get(type);
+        }
+    }
+
+    public static Serializer<GenericType> get() {
         return instance;
     }
 
     @Override
-    public GenericType fromByteBuffer(ByteBuffer byteBuffer) {
-        // TODO Auto-generated method stub
-        return null;
+    public ByteBuffer toByteBuffer(GenericType obj) {
+       return get(obj).toByteBuffer(obj);
     }
 
     @Override
-    public ByteBuffer toByteBuffer(GenericType genericType) {
-        ByteBuffer byteBuffer = null;
-
-        GenericTypeEnum currentType = genericType.getType();
-
-        if (currentType == null) {
-            currentType = GenericTypeEnum.BYTES_TYPE;
-        }
-
-        if (currentType == null) {
-
-        } else {
-            String genericValue = genericType.getValue();
-
-            switch (genericType.getType()) {
-
-                case BOOLEAN_TYPE:
-                    byteBuffer = BooleanSerializer.get().toByteBuffer(Boolean.parseBoolean(genericValue));
-                    break;
-                case BYTES_TYPE:
-                    byte[] hexDecodedBytes;
-                    try {
-                        if (genericValue.isEmpty()) {
-                            byteBuffer = ByteBufferSerializer.get().fromBytes(new byte[0]);
-                        } else {
-                            hexDecodedBytes = Hex.decodeHex(genericValue.toCharArray());
-                            byteBuffer = ByteBufferSerializer.get().fromBytes(hexDecodedBytes);
-                        }
-                    } catch (DecoderException e) {
-                        throw new CassandraUnitException("cannot parse \"" + genericValue + "\" as hex bytes", e);
-                    }
-                    break;
-                case DATE_TYPE:
-                    try {
-                        byteBuffer = DateSerializer.get().toByteBuffer(dateFormat.parse(genericValue));
-                    } catch (ParseException e) {
-                        throw new CassandraUnitException("cannot parse \"" + genericValue + "\" as date", e);
-                    }
-                    break;
-                case DOUBLE_TYPE:
-                    byteBuffer = DoubleSerializer.get().toByteBuffer(Double.parseDouble(genericValue));
-                    break;
-                case FLOAT_TYPE:
-                    byteBuffer = FloatSerializer.get().toByteBuffer(Float.parseFloat(genericValue));
-                    break;
-                case INTEGER_TYPE:
-                    int val = Integer.parseInt(genericValue);
-                    byteBuffer = IntegerSerializer.get().toByteBuffer(val);
-                    break;
-                case LEXICAL_UUID_TYPE:
-                    byteBuffer = UUIDSerializer.get().toByteBuffer(UUID.fromString(genericValue));
-                    break;
-                case LONG_TYPE:
-                    byteBuffer = LongSerializer.get().toByteBuffer(Long.parseLong(genericValue));
-                    break;
-                case TIME_UUID_TYPE:
-                    byteBuffer = UUIDSerializer.get().toByteBuffer(UUID.fromString(genericValue));
-                    break;
-                case ASCII_TYPE:
-                case UTF_8_TYPE:
-                    byteBuffer = StringSerializer.get().toByteBuffer(genericValue);
-                    break;
-                case UUID_TYPE:
-                    byteBuffer = UUIDSerializer.get().toByteBuffer(UUID.fromString(genericValue));
-                    break;
-                case COUNTER_TYPE:
-                    byteBuffer = LongSerializer.get().toByteBuffer(Long.parseLong(genericValue));
-                    break;
-                case COMPOSITE_TYPE:
-                    byteBuffer = new CompositeSerializer().toByteBuffer(createComposite(genericType));
-                    break;
-                default:
-                    byteBuffer = BytesArraySerializer.get().toByteBuffer(genericValue.getBytes());
-                    break;
-            }
-        }
-        return byteBuffer;
-    }
-
-    private Composite createComposite(GenericType genericType) {
-        if (!GenericTypeEnum.COMPOSITE_TYPE.equals(genericType.getType())) {
-            throw new IllegalArgumentException("the generricType must be a CompositeType");
-        }
-
-        Composite composite = new Composite();
-        for (int i = 0; i < genericType.getCompositeValues().length; i++) {
-            composite.addComponent(
-                    new GenericType(genericType.getCompositeValues()[i],
-                            genericType.getTypesBelongingCompositeType()[i]), GenericTypeSerializer.get());
-        }
-        return composite;
-
+    public GenericType fromByteBuffer(ByteBuffer byteBuffer) {
+        throw new UnsupportedOperationException();
     }
 }

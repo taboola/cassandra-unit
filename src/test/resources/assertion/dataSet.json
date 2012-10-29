@@ -1,0 +1,33 @@
+{
+    "name" : "ComparatorTestKeyspace",
+    "columnFamilies" : [{
+        "name" : "columnFamily",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+            "key" : "key",
+            "columns" : [{
+                "name" : "expectedUtf8ColumnName",
+                "value" : "expectedColumnValue"
+            },
+	        {
+		        "name" : "expectedBooleanColumnName",
+		        "value" : "boolean(true)"
+	        }]
+        }]
+    },
+    {
+	    "name" : "columnFamilyWithCompositeType",
+	    "keyType" : "UTF8Type",
+	    "comparatorType" : "CompositeType(LongType,UTF8Type)",
+	    "defaultColumnValueType" : "UTF8Type",
+	    "rows" : [{
+		    "key" : "key",
+		    "columns" : [{
+			    "name" : "12345:foo",
+			    "value" : "bar"
+		    }]
+	    }]
+    }]
+}

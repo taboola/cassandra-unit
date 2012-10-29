@@ -46,7 +46,7 @@ public class ComparatorTypeHelper {
                 ParsedDataType.valueOf(comparatorType);
                 return ComparatorType.getByClassName(comparatorType);
             } catch (IllegalArgumentException e) {
-                throw new ParseException("ComparatorType value is not allowed");
+                throw new ParseException("ComparatorType value is not allowed", e);
             }
         }
 
