@@ -4,11 +4,11 @@ import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
-import org.apache.cassandra.config.ConfigurationException;
 import org.apache.cassandra.config.DatabaseDescriptor;
 import org.apache.cassandra.db.commitlog.CommitLog;
+import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.cassandra.io.util.FileUtils;
-import org.apache.cassandra.thrift.CassandraDaemon;
+import org.apache.cassandra.service.CassandraDaemon;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
@@ -33,6 +33,8 @@ public class EmbeddedCassandraServerHelper {
     public static final String DEFAULT_CASSANDRA_YML_FILE = "cu-cassandra.yaml";
     public static final String DEFAULT_LOG4J_CONFIG_FILE = "/log4j-embedded-cassandra.properties";
     private static final String INTERNAL_CASSANDRA_KEYSPACE = "system";
+    private static final String INTERNAL_CASSANDRA_AUTH_KEYSPACE = "system_auth";
+    private static final String INTERNAL_CASSANDRA_TRACES_KEYSPACE = "system_traces";
 
     private static CassandraDaemon cassandraDaemon = null;
     static ExecutorService executor;
@@ -146,7 +148,9 @@ public class EmbeddedCassandraServerHelper {
         for (KeyspaceDefinition keyspaceDefinition : keyspaces) {
             String keyspaceName = keyspaceDefinition.getName();
 
-            if (!INTERNAL_CASSANDRA_KEYSPACE.equals(keyspaceName)) {
+            if (!INTERNAL_CASSANDRA_KEYSPACE.equals(keyspaceName)
+                    && !INTERNAL_CASSANDRA_AUTH_KEYSPACE.equals(keyspaceName)
+                    && !INTERNAL_CASSANDRA_TRACES_KEYSPACE.equals(keyspaceName)) {
                 cluster.dropKeyspace(keyspaceName);
             }
         }
@@ -220,11 +224,8 @@ public class EmbeddedCassandraServerHelper {
     }
 
     public static void mkdirs() {
-        try {
-            DatabaseDescriptor.createAllDirectories();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        DatabaseDescriptor.createAllDirectories();
+
     }
 
 }
