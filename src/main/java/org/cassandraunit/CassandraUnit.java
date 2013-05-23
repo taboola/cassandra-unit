@@ -15,7 +15,7 @@ public class CassandraUnit extends ExternalResource {
 
     public static String clusterName = "TestCluster";
     public static String host = "localhost:9171";
-    private String configurationFileName;
+    protected String configurationFileName;
 
     public CassandraUnit(DataSet dataSet) {
         this.dataSet = dataSet;
@@ -41,6 +41,10 @@ public class CassandraUnit extends ExternalResource {
         }
 
         /* create structure and load data */
+        load();
+    }
+
+    protected void load() {
         DataLoader dataLoader = new DataLoader(clusterName, host);
         dataLoader.load(dataSet);
 
