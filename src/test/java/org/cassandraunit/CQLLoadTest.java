@@ -3,10 +3,7 @@ package org.cassandraunit;
 import com.datastax.driver.core.ResultSet;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 /**
  * 
@@ -41,9 +38,6 @@ public class CQLLoadTest extends AbstractCassandraUnit4CQL3DataSetTestCase {
     }
 
     private void test() {
-        assertThat(getKeyspace(), notNullValue());
-        assertThat(getKeyspace().getKeyspaceName(), is(KEYSPACE_NAME));
-
         ResultSet result = session.execute("select * from testCQLTable WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570737'");
 
         String val = result.iterator().next().getString("value");

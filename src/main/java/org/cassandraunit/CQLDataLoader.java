@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -22,9 +23,7 @@ public class CQLDataLoader {
         this.keyspaceName = keyspaceName;
     }
 
-
     public void load(String cqlFile,Session session) {
-
         try {
             final InputStream inputStream = getClass().getResourceAsStream(cqlFile);
             final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -35,16 +34,9 @@ public class CQLDataLoader {
             }
             br.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             log.error(e.getMessage(),e);
-        } finally {
-            if(session!=null){
-                session.shutdown();
-            }
-
         }
-
     }
 
 

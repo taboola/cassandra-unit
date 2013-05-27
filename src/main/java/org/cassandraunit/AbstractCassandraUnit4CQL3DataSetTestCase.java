@@ -1,7 +1,6 @@
 package org.cassandraunit;
 
 import com.datastax.driver.core.Session;
-import me.prettyprint.hector.api.Keyspace;
 import org.junit.After;
 import org.junit.Before;
 
@@ -11,7 +10,6 @@ import org.junit.Before;
 public abstract class AbstractCassandraUnit4CQL3DataSetTestCase {
 
     private CassandraCQLUnit cassandraUnit;
-    private Keyspace keyspace = null;
     private boolean initialized = false;
     protected Session session;
 
@@ -24,27 +22,23 @@ public abstract class AbstractCassandraUnit4CQL3DataSetTestCase {
             cassandraUnit = new CassandraCQLUnit(getCqlFile(),getKeyspaceName());
             cassandraUnit.before();
 
-            keyspace = cassandraUnit.keyspace;
-
             session = cassandraUnit.createSession();
+            session.execute("USE "+getKeyspaceName());
 
             initialized = true;
-
         }
-
     }
     @After
     public void after(){
-        session.shutdown();
+        if(session!=null){
+            session.shutdown();
+        }
     }
 
     public abstract String getCqlFile();
     public abstract String getKeyspaceName();
 
 
-    public Keyspace getKeyspace() {
-        return keyspace;
-    }
 
 
 }
