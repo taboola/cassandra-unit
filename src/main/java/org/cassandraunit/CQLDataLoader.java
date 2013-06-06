@@ -1,43 +1,55 @@
 package org.cassandraunit;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
+import org.cassandraunit.dataset.CQLDataSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 /**
  * @author Marcin Szymaniuk
+ * @author Jeremy Sevellec
  */
 public class CQLDataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(CQLDataLoader.class);
-    private Cluster cluster;
-    private String keyspaceName;
 
-    public CQLDataLoader(String keyspaceName) {
-        this.keyspaceName = keyspaceName;
+    public Session getSession() {
+        return session;
     }
 
-    public void load(String cqlFile,Session session) {
-        try {
-            final InputStream inputStream = getClass().getResourceAsStream(cqlFile);
-            final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader br = new BufferedReader(inputStreamReader);
-            String line;
-            while ((line = br.readLine()) != null) {
-                session.execute(line);
-            }
-            br.close();
+    private final Session session;
 
-        } catch (IOException e) {
-            log.error(e.getMessage(),e);
+    public CQLDataLoader(String hostIp, int port) {
+        this.session = createSession(hostIp, port);
+    }
+
+    private Session createSession(String hostIp,int port) {
+        Cluster cluster =
+                new Cluster.Builder().addContactPoints(hostIp).withPort(port).build();
+        Session session = cluster.connect();
+        return session;
+    }
+
+
+    public void load(CQLDataSet dataSet) {
+        initKeyspace(session,dataSet.getKeyspaceName());
+        log.debug("loading data");
+        for (String query : dataSet.getCQLQueries()) {
+            session.execute(query);
         }
     }
 
 
+    private void initKeyspace(Session session, String keyspaceName) {
+        log.debug("initKeyspace " + keyspaceName);
+        ResultSet keyspaceQueryResult =
+                session.execute("SELECT keyspace_name from system.schema_keyspaces where keyspace_name='" + keyspaceName + "'");
+        if(keyspaceQueryResult.iterator().hasNext()){
+            session.execute("DROP KEYSPACE "+ keyspaceName);
+        }
+        session.execute("CREATE KEYSPACE " + keyspaceName + " WITH replication={'class' : 'SimpleStrategy', 'replication_factor':1}");
+        session.execute("use " + keyspaceName);
+    }
 }

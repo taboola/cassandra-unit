@@ -4,7 +4,7 @@ import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.rules.ExternalResource;
 
 /**
- * User: Marcin Szymaniuk
+ * @author Marcin Szymaniuk
  */
 public abstract class BaseCassandraUnit extends ExternalResource {
     protected String configurationFileName;

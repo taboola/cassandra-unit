@@ -1,6 +1,8 @@
 package org.cassandraunit;
 
 import com.datastax.driver.core.ResultSet;
+import org.cassandraunit.dataset.CQLDataSet;
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,22 +10,17 @@ import static org.junit.Assert.assertEquals;
 /**
  * 
  * @author Marcin Szymaniuk
+ * @author Jeremy Sevellec
  *
  */
-public class CQLLoadTest extends AbstractCassandraUnit4CQL3DataSetTestCase {
+public class CQLDataLoadTestWithClassInheritance extends AbstractCassandraUnit4CQLTestCase {
 
-
-    private final String KEYSPACE_NAME = "testkeyspace";
 
     @Override
-	public String getCqlFile() {
-		return "/cql/data.cql";
-	}
-
-    @Override
-    public String getKeyspaceName() {
-        return KEYSPACE_NAME;  //To change body of implemented methods use File | Settings | File Templates.
+    public CQLDataSet getDataSet() {
+        return new ClassPathCQLDataSet("cql/simple.cql", "mykeyspace");
     }
+
 
     @Test
 	public void testCQLDataAreInPlace() throws Exception {
@@ -38,11 +35,10 @@ public class CQLLoadTest extends AbstractCassandraUnit4CQL3DataSetTestCase {
     }
 
     private void test() {
-        ResultSet result = session.execute("select * from testCQLTable WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570737'");
+        ResultSet result = getSession().execute("select * from testCQLTable WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570737'");
 
         String val = result.iterator().next().getString("value");
         assertEquals("Cql loaded string",val);
     }
-
 
 }

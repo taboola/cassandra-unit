@@ -2,64 +2,41 @@ package org.cassandraunit;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
+import org.cassandraunit.dataset.CQLDataSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
  * @author Marcin Szymaniuk
+ * @author Jeremy Sevellec
  */
 public class CassandraCQLUnit extends BaseCassandraUnit {
-    public String cqlFile;
-    public static String keyspaceName = "testkeyspace";
+    private CQLDataSet dataSet;
 
     private static final Logger log = LoggerFactory.getLogger(CassandraCQLUnit.class);
     private String hostIp = "127.0.0.1";
-    private int port = 9031;
+    private int port = 9142;
+    public Session session;
 
-    public CassandraCQLUnit(String cqlFile, String keyspaceName) {
-        this.keyspaceName = keyspaceName;
-        this.cqlFile = cqlFile;
+    public CassandraCQLUnit(CQLDataSet dataSet) {
+        this.dataSet = dataSet;
     }
 
+    public CassandraCQLUnit(CQLDataSet dataSet, String configurationFileName) {
+        this(dataSet);
+        this.configurationFileName = configurationFileName;
+    }
 
-    public CassandraCQLUnit(String cqlFile, String keyspaceName, String hostIp, int port) {
-        this.keyspaceName = keyspaceName;
-        this.cqlFile = cqlFile;
-        this.hostIp=hostIp;
-        this.port=port;
+    public CassandraCQLUnit(CQLDataSet dataSet, String configurationFileName, String hostIp, int port) {
+        this(dataSet);
+        this.configurationFileName = configurationFileName;
+        this.hostIp = hostIp;
+        this.port = port;
     }
 
     protected void load() {
-        Session session = null;
-        try {
-            CQLDataLoader dataLoader = new CQLDataLoader(keyspaceName);
-            session = createSession();
-            recreateKeyspace(session);
-
-            session.execute("use " + keyspaceName);
-            dataLoader.load(cqlFile, session);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            if (session != null) {
-                session.shutdown();
-            }
-        }
+        CQLDataLoader dataLoader = new CQLDataLoader(hostIp, port);
+        dataLoader.load(dataSet);
+        session = dataLoader.getSession();
     }
 
-    private void recreateKeyspace(Session session) {
-
-        ResultSet keyspaceQueryResult =
-                session.execute("SELECT keyspace_name from system.schema_keyspaces where keyspace_name='" + keyspaceName + "'");
-        if(keyspaceQueryResult.iterator().hasNext()){
-            session.execute("DROP KEYSPACE "+keyspaceName);
-        }
-        session.execute("CREATE KEYSPACE " + keyspaceName + " WITH replication={'class' : 'SimpleStrategy', 'replication_factor':1}");
-    }
-
-    public Session createSession() {
-        com.datastax.driver.core.Cluster cluster =
-                new com.datastax.driver.core.Cluster.Builder().addContactPoints(hostIp).withPort(port).build();
-        Session session = cluster.connect();
-        return session;
-    }
 }

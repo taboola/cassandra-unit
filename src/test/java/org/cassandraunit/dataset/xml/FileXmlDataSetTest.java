@@ -18,7 +18,7 @@ public class FileXmlDataSetTest extends AbstractFileDataSetTest {
 
 	@Override
 	public String getDataSetClasspathRessource() {
-		return "/xml/dataSetDefaultValues.xml";
+		return "/cql/simple.cql";
 	}
 
 	@Test
