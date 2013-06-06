@@ -56,7 +56,7 @@ public class ClasspathCQLDataSetTest {
     @Test
     public void shouldGetDefaultTestKeyspaceName() {
         CQLDataSet dataSet = new ClassPathCQLDataSet("cql/simple.cql");
-        assertThat(dataSet.getKeyspaceName(),is("cassandra-unit-test-keyspace"));
+        assertThat(dataSet.getKeyspaceName(),is("cassandraunittestkeyspace"));
     }
 
     @Test

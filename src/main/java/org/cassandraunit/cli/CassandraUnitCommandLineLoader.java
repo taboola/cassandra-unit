@@ -1,13 +1,17 @@
 package org.cassandraunit.cli;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.lang.StringUtils;
+import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.LoadingOption;
 import org.cassandraunit.dataset.FileDataSet;
+import org.cassandraunit.dataset.cql.FileCQLDataSet;
 import org.cassandraunit.model.StrategyModel;
 
 public class CassandraUnitCommandLineLoader {
 
+    public static final String CQL_FILE_EXTENSION = "cql";
     private static CommandLineParser commandLineParser = null;
 
     private static Options options = null;
@@ -63,6 +67,19 @@ public class CassandraUnitCommandLineLoader {
         String host = commandLine.getOptionValue("h");
         String port = commandLine.getOptionValue("p");
         String file = commandLine.getOptionValue("f");
+
+        String fileExtension = StringUtils.substringAfterLast(file, ".");
+
+        if (CQL_FILE_EXTENSION.equals(fileExtension)) {
+            cqlDataSetLoad(host, port, file);
+        } else {
+            otherTypeOfDataSetLoad(host, port, file);
+        }
+
+        System.out.println("Loading completed");
+    }
+
+    private static void otherTypeOfDataSetLoad(String host, String port, String file) {
         LoadingOption loadingOption = new LoadingOption();
         loadingOption.setOnlySchema(commandLine.hasOption("o"));
 
@@ -77,7 +94,11 @@ public class CassandraUnitCommandLineLoader {
 
         DataLoader dataLoader = new DataLoader("clusterToLoad", host + ":" + port);
         dataLoader.load(new FileDataSet(file), loadingOption);
-        System.out.println("Loading completed");
+    }
+
+    private static void cqlDataSetLoad(String host, String port, String file) {
+        CQLDataLoader dataLoader = new CQLDataLoader(host,Integer.parseInt(port));
+        dataLoader.load(new FileCQLDataSet(file));
     }
 
     private static boolean containBadReplicationFactorArgumentValue() {

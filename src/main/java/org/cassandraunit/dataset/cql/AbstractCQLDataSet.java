@@ -19,7 +19,7 @@ public abstract class AbstractCQLDataSet implements CQLDataSet {
     private String keyspaceName = null;
 
     public AbstractCQLDataSet(String dataSetLocation) {
-        this(dataSetLocation,"cassandra-unit-test-keyspace");
+        this(dataSetLocation,"cassandraunittestkeyspace");
     }
 
     public AbstractCQLDataSet(String dataSetLocation, String keyspaceName) {
