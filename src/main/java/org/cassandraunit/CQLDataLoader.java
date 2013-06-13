@@ -41,7 +41,7 @@ public class CQLDataLoader {
 
 
         log.debug("loading data");
-        for (String query : dataSet.getCQLQueries()) {
+        for (String query : dataSet.getCQLStatements()) {
             log.debug("executing : " + query );
             session.execute(query);
         }

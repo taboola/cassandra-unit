@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface CQLDataSet {
 
-    List<String> getCQLQueries();
+    List<String> getCQLStatements();
 
     String getKeyspaceName();
 
