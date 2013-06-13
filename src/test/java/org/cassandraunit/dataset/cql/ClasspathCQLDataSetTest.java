@@ -47,17 +47,12 @@ public class ClasspathCQLDataSetTest {
         assertThat(dataSet.getCQLQueries(), notNullValue());
         assertThat(dataSet.getCQLQueries().isEmpty(), is(false));
         assertThat(dataSet.getCQLQueries().size(),is(4));
-        assertThat(dataSet.getCQLQueries().get(0),is("create table testCQLTable (id uuid, value varchar, PRIMARY KEY(id));"));
-        assertThat(dataSet.getCQLQueries().get(1),is("insert into testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570737,'Cql loaded string');"));
-        assertThat(dataSet.getCQLQueries().get(2),is("insert into testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570738,'BLA2');"));
-        assertThat(dataSet.getCQLQueries().get(3),is("insert into testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570739,'BLA1');"));
+        assertThat(dataSet.getCQLQueries().get(0),is("CREATE TABLE testCQLTable (id uuid, value varchar, PRIMARY KEY(id));"));
+        assertThat(dataSet.getCQLQueries().get(1),is("INSERT INTO testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570737,'Cql loaded string');"));
+        assertThat(dataSet.getCQLQueries().get(2),is("INSERT INTO testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570738,'BLA2');"));
+        assertThat(dataSet.getCQLQueries().get(3),is("INSERT INTO testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570739,'BLA1');"));
     }
 
-    @Test
-    public void shouldGetDefaultTestKeyspaceName() {
-        CQLDataSet dataSet = new ClassPathCQLDataSet("cql/simple.cql");
-        assertThat(dataSet.getKeyspaceName(),is("cassandraunittestkeyspace"));
-    }
 
     @Test
     public void shouldGetDefinedTestKeyspaceName() {

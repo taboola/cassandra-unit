@@ -17,20 +17,30 @@ public abstract class AbstractCQLDataSet implements CQLDataSet {
 
     private String dataSetLocation = null;
     private String keyspaceName = null;
+    private boolean keyspaceCreation = true;
 
     public AbstractCQLDataSet(String dataSetLocation) {
-        this(dataSetLocation,"cassandraunittestkeyspace");
+        this.dataSetLocation = dataSetLocation;
+    }
+
+    public AbstractCQLDataSet(String dataSetLocation, boolean keyspaceCreation) {
+        this(dataSetLocation, keyspaceCreation, null);
     }
 
     public AbstractCQLDataSet(String dataSetLocation, String keyspaceName) {
-        if (keyspaceName == null || keyspaceName.isEmpty()) {
-            throw new IllegalArgumentException("keyspaceName can't be null or empty");
-        }
+        this(dataSetLocation, true, keyspaceName);
+    }
+
+
+    public AbstractCQLDataSet(String dataSetLocation, boolean keyspaceCreation, String keyspaceName) {
         if (getInputDataSetLocation(dataSetLocation) == null) {
             throw new ParseException("Dataset not found");
         }
-        this.keyspaceName = keyspaceName.toLowerCase();
         this.dataSetLocation = dataSetLocation;
+        this.keyspaceCreation = keyspaceCreation;
+        if (keyspaceName != null) {
+            this.keyspaceName = keyspaceName.toLowerCase();
+        }
     }
 
 
@@ -57,5 +67,9 @@ public abstract class AbstractCQLDataSet implements CQLDataSet {
     @Override
     public String getKeyspaceName() {
         return keyspaceName;
+    }
+
+    public boolean isKeyspaceCreation() {
+        return keyspaceCreation;
     }
 }

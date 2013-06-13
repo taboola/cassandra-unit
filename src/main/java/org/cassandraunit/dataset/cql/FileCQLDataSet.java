@@ -12,11 +12,19 @@ import java.io.InputStream;
 public class FileCQLDataSet extends AbstractCQLDataSet implements CQLDataSet {
 
     public FileCQLDataSet(String dataSetLocation) {
-        super(dataSetLocation);
+        super(dataSetLocation, true, null);
+    }
+
+    public FileCQLDataSet(String dataSetLocation, boolean keyspaceCreation) {
+        super(dataSetLocation, keyspaceCreation, null);
     }
 
     public FileCQLDataSet(String dataSetLocation, String keyspaceName) {
-        super(dataSetLocation,keyspaceName);
+        super(dataSetLocation, true, keyspaceName);
+    }
+
+    public FileCQLDataSet(String dataSetLocation, boolean keyspaceCreation, String keyspaceName) {
+        super(dataSetLocation, keyspaceCreation, keyspaceName);
     }
 
     @Override

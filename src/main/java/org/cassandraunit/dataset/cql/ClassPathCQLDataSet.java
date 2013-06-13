@@ -10,11 +10,19 @@ import java.io.InputStream;
 public class ClassPathCQLDataSet extends AbstractCQLDataSet implements CQLDataSet {
 
     public ClassPathCQLDataSet(String dataSetLocation) {
-        super(dataSetLocation);
+        super(dataSetLocation, true, null);
+    }
+
+    public ClassPathCQLDataSet(String dataSetLocation, boolean keyspaceCreation) {
+        super(dataSetLocation, keyspaceCreation);
     }
 
     public ClassPathCQLDataSet(String dataSetLocation, String keyspaceName) {
-        super(dataSetLocation, keyspaceName);
+        super(dataSetLocation, true , keyspaceName);
+    }
+
+    public ClassPathCQLDataSet(String dataSetLocation, boolean keyspaceCreation, String keyspaceName) {
+        super(dataSetLocation, keyspaceCreation, keyspaceName);
     }
 
     @Override

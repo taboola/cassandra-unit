@@ -14,4 +14,6 @@ public interface CQLDataSet {
 
     String getKeyspaceName();
 
+    boolean isKeyspaceCreation();
+
 }

@@ -98,7 +98,7 @@ public class CassandraUnitCommandLineLoader {
 
     private static void cqlDataSetLoad(String host, String port, String file) {
         CQLDataLoader dataLoader = new CQLDataLoader(host,Integer.parseInt(port));
-        dataLoader.load(new FileCQLDataSet(file));
+        dataLoader.load(new FileCQLDataSet(file, false));
     }
 
     private static boolean containBadReplicationFactorArgumentValue() {
