@@ -9,7 +9,7 @@
 	<artifactId>cassandra-unit</artifactId>
 	<packaging>jar</packaging>
 	<name>cassandra-unit</name>
-	<version>1.2.0.1-SNAPSHOT</version>
+
 	<description>Test framekork to develop with Cassandra</description>
 	<build>
 		<resources>
