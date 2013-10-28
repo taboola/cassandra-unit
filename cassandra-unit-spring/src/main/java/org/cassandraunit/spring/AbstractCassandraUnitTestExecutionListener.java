@@ -1,29 +1,3 @@
-/* +-----------------------------------------------------------------------------------------------+
- *                                                                                                
- *  Titre          : AbstractCassandraUnitTestListener                                                                 
- *  Description    : Définition                                         
- *  Copyright      : Cofiroute 2013                                                            
- *  Societe        : Cofiroute                                                                    
- *  Author         : LEBRUN_G                                                                      
- *  Version        : 1.0.0                                                                        
- *  Package        : org.cassandraunit.spring                                                              
- *  Parametre VM   : Neant                                                                        
- *  Parametre main : Neant                                                                        
- *                                                                                                
- * +-----------------------------------------------------------------------------------------------+
- *  Historique des mises a jour :                                                                 
- *  Auteur Date       Description                                                                 
- *  ------- ------------------------------------------------------------------------------------- 
- *  LEBRUN_G 24/10/13 Creation                                                                      
- *                                                                                                
- * +-----------------------------------------------------------------------------------------------+
- *  Remarques :                                                                                   
- *                                                                                                
- * +-----------------------------------------------------------------------------------------------+
- *  RAF : Neant                                                                                   
- *                                                                                                
- * +-----------------------------------------------------------------------------------------------+
- */
 package org.cassandraunit.spring;
 
 import com.google.common.base.Optional;
@@ -48,15 +22,17 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * User: LEBRUN_G
- * Date: 24/10/13
- * Time: 13:17
+ * The goal of this abstract listener is to provide utility methods for its subclasses to be able to :
+ * - start an embedded Cassandra
+ * - load dataset into Cassandra keyspace 
+ * 
+ * @author Gaëtan Le Brun
  */
 public abstract class AbstractCassandraUnitTestExecutionListener extends AbstractTestExecutionListener {
   private static final org.slf4j.Logger LOGGER      = LoggerFactory.getLogger(CassandraUnitTestExecutionListener.class);
   private static       boolean          initialized = false;
 
-  public void startServer(TestContext testContext) throws Exception {
+  protected void startServer(TestContext testContext) throws Exception {
     EmbeddedCassandra embeddedCassandra = Preconditions.checkNotNull(
             AnnotationUtils.findAnnotation(testContext.getTestInstance().getClass(), EmbeddedCassandra.class),
             "CassandraUnitTestExecutionListener must be used with @EmbeddedCassandra on " + testContext.getTestClass());
@@ -119,7 +95,7 @@ public abstract class AbstractCassandraUnitTestExecutionListener extends Abstrac
     return Arrays.asList(dataset);
   }
 
-  public void cleanServer() {
+  protected void cleanServer() {
     EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
   }
 
