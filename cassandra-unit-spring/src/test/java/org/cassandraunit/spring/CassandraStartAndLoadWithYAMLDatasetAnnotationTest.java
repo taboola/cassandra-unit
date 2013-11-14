@@ -48,7 +48,7 @@ public class CassandraStartAndLoadWithYAMLDatasetAnnotationTest {
     Cluster cluster = HFactory.getOrCreateCluster("Test Cluster", "localhost:9171");
     List<KeyspaceDefinition> keyspaces = cluster.describeKeyspaces();
     assertThat(cluster.describeKeyspaces(), notNullValue());
-    assertThat(keyspaces.size(), is(3 + 1));
+    assertThat(keyspaces.size(), is(3));
     assertThat(cluster.describeKeyspace("mykeyspacename"), notNullValue());
     assertThat(cluster.describeKeyspace("mykeyspacename").getName(), is("mykeyspacename"));
 

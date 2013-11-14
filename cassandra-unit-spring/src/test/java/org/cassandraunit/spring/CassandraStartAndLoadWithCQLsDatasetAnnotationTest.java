@@ -38,11 +38,11 @@ public class CassandraStartAndLoadWithCQLsDatasetAnnotationTest {
         .build();
     Session session = cluster.connect("cassandra_unit_keyspace");
 
-    ResultSet result = session.execute("select * from testCQLTable1 WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570717'");
+    ResultSet result = session.execute("select * from testCQLTable1 WHERE id=1690e8da-5bf8-49e8-9583-4dff8a570717");
     String val = result.iterator().next().getString("value");
     assertEquals("1- Cql loaded string", val);
 
-    result = session.execute("select * from testCQLTable2 WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570727'");
+    result = session.execute("select * from testCQLTable2 WHERE id=1690e8da-5bf8-49e8-9583-4dff8a570727");
     val = result.iterator().next().getString("value");
     assertEquals("2- Cql loaded string", val);
   }

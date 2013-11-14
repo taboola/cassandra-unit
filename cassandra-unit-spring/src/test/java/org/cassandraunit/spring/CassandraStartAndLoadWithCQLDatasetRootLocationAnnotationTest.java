@@ -37,7 +37,7 @@ public class CassandraStartAndLoadWithCQLDatasetRootLocationAnnotationTest {
         .withPort(9142)
         .build();
     Session session = cluster.connect("cassandra_unit_keyspace");
-    ResultSet result = session.execute("select * from testCQLTableRootLocation WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570797'");
+    ResultSet result = session.execute("select * from testCQLTableRootLocation WHERE id=1690e8da-5bf8-49e8-9583-4dff8a570797");
     String val = result.iterator().next().getString("value");
     assertEquals("Root- Cql loaded string", val);
   }

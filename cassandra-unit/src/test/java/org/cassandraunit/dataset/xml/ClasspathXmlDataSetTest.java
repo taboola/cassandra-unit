@@ -63,8 +63,8 @@ public class ClasspathXmlDataSetTest {
             fail();
         } catch (ParseException e) {
             /* nothing to do, it what we want */
-            assertThat(StringUtils.contains(e.getMessage(),
-                    "Invalid content was found starting with element 'columnFamily'"), is(Boolean.TRUE));
+            assertThat(e.getMessage(), containsString("org.xml.sax.SAXParseException"));
+            assertThat(e.getMessage(), containsString("'columnFamily'"));
         }
     }
 

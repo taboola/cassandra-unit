@@ -48,7 +48,7 @@ public class CassandraStartAndLoadWithYAML2DatasetAnnotationTest {
     Cluster cluster = HFactory.getOrCreateCluster("Test Cluster", "localhost:9171");
     List<KeyspaceDefinition> keyspaces = cluster.describeKeyspaces();
     assertThat(cluster.describeKeyspaces(), notNullValue());
-    assertThat(keyspaces.size(), is(3 + 1));
+    assertThat(keyspaces.size(), is(3));
     assertThat(cluster.describeKeyspace("mykeyspacename"), notNullValue());
     assertThat(cluster.describeKeyspace("mykeyspacename").getName(), is("mykeyspacename"));
 
@@ -63,7 +63,8 @@ public class CassandraStartAndLoadWithYAML2DatasetAnnotationTest {
     QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
     List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
     assertThat(rows.size(), Matchers.is(1));
-    assertThat(rows.get(0).getKey(), is(decodeHex("01".toCharArray())));
+      Row<byte[], byte[], byte[]> row = rows.get(0);
+      assertThat(row.getKey(), is(decodeHex("01".toCharArray())));
     assertThat(rows.get(0).getColumnSlice().getColumns().size(), is(1));
 
     assertThat(rows.get(0).getColumnSlice().getColumns().get(0), notNullValue());

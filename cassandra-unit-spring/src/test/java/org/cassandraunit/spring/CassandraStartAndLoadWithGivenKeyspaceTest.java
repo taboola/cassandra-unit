@@ -37,7 +37,7 @@ public class CassandraStartAndLoadWithGivenKeyspaceTest {
         .withPort(9142)
         .build();
     Session session = cluster.connect("myownkeyspace");
-    ResultSet result = session.execute("select * from testCQLTableKS WHERE id='1690e8da-5bf8-49e8-9583-4dff8a570787'");
+    ResultSet result = session.execute("select * from testCQLTableKS WHERE id=1690e8da-5bf8-49e8-9583-4dff8a570787");
     String val = result.iterator().next().getString("value");
     assertEquals("KS- Cql loaded string", val);
   }

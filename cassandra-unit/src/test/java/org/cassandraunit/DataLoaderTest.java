@@ -252,14 +252,14 @@ public class DataLoaderTest {
 			QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
 			List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
 			assertThat(rows.size(), is(3));
-			assertThat(rows.get(0).getKey(), is(decodeHex("30")));
+			assertThat(rows.get(0).getKey(), is(decodeHex("10")));
 			assertThat(rows.get(0).getColumnSlice().getColumns().size(), is(2));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getName(), is(decodeHex("31")));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("31")));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getName(), is(decodeHex("32")));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("32")));
-			assertThat(rows.get(2).getKey(), is(decodeHex("20")));
-			assertThat(rows.get(1).getKey(), is(decodeHex("10")));
+			assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getName(), is(decodeHex("11")));
+			assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("11")));
+			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getName(), is(decodeHex("12")));
+			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("12")));
+			assertThat(rows.get(1).getKey(), is(decodeHex("20")));
+			assertThat(rows.get(2).getKey(), is(decodeHex("30")));
 
 		} catch (HInvalidRequestException e) {
 			e.printStackTrace();
@@ -287,57 +287,59 @@ public class DataLoaderTest {
 			QueryResult<OrderedSuperRows<byte[], byte[], byte[], byte[]>> result = query.execute();
 			List<SuperRow<byte[], byte[], byte[], byte[]>> rows = result.get().getList();
 			assertThat(rows.size(), is(2));
-			assertThat(rows.get(0).getKey(), is(decodeHex("01")));
-			assertThat(rows.get(0).getSuperSlice(), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns(), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().size(), is(2));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getName(), is(decodeHex("11")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns(), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().size(), is(2));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(0), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getName(),
+            SuperRow<byte[], byte[], byte[], byte[]> superRow0 = rows.get(1);
+            SuperRow<byte[], byte[], byte[], byte[]> superRow1 = rows.get(0);
+            assertThat(superRow0.getKey(), is(decodeHex("01")));
+			assertThat(superRow0.getSuperSlice(), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns(), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().size(), is(2));
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getName(), is(decodeHex("11")));
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns(), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().size(), is(2));
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().get(0), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getName(),
 					is(decodeHex("1110")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getValue(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getValue(),
 					is(decodeHex("1110")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(1), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getName(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().get(1), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getName(),
 					is(decodeHex("1120")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getValue(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getValue(),
 					is(decodeHex("1120")));
 
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getName(), is(decodeHex("12")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns(), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().size(), is(2));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(0), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(0).getName(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getName(), is(decodeHex("12")));
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns(), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().size(), is(2));
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().get(0), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().get(0).getName(),
 					is(decodeHex("1210")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(0).getValue(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().get(0).getValue(),
 					is(decodeHex("1210")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(1), notNullValue());
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(1).getName(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().get(1), notNullValue());
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().get(1).getName(),
 					is(decodeHex("1220")));
-			assertThat(rows.get(0).getSuperSlice().getSuperColumns().get(1).getColumns().get(1).getValue(),
+			assertThat(superRow0.getSuperSlice().getSuperColumns().get(1).getColumns().get(1).getValue(),
 					is(decodeHex("1220")));
 
-			assertThat(rows.get(1).getKey(), is(decodeHex("02")));
-			assertThat(rows.get(1).getSuperSlice(), notNullValue());
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns(), notNullValue());
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().size(), is(1));
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0), notNullValue());
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getName(), is(decodeHex("21")));
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns(), notNullValue());
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().size(), is(2));
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(0), notNullValue());
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getName(),
+            assertThat(superRow1.getKey(), is(decodeHex("02")));
+			assertThat(superRow1.getSuperSlice(), notNullValue());
+			assertThat(superRow1.getSuperSlice().getSuperColumns(), notNullValue());
+			assertThat(superRow1.getSuperSlice().getSuperColumns().size(), is(1));
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0), notNullValue());
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getName(), is(decodeHex("21")));
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns(), notNullValue());
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().size(), is(2));
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().get(0), notNullValue());
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getName(),
 					is(decodeHex("2110")));
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getValue(),
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().get(0).getValue(),
 					is(decodeHex("2110")));
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(1), notNullValue());
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getName(),
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().get(1), notNullValue());
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getName(),
 					is(decodeHex("2120")));
-			assertThat(rows.get(1).getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getValue(),
+			assertThat(superRow1.getSuperSlice().getSuperColumns().get(0).getColumns().get(1).getValue(),
 					is(decodeHex("2120")));
 
 		} catch (HInvalidRequestException e) {
@@ -365,24 +367,25 @@ public class DataLoaderTest {
 			QueryResult<OrderedRows<UUID, String, byte[]>> result = query.execute();
 			List<Row<UUID, String, byte[]>> rows = result.get().getList();
 			assertThat(rows.size(), is(2));
-			assertThat(rows.get(0).getKey(), is(UUID.fromString("13818e20-1dd2-11b2-879a-782bcb80ff6a")));
-			assertThat(rows.get(0).getColumnSlice().getColumns().size(), is(2));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(0), notNullValue());
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getName(), is("name21"));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("21")));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(1), notNullValue());
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getName(), is("name22"));
-			assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("22")));
 
-			assertThat(rows.get(1).getKey(), is(UUID.fromString("13816710-1dd2-11b2-879a-782bcb80ff6a")));
-			assertThat(rows.get(1).getColumnSlice().getColumns().size(), is(2));
-			assertThat(rows.get(1).getColumnSlice().getColumns().get(0), notNullValue());
-			assertThat(rows.get(1).getColumnSlice().getColumns().get(0).getName(), is("name11"));
-			assertThat(rows.get(1).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("11")));
-			assertThat(rows.get(1).getColumnSlice().getColumns().get(1), notNullValue());
-			assertThat(rows.get(1).getColumnSlice().getColumns().get(1).getName(), is("name12"));
-			assertThat(rows.get(1).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("12")));
-		} catch (HInvalidRequestException e) {
+            assertThat(rows.get(0).getKey(), is(UUID.fromString("13816710-1dd2-11b2-879a-782bcb80ff6a")));
+            assertThat(rows.get(0).getColumnSlice().getColumns().size(), is(2));
+            assertThat(rows.get(0).getColumnSlice().getColumns().get(0), notNullValue());
+            assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getName(), is("name11"));
+            assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("11")));
+            assertThat(rows.get(0).getColumnSlice().getColumns().get(1), notNullValue());
+            assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getName(), is("name12"));
+            assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("12")));
+
+            assertThat(rows.get(1).getKey(), is(UUID.fromString("13818e20-1dd2-11b2-879a-782bcb80ff6a")));
+            assertThat(rows.get(1).getColumnSlice().getColumns().size(), is(2));
+            assertThat(rows.get(1).getColumnSlice().getColumns().get(0), notNullValue());
+            assertThat(rows.get(1).getColumnSlice().getColumns().get(0).getName(), is("name21"));
+            assertThat(rows.get(1).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("21")));
+            assertThat(rows.get(1).getColumnSlice().getColumns().get(1), notNullValue());
+            assertThat(rows.get(1).getColumnSlice().getColumns().get(1).getName(), is("name22"));
+            assertThat(rows.get(1).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("22")));
+        } catch (HInvalidRequestException e) {
 			e.printStackTrace();
 			fail();
 		}

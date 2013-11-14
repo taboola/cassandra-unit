@@ -25,10 +25,14 @@ import org.cassandraunit.model.ColumnFamilyModel;
 import org.cassandraunit.model.ColumnModel;
 import org.cassandraunit.model.StrategyModel;
 import org.cassandraunit.type.GenericTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SampleDataSetChecker {
+    private static Logger logger = LoggerFactory.getLogger(SampleDataSetChecker.class);
 
-	public static void assertDataSetLoaded(Keyspace keyspace) {
+
+    public static void assertDataSetLoaded(Keyspace keyspace) {
 		RangeSlicesQuery<byte[], byte[], byte[]> query = HFactory.createRangeSlicesQuery(keyspace,
 				BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
 		query.setColumnFamily("columnFamily1");
@@ -36,14 +40,16 @@ public class SampleDataSetChecker {
 		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = query.execute();
 		List<Row<byte[], byte[], byte[]>> rows = result.get().getList();
 		assertThat(rows.size(), is(3));
-		assertThat(rows.get(0).getKey(), is(decodeHex("30")));
-		assertThat(rows.get(0).getColumnSlice().getColumns().size(), is(2));
-		assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getName(), is(decodeHex("31")));
-		assertThat(rows.get(0).getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("31")));
-		assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getName(), is(decodeHex("32")));
-		assertThat(rows.get(0).getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("32")));
-		assertThat(rows.get(1).getKey(), is(decodeHex("10")));
-		assertThat(rows.get(2).getKey(), is(decodeHex("20")));
+
+        Row<byte[], byte[], byte[]> row = rows.get(0);
+        assertThat(row.getKey(), is(decodeHex("10")));
+		assertThat(row.getColumnSlice().getColumns().size(), is(2));
+		assertThat(row.getColumnSlice().getColumns().get(0).getName(), is(decodeHex("11")));
+		assertThat(row.getColumnSlice().getColumns().get(0).getValue(), is(decodeHex("11")));
+		assertThat(row.getColumnSlice().getColumns().get(1).getName(), is(decodeHex("12")));
+		assertThat(row.getColumnSlice().getColumns().get(1).getValue(), is(decodeHex("12")));
+		assertThat(rows.get(1).getKey(), is(decodeHex("20")));
+		assertThat(rows.get(2).getKey(), is(decodeHex("30")));
 
 	}
 

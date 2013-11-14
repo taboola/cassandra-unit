@@ -13,71 +13,71 @@ import org.slf4j.LoggerFactory;
  */
 public class CQLDataLoader {
 
-  private static final Logger log = LoggerFactory.getLogger(CQLDataLoader.class);
-  public static final String DEFAULT_KEYSPACE_NAME = "cassandraunitkeyspace";
+    private static final Logger log = LoggerFactory.getLogger(CQLDataLoader.class);
+    public static final String DEFAULT_KEYSPACE_NAME = "cassandraunitkeyspace";
 
 
-  public Session getSession() {
-    return session;
-  }
-
-  private final Session session;
-
-  public CQLDataLoader(String hostIp, int port) {
-    this.session = createSession(hostIp, port);
-  }
-
-  private Session createSession(String hostIp, int port) {
-    Cluster cluster =
-        new Cluster.Builder().addContactPoints(hostIp).withPort(port).build();
-    Session session = cluster.connect();
-    return session;
-  }
-
-  public void load(CQLDataSet dataSet) {
-    initKeyspaceContext(session, dataSet);
-
-    log.debug("loading data");
-    for (String query : dataSet.getCQLStatements()) {
-      log.debug("executing : " + query );
-      session.execute(query);
+    public Session getSession() {
+        return session;
     }
 
-    if (dataSet.getKeyspaceName() != null) {
-      String useQuery = "use " + dataSet.getKeyspaceName();
-      session.execute(useQuery);
-    }
-  }
+    private final Session session;
 
-  private void initKeyspaceContext(Session session, CQLDataSet dataSet) {
-    String keyspaceName = DEFAULT_KEYSPACE_NAME;
-    if (dataSet.getKeyspaceName() != null) {
-      keyspaceName = dataSet.getKeyspaceName();
+    public CQLDataLoader(String hostIp, int port) {
+        this.session = createSession(hostIp, port);
     }
 
-    log.debug("initKeyspaceContext : " +
-        "keyspaceDeletion=" + dataSet.isKeyspaceDeletion() +
-        "keyspaceCreation=" + dataSet.isKeyspaceCreation() +
-        ";keyspaceName=" + keyspaceName);
-
-    if (dataSet.isKeyspaceDeletion()) {
-      String selectQuery = "SELECT keyspace_name FROM system.schema_keyspaces where keyspace_name='" + keyspaceName + "'";
-      ResultSet keyspaceQueryResult = session.execute(selectQuery);
-      if (keyspaceQueryResult.iterator().hasNext()) {
-        String dropQuery = "DROP KEYSPACE " + keyspaceName;
-        log.debug("executing : " + dropQuery);
-        session.execute(dropQuery);
-      }
+    private Session createSession(String hostIp, int port) {
+        Cluster cluster =
+                new Cluster.Builder().addContactPoints(hostIp).withPort(port).build();
+        Session session = cluster.connect();
+        return session;
     }
 
-    if (dataSet.isKeyspaceCreation()) {
-      String createQuery = "CREATE KEYSPACE " + keyspaceName + " WITH replication={'class' : 'SimpleStrategy', 'replication_factor':1}";
-      log.debug("executing : " + createQuery);
-      session.execute(createQuery);
+    public void load(CQLDataSet dataSet) {
+        initKeyspaceContext(session, dataSet);
+
+        log.debug("loading data");
+        for (String query : dataSet.getCQLStatements()) {
+            log.debug("executing : " + query);
+            session.execute(query);
+        }
+
+        if (dataSet.getKeyspaceName() != null) {
+            String useQuery = "use " + dataSet.getKeyspaceName();
+            session.execute(useQuery);
+        }
     }
 
-    String useQuery = "USE " + keyspaceName;
-    log.debug("executing : " + useQuery);
-    session.execute(useQuery);
-  }
+    private void initKeyspaceContext(Session session, CQLDataSet dataSet) {
+        String keyspaceName = DEFAULT_KEYSPACE_NAME;
+        if (dataSet.getKeyspaceName() != null) {
+            keyspaceName = dataSet.getKeyspaceName();
+        }
+
+        log.debug("initKeyspaceContext : " +
+                "keyspaceDeletion=" + dataSet.isKeyspaceDeletion() +
+                "keyspaceCreation=" + dataSet.isKeyspaceCreation() +
+                ";keyspaceName=" + keyspaceName);
+
+        if (dataSet.isKeyspaceDeletion()) {
+            String selectQuery = "SELECT keyspace_name FROM system.schema_keyspaces where keyspace_name='" + keyspaceName + "'";
+            ResultSet keyspaceQueryResult = session.execute(selectQuery);
+            if (keyspaceQueryResult.iterator().hasNext()) {
+                String dropQuery = "DROP KEYSPACE " + keyspaceName;
+                log.debug("executing : " + dropQuery);
+                session.execute(dropQuery);
+            }
+        }
+
+        if (dataSet.isKeyspaceCreation()) {
+            String createQuery = "CREATE KEYSPACE " + keyspaceName + " WITH replication={'class' : 'SimpleStrategy', 'replication_factor':1}";
+            log.debug("executing : " + createQuery);
+            session.execute(createQuery);
+            String useQuery = "USE " + keyspaceName;
+            log.debug("executing : " + useQuery);
+            session.execute(useQuery);
+        }
+
+    }
 }
